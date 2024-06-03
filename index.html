@@ -6,9 +6,11 @@
     <title>My Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="mediaqueries.css">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
 </head>
 <body>
+    <div id="particles-js"></div>
     <nav id = "desktop-nav">
         <div class = "logo"> Jeremy Calcarian </div>
         <div>
@@ -37,12 +39,11 @@
         </div>
     </nav>
     <section id = "profile">
-        <div class = "section__pic-container">
-            <img src="./Assets/profile-pic.png" alt="Jeremy Calcarian profile picture" />
-        </div>
         <div class = "section__text">
             <p class = "section__text__p1"> Hello, I'm</p>
-            <h1 class = "title"> Jeremy Calcarian</h1>
+            <h1 class="title">
+                <span id="animated-text"></span>
+            </h1>
             <p class = "section__text__p2">Student at the University of Pennsylvania</p> 
             <div class = "btn-container">
                 <button 
@@ -75,12 +76,7 @@
         <p class = "section__text__p1"> Get To Know More</p>
         <h1 class = "title"> About Me</h1>
         <div class = "section-container"> 
-            <div class = "section__pic-container">
-                <img 
-                src="./Assets/about-pic.png" 
-                alt="Profile picture" 
-                class = "about-pic">
-            </div>
+
             <div class = "about-details-container">
                 <div class = "about-containers">
                     <div class = details-container>
@@ -99,7 +95,9 @@
                     </div>
                 </div>
                 <div class = "text-container">
-                    <p>Will this update</p>
+                    <p>I am a current student at Penn exploring and working on numerous machine learning applications. 
+                        I am very interested in the shifting pace of artificial intelligence and the changes that are happening in the technology 
+                    and healthcare sector. I love videography, footy (soccer), and poker. </p>
                 </div>
             </div>
         </div>
