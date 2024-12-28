@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From Fair Games to Fair Prices: Martingale Theory in Modern Finance</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #2c2c2c;
+            color: white;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        h1, h2 {
+            color: #f0f0f0;
+        }
+        p {
+            margin-bottom: 20px;
+            color: #ccc;
+        }
+        .highlight-box {
+            background-color: #444;
+            border-left: 4px solid #888;
+            padding: 10px 20px;
+            margin: 20px 0;
+            color: #ddd;
+        }
+        pre {
+            background-color: #444;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            color: #f8f8f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>From Fair Games to Fair Prices: Martingale Theory in Modern Finance</h1>
+        <p><strong>Motivation:</strong> The idea of a "fair game" is central to both probability theory and finance. In the realm of finance, fairness translates to the absence of arbitrage opportunities. Martingale theory provides a mathematical framework to describe this principle.
+        After completing coursework in investment management and stochastic processes, I was motivaed to connect some of the stochastic theory to real-world finance non-arbitrage implications. I am by no means an expert on this topic but find stochastic proccesses to be quite fascinating especially in their 
+    application in finance. I thought I'd connect some dots of some of the lecture material I have learned recently. </p>
+
+        <h2>Martingales 101</h2>
+        <p>Martingales are stochastic processes where the expected value of the next observation is equal to the current value, given all past observations. Intuitively, it represents a "fair game" where future winnings are unpredictable given the current state.</p>
+        <div class="highlight-box">
+            <strong>Definition:</strong> A stochastic process \( X_t \) is a martingale if:
+            \[
+            \mathbb{E}[X_{t+1} \mid \mathcal{F}_t] = X_t
+            \]
+            where \( \mathcal{F}_t \) represents the information up to time \( t \).
+        </div>
+        <div class="highlight-box">
+            Additionally, \( \mathcal{F}_T \) can be represented as the collection \( X_0, X_1, \dots, X_T \), encapsulating all past states.
+        </div>
+
+        <h2>Conditions for Martingales</h2>
+        <p>For a stochastic process \( X_t \) to be a martingale, the following conditions must be satisfied:</p>
+        <ol>
+            <li>\( \mathbb{E}[|X_t|] < \infty \) for all \( t \geq 0 \) (finite expectation).</li>
+            <li>\( \mathbb{E}[X_{t+1} \mid \mathcal{F}_t] = X_t \) (martingale property).</li>
+            <li>\( X_t \) is \( \mathcal{F}_t \)-adapted (depends only on past and present, not future).</li>
+        </ol>
+
+        <h2>Simple Example: \( M_t = S_t^2 - \frac{\sigma^2 t}{4} \)</h2>
+        <p>We now consider the process \( M_t = S_t^2 - \frac{\sigma^2 t}{4} \), where \( S_t \) represents a discrete random walk or a simple Brownian motion approximation. Let us verify the martingale property by computing \( \mathbb{E}[M_{t+1} \mid \mathcal{F}_t] \).</p>
+
+        <ol>
+            <li>
+                <strong>Step 1:</strong> Substitute \( M_{t+1} \) in terms of \( S_{t+1} \):
+                \[
+                M_{t+1} = S_{t+1}^2 - \frac{\sigma^2 (t+1)}{4}.
+                \]
+                Using \( S_{t+1} = S_t + X_{t+1} \), where \( X_{t+1} \) is an independent random increment with \( \mathbb{E}[X_{t+1} \mid \mathcal{F}_t] = 0 \):
+                \[
+                M_{t+1} = (S_t + X_{t+1})^2 - \frac{\sigma^2 (t+1)}{4}.
+                \]
+            </li>
+
+            <li>
+                <strong>Step 2:</strong> Expand \( (S_t + X_{t+1})^2 \):
+                \[
+                M_{t+1} = S_t^2 + 2S_t X_{t+1} + X_{t+1}^2 - \frac{\sigma^2 (t+1)}{4}.
+                \]
+                Taking the conditional expectation given \( \mathcal{F}_t \):
+                \[
+                \mathbb{E}[M_{t+1} \mid \mathcal{F}_t] = \mathbb{E}[S_t^2 + 2S_t X_{t+1} + X_{t+1}^2 \mid \mathcal{F}_t] - \frac{\sigma^2 (t+1)}{4}.
+                \]
+            </li>
+
+            <li>
+                <strong>Step 3:</strong> Simplify the expectation:
+                Since \( \mathbb{E}[X_{t+1} \mid \mathcal{F}_t] = 0 \):
+                \[
+                \mathbb{E}[M_{t+1} \mid \mathcal{F}_t] = S_t^2 + \mathbb{E}[X_{t+1}^2 \mid \mathcal{F}_t] - \frac{\sigma^2 (t+1)}{4}.
+                \]
+                The variance of \( X_{t+1} \) is \( \sigma^2 \), so \( \mathbb{E}[X_{t+1}^2 \mid \mathcal{F}_t] = \sigma^2 \):
+                \[
+                \mathbb{E}[M_{t+1} \mid \mathcal{F}_t] = S_t^2 + \sigma^2 - \frac{\sigma^2 (t+1)}{4}.
+                \]
+            </li>
+
+            <li>
+                <strong>Step 4:</strong> Simplify further:
+                \[
+                \mathbb{E}[M_{t+1} \mid \mathcal{F}_t] = S_t^2 - \frac{\sigma^2 t}{4}.
+                \]
+                This equals \( M_t \), confirming the martingale property.
+            </li>
+        </ol>
+        <p>By substituting the definitions of \( S_{t+1} \) and applying the properties of conditional expectation, we verified that \( M_t = S_t^2 - \frac{\sigma^2 t}{4} \) satisfies the martingale property.</p>
+
+        <h2>Mini Intro to Put-Call Parity: An Arbitrage Example</h2>
+        <h3>Setup</h3>
+        <ul>
+            <li>Stock Price (\( S \)) = $10</li>
+            <li>Strike Price (\( K \)) = $10</li>
+            <li>Risk-Free Rate (\( r \)) = 0% (for simplicity)</li>
+            <li>Time to Expiration (\( T \)) = 1 year</li>
+            <li>No dividends on the stock</li>
+        </ul>
+        <p>Put-Call Parity (with \( r = 0 \)) states:</p>
+        \[
+        C - P = S - K
+        \]
+        Substituting values:
+        \[
+        C - P = 10 - 10 = 0 \implies C = P
+        \]
+        <p>This says the call price (\( C \)) should equal the put price (\( P \)).</p>
+
+        <h3>The Mismatch</h3>
+        <p>Suppose, in the market, the call is trading at $3 and the put is trading at $1. Clearly:</p>
+        \[
+        C - P = 3 - 1 = 2 \neq 0
+        \]
+        <p>The put-call parity says it should be 0. This discrepancy indicates a potential arbitrage.</p>
+
+        <h3>Constructing the Arbitrage</h3>
+        <p>We outline a classic arbitrage strategy to profit immediately and lock in a risk-free payoff at expiration:</p>
+        <ul>
+            <li>Buy 1 share of the stock at $10</li>
+            <li>Buy 1 put at $1</li>
+            <li>Sell 1 call at $3</li>
+        </ul>
+
+        <h4>Net Cash Flow at the Start</h4>
+        <ul>
+            <li>Outflow for stock = \(-\$10\)</li>
+            <li>Outflow for put = \(-\$1\)</li>
+            <li>Inflow from selling call = \(+\$3\)</li>
+        </ul>
+        <p>Total Initial Outlay:</p>
+        \[
+        -10 - 1 + 3 = -8
+        \]
+        <p>You pay $8 net today to set this up.</p>
+
+        <h4>What Happens at Expiration?</h4>
+        <h5>1) If Stock Price \( S_{\text{exp}} > \$10 \):</h5>
+        <ul>
+            <li>The call you sold will be exercised by the buyer. You must deliver 1 share at $10.</li>
+            <li>You already own 1 share (bought at $10), so you simply hand it over and receive $10 from the call buyer.</li>
+            <li>The put you bought is worthless (since no one will exercise the right to sell at $10 if the stock is trading above $10).</li>
+        </ul>
+        <p>Net Cash Flow:</p>
+        \[
+        \$10 - \$8 = \$2 \text{ (risk-free profit)}
+        \]
+
+        <h5>2) If Stock Price \( S_{\text{exp}} < \$10 \):</h5>
+        <ul>
+            <li>The call you sold expires worthless (no one will exercise a call to buy at $10 if the stock is below $10).</li>
+            <li>The put you bought is in the money. You can exercise it to sell your share at $10.</li>
+        </ul>
+        <p>Net Cash Flow:</p>
+        \[
+        \$10 - \$8 = \$2 \text{ (risk-free profit)}
+        \]
+
+        <h3>Why This Is Arbitrage</h3>
+        <p>In both outcomes, you end up with a \(+\$2\) profit. You never lose money and are not exposed to where the stock finally trades. This is the classic definition of risk-free arbitrage.</p>
+
+        <div class="highlight-box">
+            <strong>Key Takeaway:</strong> When the market prices of calls and puts deviate from the relationship:
+            \[
+            C - P = S - K e^{-rT}
+            \]
+            savvy traders can construct risk-free trades to lock in guaranteed profit. This forces the market to correct the prices, restoring put-call parity and eliminating arbitrage.
+        </div>
+        
+
+        <h2>The Black–Scholes Model</h2>
+        <p>The Black–Scholes model uses continuous-time martingale pricing and risk-neutral valuation. In a risk-neutral world, the discounted price of an asset is a martingale.</p>
+        <div class="highlight-box">
+            \( \frac{\partial V}{\partial t} + \frac{1}{2} \sigma^2 S^2 \frac{\partial^2 V}{\partial S^2} + r S \frac{\partial V}{\partial S} - rV = 0 \)
+        </div>
+        <p>This partial differential equation governs option pricing.</p>
+
+        <h2>Hedging and Replication</h2>
+        <p>Delta-hedging involves replicating the payoff of an option by dynamically adjusting a portfolio of the underlying asset and risk-free bond. The martingale property ensures that the discounted value of this portfolio equals the option price.</p>
+
+        <h2>Conclusion</h2>
+        <p>Martingale theory unifies key concepts in financial mathematics. It enforces no-arbitrage pricing, aids in understanding the Black–Scholes formula, and supports dynamic hedging strategies.</p>
+        <div class="highlight-box">
+            <strong>Key Takeaway:</strong> Martingales provided a theortical that markets, under the right measure, exhibit no drift other than the risk-free rate, guaranteeing consistent derivative pricing. However many times they replicate patterns with drift during periods, in which arbitrage may be available.
+        </div>
+    </div>
+</body>
+</html>
+
