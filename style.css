@@ -553,5 +553,73 @@ footer p {
     z-index: -1;
 }
 
+/* COURSEWORK SECTION */
+/* COURSEWORK SECTION */
+
+#coursework {
+  background-color: #1e1e1e;
+  color: white;
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.slideshow-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.slideshow-slide {
+  display: none;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.slideshow-slide.active {
+  display: block;
+  opacity: 1;
+  transform: scale(1);
+}
+
+ul.coursework-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+ul.coursework-list li {
+  margin: 10px 0;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.slideshow-header {
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #bbb;
+  background: #333;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.slideshow-header.active {
+  color: #fff;
+  background: #000;
+  border: 1px solid #444;
+}
+
+.slideshow-headers {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+  gap: 20px;
+}
+
 
 

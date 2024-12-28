@@ -16,91 +16,90 @@
 
       gtag('config', 'G-HF7S0ZZ3GT');
     </script>
-    
-
 </head>
 <body>
     <div id="particles-js"></div>
-    <nav id = "desktop-nav">
-        <div class = "logo"> Jeremy Calcarian </div>
+    <nav id="desktop-nav">
+        <div class="logo"> Jeremy Calcarian </div>
         <div>
-            <ul class = "nav-links">
+            <ul class="nav-links">
                 <li> <a href="#about">About</a> </li>
+                <li> <a href="#coursework">Coursework</a> </li>
                 <li> <a href="#experience">Experience</a> </li>
                 <li> <a href="#projects">Projects</a> </li>
                 <li> <a href="#contact">Contact</a> </li>
             </ul>
         </div>
     </nav>
-    <nav id = "hamburger-nav">
-        <div class = "logo"> Jeremy Calcarian </div>
-        <div class = "hamburger-menu">
-            <div class = "hamburger-icon" onclick = "toggleMenu()">
+    <nav id="hamburger-nav">
+        <div class="logo"> Jeremy Calcarian </div>
+        <div class="hamburger-menu">
+            <div class="hamburger-icon" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
-            <div class = "menu-links">
-                <li> <a href="#about" onclick = "toggleMenu()" >About</a> </li>
-                <li> <a href="#experience" onclick = "toggleMenu()">Experience</a> </li>
-                <li> <a href="#projects" onclick = "toggleMenu()">Projects</a> </li>
-                <li> <a href="#contact" onclick = "toggleMenu()">Contact</a> </li>
+            <div class="menu-links">
+                <li> <a href="#about" onclick="toggleMenu()">About</a> </li>
+                <li> <a href="#coursework" onclick="toggleMenu()">Coursework</a> </li>
+                <li> <a href="#experience" onclick="toggleMenu()">Experience</a> </li>
+                <li> <a href="#projects" onclick="toggleMenu()">Projects</a> </li>
+                <li> <a href="#contact" onclick="toggleMenu()">Contact</a> </li>
             </div>
         </div>
     </nav>
     <section id="profile">
-      <div class="section__text">
-          <p class="section__text__p1"> Hello, I'm</p>
-          <h1 class="title">
-              <span id="animated-text"></span>
-          </h1>
-          <p class="section__text__p2">Student at the University of Pennsylvania</p> 
-          <div class="btn-container">
-              <button 
-                  class="btn btn-color-1" 
-                  onclick="location.href = './#contact'"
-              >
-                  Contact Info
-              </button>
-          </div>
-          <div id="socials-container">
-              <img src="./Assets/linkedin.png" 
-                  alt="My LinkedIn Profile"
-                  class="icon" 
-                  onclick="location.href = 'https://www.linkedin.com/in/jeremycalcarian/'" />
-              <img src="./Assets/github.png" 
-                  alt="My GitHub Profile"
-                  class="icon" 
-                  onclick="location.href = 'https://github.com/jeremycalcarian'" />
-          </div>
-      </div>
-  </section>
-  
-    <section id = "about">
-        <p class = "section__text__p1"> Get To Know More</p>
-        <h1 class = "title"> About Me</h1>
-        <div class = "section-container"> 
+        <div class="section__text">
+            <p class="section__text__p1"> Hello, I'm</p>
+            <h1 class="title">
+                <span id="animated-text"></span>
+            </h1>
+            <p class="section__text__p2">Student at the University of Pennsylvania</p> 
+            <div class="btn-container">
+                <button 
+                    class="btn btn-color-1" 
+                    onclick="location.href = './#contact'"
+                >
+                    Contact Info
+                </button>
+            </div>
+            <div id="socials-container">
+                <img src="./Assets/linkedin.png" 
+                    alt="My LinkedIn Profile"
+                    class="icon" 
+                    onclick="location.href = 'https://www.linkedin.com/in/jeremycalcarian/'" />
+                <img src="./Assets/github.png" 
+                    alt="My GitHub Profile"
+                    class="icon" 
+                    onclick="location.href = 'https://github.com/jeremycalcarian'" />
+            </div>
+        </div>
+    </section>
 
-            <div class = "about-details-container">
-                <div class = "about-containers">
-                    <div class = details-container>
+    <section id="about">
+        <p class="section__text__p1"> Get To Know More</p>
+        <h1 class="title"> About Me</h1>
+        <div class="section-container"> 
+            <div class="about-details-container">
+                <div class="about-containers">
+                    <div class="details-container">
                         <img src="./Assets/portfolio.png" 
                         alt="Experience icon" 
-                        class = "uniform_icon">
+                        class="uniform_icon">
                         <h3>Experience</h3>
                         <p>Currently <br> Building @Niura</p>
                     </div>
-                    <div class = "details-container">
+                    <div class="details-container">
                         <img src="./Assets/penn-logo-black-and-white.png" 
                         alt="Education icon" 
-                        class = "uniform_icon2">
+                        class="uniform_icon2">
                         <h3>Education</h3>
                         <p>B.S<br> Finance, Statistics, Computer Science, Data Science</p>
                     </div>
                 </div>
-                <div class = "text-container">
+                <div class="text-container">
                     <p>I’m a student at Penn with a strong interest in probabilistic and stochastic models, especially their applications in finance. I also enjoy using NLP and product data to uncover unique patterns and insights.
-
+                      
                       I’ve worked on a range of machine learning projects and am particularly interested in neurotech.
                       
                       Outside of academics, I spend my time on videography, soccer, and weightlifting. </p>
@@ -110,136 +109,189 @@
         <img 
         src="./Assets/arrow.png" 
         alt="Arrow icon"
-        class = "icon arrow"
-        onclick = "location.href = './#experience'"
+        class="icon arrow"
+        onclick="location.href = './#coursework'"
         >
     </section>
+
+    <section id="coursework">
+      <p class="section__text__p1">Dive Into My</p>
+      <h1 class="title">Selected Coursework</h1>
+      <div class="slideshow-headers">
+          <div class="slideshow-header active" onclick="showSlide(0)">Technical Coursework</div>
+          <div class="slideshow-header" onclick="showSlide(1)">Non-Technical Courswork</div>
+      </div>
+      <div class="slideshow-container">
+          <div class="slideshow-slide active">
+              <ul class="coursework-list">
+                  <li>Machine Learning</li>
+                  <li>Probability</li>
+                  <li>Discrete Mathematics</li>
+                  <li>Computer Systems</li>
+                  <li>Data Structures</li>
+                  <li>Algorithms</li>
+                  <li>Natural Language Processing</li>
+                  <li>Linear Algebra</li>
+                  <li>Investment Management</li>
+                  <li>Financial Derivatives</li>
+                  <li>Stochastic Processes</li>
+                  <li>Big Data Analytics</li>
+              </ul>
+          </div>
+          <div class="slideshow-slide">
+              <ul class="coursework-list">
+                  <li>Entrepreneurship through Acquisitions</li>
+                  <li>Entrepreneurship and Technology Innovation</li>
+                  <li>Consumer Behavior</li>
+                  <li>Marketing Strategy For Technology Platforms</li>
+                  <li>Business Communication for Impact</li>
+                  <li>Teamwork and Interpersonal Influence</li>
+              </ul>
+          </div>
+      </div>
+      <script>
+          const slides = document.querySelectorAll('.slideshow-slide');
+          const headers = document.querySelectorAll('.slideshow-header');
+
+          function showSlide(index) {
+              slides.forEach((slide, i) => {
+                  slide.classList.remove('active');
+                  headers[i].classList.remove('active');
+                  if (i === index) {
+                      slide.classList.add('active');
+                      headers[i].classList.add('active');
+                  }
+              });
+          }
+      </script>
+  </section>
+
     <section id="experience">
         <p class="section__text__p1">Explore My</p>
         <h1 class="title">Experience</h1>
         <div class="experience-details-container">
-          <div class="about-containers">
-            <div class="details-container">
-              <h2 class="experience-sub-title">Programming</h2>
-              <div class="article-container">
-                <article>
-                  <img
-                    src="./assets/checkmark.png"
-                    alt="Experience icon"
-                    class="icon"
-                  />
-                  <div>
-                    <h3>HTML</h3>
-                    <p>Intermediate</p>
-                  </div>
-                </article>
-                <article>
-                  <img
-                    src="./assets/checkmark.png"
-                    alt="Experience icon"
-                    class="icon"
-                  />
-                  <div>
-                    <h3>CSS</h3>
-                    <p>Basic</p>
-                  </div>
-                </article>
-                <article>
-                  <img
-                    src="./assets/checkmark.png"
-                    alt="Experience icon"
-                    class="icon"
-                  />
-                  <div>
-                    <h3>Java</h3>
-                    <p>Experienced</p>
-                  </div>
-                </article>
-                <article>
-                  <img
-                    src="./assets/checkmark.png"
-                    alt="Experience icon"
-                    class="icon"
-                  />
-                  <div>
-                    <h3>Python</h3>
-                    <p>Experienced</p>
-                  </div>
-                </article>
-                <article>
-                  <img
-                    src="./assets/checkmark.png"
-                    alt="Experience icon"
-                    class="icon"
-                  />
-                  <div>
-                    <h3>C</h3>
-                    <p>Basic</p>
-                  </div>
-                </article>
-                <article>
-                  <img
-                    src="./assets/checkmark.png"
-                    alt="Experience icon"
-                    class="icon"
-                  />
-                  <div>
-                    <h3>JavaScript</h3>
-                    <p>Basic</p>
-                  </div>
-                </article>
-              </div>
+            <div class="about-containers">
+                <div class="details-container">
+                    <h2 class="experience-sub-title">Programming</h2>
+                    <div class="article-container">
+                        <article>
+                            <img
+                                src="./assets/checkmark.png"
+                                alt="Experience icon"
+                                class="icon"
+                            />
+                            <div>
+                                <h3>HTML</h3>
+                                <p>Intermediate</p>
+                            </div>
+                        </article>
+                        <article>
+                            <img
+                                src="./assets/checkmark.png"
+                                alt="Experience icon"
+                                class="icon"
+                            />
+                            <div>
+                                <h3>CSS</h3>
+                                <p>Basic</p>
+                            </div>
+                        </article>
+                        <article>
+                            <img
+                                src="./assets/checkmark.png"
+                                alt="Experience icon"
+                                class="icon"
+                            />
+                            <div>
+                                <h3>Java</h3>
+                                <p>Experienced</p>
+                            </div>
+                        </article>
+                        <article>
+                            <img
+                                src="./assets/checkmark.png"
+                                alt="Experience icon"
+                                class="icon"
+                            />
+                            <div>
+                                <h3>Python</h3>
+                                <p>Experienced</p>
+                            </div>
+                        </article>
+                        <article>
+                            <img
+                                src="./assets/checkmark.png"
+                                alt="Experience icon"
+                                class="icon"
+                            />
+                            <div>
+                                <h3>C</h3>
+                                <p>Basic</p>
+                            </div>
+                        </article>
+                        <article>
+                            <img
+                                src="./assets/checkmark.png"
+                                alt="Experience icon"
+                                class="icon"
+                            />
+                            <div>
+                                <h3>JavaScript</h3>
+                                <p>Basic</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+                <div class="details-container">
+                    <h2 class="experience-sub-title">Software</h2>
+                    <div class="article-container">
+                        <article>
+                            <img
+                                src="./assets/checkmark.png"
+                                alt="Experience icon"
+                                class="icon"
+                            />
+                            <div>
+                                <h3>TensorFlow</h3>
+                                <p>Experienced</p>
+                            </div>
+                        </article>
+                        <article>
+                            <img
+                                src="./assets/checkmark.png"
+                                alt="Experience icon"
+                                class="icon"
+                            />
+                            <div>
+                                <h3>PySpark</h3>
+                                <p>Intermediate</p>
+                            </div>
+                        </article>
+                        <article>
+                            <img
+                                src="./assets/checkmark.png"
+                                alt="Experience icon"
+                                class="icon"
+                            />
+                            <div>
+                                <h3>Microsoft Suite</h3>
+                                <p>Experienced</p>
+                            </div>
+                        </article>
+                        <article>
+                            <img
+                                src="./assets/checkmark.png"
+                                alt="Experience icon"
+                                class="icon"
+                            />
+                            <div>
+                                <h3>AWS</h3>
+                                <p>Intermediate</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
             </div>
-            <div class="details-container">
-              <h2 class="experience-sub-title">Software</h2>
-              <div class="article-container">
-                <article>
-                  <img
-                    src="./assets/checkmark.png"
-                    alt="Experience icon"
-                    class="icon"
-                  />
-                  <div>
-                    <h3>TensorFlow</h3>
-                    <p>Experienced</p>
-                  </div>
-                </article>
-                <article>
-                  <img
-                    src="./assets/checkmark.png"
-                    alt="Experience icon"
-                    class="icon"
-                  />
-                  <div>
-                    <h3>PySpark</h3>
-                    <p>Intermediate</p>
-                  </div>
-                </article>
-                <article>
-                  <img
-                    src="./assets/checkmark.png"
-                    alt="Experience icon"
-                    class="icon"
-                  />
-                  <div>
-                    <h3>Microsoft Suite</h3>
-                    <p>Experienced</p>
-                  </div>
-                </article>
-                <article>
-                  <img
-                    src="./assets/checkmark.png"
-                    alt="Experience icon"
-                    class="icon"
-                  />
-                  <div>
-                    <h3>AWS</h3>
-                    <p>Intermediate</p>
-                  </div>
-                </article>
-              </div>
-            </div>
-          </div>
         </div>
         <img
           src="./assets/arrow.png"
@@ -247,8 +299,9 @@
           class="icon arrow"
           onclick="location.href='./#projects'"
         />
-      </section>
-      <section id="projects">
+    </section>
+
+    <section id="projects">
         <p class="section__text__p1">Browse My Recent</p>
         <h1 class="title">Projects</h1>
         <div class="project-container">
@@ -266,33 +319,36 @@
             </div>
         </div>
     </section>    
+
     <section id="contact">
-      <p class="section__text__p1">Get in Touch</p>
-      <h1 class="title">Contact Me</h1>
-      <div class="contact-info-upper-container">
-        <div class="contact-info-container">
-          <img
-            src="./assets/email.png"
-            alt="Email icon"
-            class="icon contact-icon email-icon"
-          />
-          <p><a href="mailto:calcajer@wharton.upenn.edu">calcajer@wharton.upenn.edu</a></p>
+        <p class="section__text__p1">Get in Touch</p>
+        <h1 class="title">Contact Me</h1>
+        <div class="contact-info-upper-container">
+            <div class="contact-info-container">
+                <img
+                    src="./assets/email.png"
+                    alt="Email icon"
+                    class="icon contact-icon email-icon"
+                />
+                <p><a href="mailto:calcajer@wharton.upenn.edu">calcajer@wharton.upenn.edu</a></p>
+            </div>
+            <div class="contact-info-container">
+                <img
+                    src="./assets/linkedin.png"
+                    alt="LinkedIn icon"
+                    class="icon contact-icon"
+                />
+                <p><a href="https://www.linkedin.com/in/jeremycalcarian/">LinkedIn</a></p>
+            </div>
         </div>
-        <div class="contact-info-container">
-          <img
-            src="./assets/linkedin.png"
-            alt="LinkedIn icon"
-            class="icon contact-icon"
-          />
-          <p><a href="https://www.linkedin.com/in/jeremycalcarian/">LinkedIn</a></p>
-        </div>
-      </div>
     </section>
+
     <footer>
         <nav>
-            <di class = "nav-links-container">
-                <ul class = "nav-links">
+            <div class="nav-links-container">
+                <ul class="nav-links">
                     <li> <a href="#about">About</a> </li>
+                    <li> <a href="#coursework">Coursework</a> </li>
                     <li> <a href="#experience">Experience</a> </li>
                     <li> <a href="#projects">Projects</a> </li>
                     <li> <a href="#contact">Contact</a> </li>
