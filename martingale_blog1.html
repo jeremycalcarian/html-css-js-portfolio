@@ -8,73 +8,71 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
+        /* Original colors untouched */
         body {
-          font-family: 'Poppins', sans-serif;
-          margin: 0;
-          padding: 0;
-          background-color: #2c2c2c;
-          color: white;
-          line-height: 1.6;
-
-          overflow-x: hidden; 
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #2c2c2c;
+            color: white;
+            line-height: 1.6;
         }
-        .container {
-          width: 100%;
-          max-width: 1200px;
-          margin: 50px auto;
-          padding: 20px;
-          background-color: #333;
-          border-radius: 10px;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-
-          overflow: hidden;
+        .blog1_container {
+            /* ADDED: width: 100% so it can shrink on mobile */
+            width: 100%;
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
-        h1, h2, h3, h4, h5, h6, p, li {
-          /* Allow longer words/latex to wrap within the container */
-          word-break: break-word;
-        }
+  
         h1, h2 {
-          color: #f0f0f0;
+            color: #f0f0f0;
         }
         p {
-          margin-bottom: 20px;
-          color: #ccc;
+            margin-bottom: 20px;
+            color: #ccc;
+            /* ADDED: Ensure text wraps instead of getting cut off */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
         .highlight-box {
-          background-color: #444;
-          border-left: 4px solid #888;
-          padding: 10px 20px;
-          margin: 20px 0;
-          color: #ddd;
+            background-color: #444;
+            border-left: 4px solid #888;
+            padding: 10px 20px;
+            margin: 20px 0;
+            color: #ddd;
+            /* ADDED: Force wrap in highlight boxes too */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
         pre {
-          background-color: #444;
-          padding: 15px;
-          border-radius: 5px;
-          /* Allow code to scroll horizontally if it’s too wide */
-          overflow-x: auto;
-          color: #f8f8f2;
-          white-space: pre;
+            background-color: #444;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto; /* keep horizontal scroll for code */
+            color: #f8f8f2;
+            /* If you want code lines to also wrap (not recommended for code), add: 
+               white-space: pre-wrap; 
+               word-break: break-word;
+            */
         }
-        /* Simple “expand/collapse” for the boxes */
-        .expandable-box {
-          background-color: #444;
-          border: 1px solid #777;
-          padding: 10px;
-          cursor: pointer;
-          margin: 20px 0;
-        }
+        /* If you use other elements that contain text (like .expandable-box/.expandable-content),
+           add the same wrapping rules there too: */
+        .expandable-box,
         .expandable-content {
-          display: none;
-          padding: 10px;
-          background-color: #555;
-          border: 1px solid #777;
-          margin-bottom: 20px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
         }
       </style>
 </head>
 <body>
-    <div class="container">
+    <div class="blog1_container">
         <h1>From Fair Games to Fair Prices: Martingale Theory in Modern Finance</h1>
         <p><strong>Motivation:</strong> The idea of a "fair game" is central to both probability theory and finance. In the realm of finance, fairness translates to the absence of arbitrage opportunities. Martingale theory provides a mathematical framework to describe this principle.
         Investment Management and Stochastic Proccesses were two particularly interesting courses I have taken @ Penn. I thought I'd connect some dots of some of the material I have learned and show a very basic introduction to the relationship between these topics.  </p>
@@ -284,7 +282,10 @@
         <h3>Substitute Into the Put-Call Parity Formula</h3>
         <p>Substituting the expressions for \( C_0 \) and \( P_0 \) into the parity formula:</p>
         \[
-        (e^{-rT} \mathbb{E}_Q[S_T \cdot 1\{S_T > K\}] - e^{-rT} K Q(S_T > K)) - (e^{-rT} \mathbb{E}_Q[K \cdot 1\{S_T \leq K\}] - e^{-rT} \mathbb{E}_Q[S_T \cdot 1\{S_T \leq K\}]) = S_0 - K e^{-rT}
+        (e^{-rT} \mathbb{E}_Q[S_T \cdot 1\{S_T > K\}] - e^{-rT} K Q(S_T > K)) 
+        \]
+        \[
+        - (e^{-rT} \mathbb{E}_Q[K \cdot 1\{S_T \leq K\}] - e^{-rT} \mathbb{E}_Q[S_T \cdot 1\{S_T \leq K\}]) = S_0 - K e^{-rT}
         \]
         <div class="expandable-box" onclick="toggleExpandableContent('expandable-work')">
             Click to see work expanded

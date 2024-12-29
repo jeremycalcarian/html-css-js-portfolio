@@ -678,5 +678,33 @@ ul.coursework-list li {
   border-radius: 5px;
   margin-top: 10px;
 }
+.blog1_container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #333; /* same colors as before */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+h1, h2, h3, h4, h5, h6,
+p, li, blockquote, div,
+.highlight-box,
+.expandable-box,
+.expandable-content {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+pre {
+  background-color: #444;
+  padding: 15px;
+  border-radius: 5px;
+  overflow-x: auto;
+  color: #f8f8f2;
+
+}
 
 
