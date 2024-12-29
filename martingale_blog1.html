@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>From Fair Games to Fair Prices: Martingale Theory in Modern Finance</title>
+    <title>Martingales and Put-Call Parity</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -17,7 +17,7 @@
             line-height: 1.6;
         }
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 50px auto;
             padding: 20px;
             background-color: #333;
@@ -51,8 +51,7 @@
     <div class="container">
         <h1>From Fair Games to Fair Prices: Martingale Theory in Modern Finance</h1>
         <p><strong>Motivation:</strong> The idea of a "fair game" is central to both probability theory and finance. In the realm of finance, fairness translates to the absence of arbitrage opportunities. Martingale theory provides a mathematical framework to describe this principle.
-        After completing coursework in investment management and stochastic processes, I was motivaed to connect some of the stochastic theory to real-world finance non-arbitrage implications. I am by no means an expert on this topic but find stochastic proccesses to be quite fascinating especially in their 
-    application in finance. I thought I'd connect some dots of some of the lecture material I have learned recently. </p>
+        Investment Management and Stochastic Proccesses were two particularly interesting courses I have taken @ Penn. I thought I'd connect some dots of some of the material I have learned and show a very basic introduction to the relationship between these topics.  </p>
 
         <h2>Martingales 101</h2>
         <p>Martingales are stochastic processes where the expected value of the next observation is equal to the current value, given all past observations. Intuitively, it represents a "fair game" where future winnings are unpredictable given the current state.</p>
@@ -201,24 +200,333 @@
             \]
             savvy traders can construct risk-free trades to lock in guaranteed profit. This forces the market to correct the prices, restoring put-call parity and eliminating arbitrage.
         </div>
+        <h2>Recall the Execution Payoffs of Calls and Puts</h2>
+        <p>Call Option Payoff = \( \text{Max}(0, S_t - K) \), where \( S_t \) is the strike price at some time \( t \).</p>
+        <p>Put Option Payoff = \( \text{Max}(0, K - S_t) \)</p>
+
+        <h3>Expanding the Call Option Formula</h3>
+        <p>Start with the given payoff formula:</p>
+        \[
+        C_0 = e^{-rT} \mathbb{E}_Q[\text{Max}(S_T - K, 0)]
+        \]
+        <p>Here:</p>
+        <ul>
+            <li>\( C_0 \): The current price of the European call option.</li>
+            <li>\( S_T \): The stock price at maturity \( T \).</li>
+            <li>\( K \): The strike price of the call.</li>
+            <li>\( e^{-rT} \): The discount factor for the risk-free rate \( r \) over time \( T \).</li>
+            <li>\( \mathbb{E}_Q[\cdot] \): Expectation under the equivalent martingale measure \( Q \).</li>
+        </ul>
+        <p>The term \( \text{Max}(S_T - K, 0) \) represents the call option payoff at maturity, i.e., the value \( S_T - K \) if \( S_T > K \), or 0 otherwise.</p>
+
+        <h3>Expanding the Max Function</h3>
+        <p>Recall that the max function can be written using the indicator function \( 1\{S_T > K\} \), which is 1 when \( S_T > K \) and 0 otherwise:</p>
+        \[
+        \text{Max}(S_T - K, 0) = (S_T - K) \cdot 1\{S_T > K\}
+        \]
+        <p>Substituting this into the formula for \( C_0 \):</p>
+        \[
+        C_0 = e^{-rT} \mathbb{E}_Q[(S_T - K) \cdot 1\{S_T > K\}]
+        \]
+
+        <h3>Separating the Expectation</h3>
+        <p>Using the linearity of expectation, split the expression:</p>
+        \[
+        \mathbb{E}_Q[(S_T - K) \cdot 1\{S_T > K\}] = \mathbb{E}_Q[S_T \cdot 1\{S_T > K\}] - \mathbb{E}_Q[K \cdot 1\{S_T > K\}]
+        \]
+        <p>Substituting back, we get:</p>
+        \[
+        C_0 = e^{-rT} \mathbb{E}_Q[S_T \cdot 1\{S_T > K\}] - e^{-rT} K \cdot Q(S_T > K)
+        \]
+
+        <h3>Interpretation</h3>
+        <p>The term \( \mathbb{E}_Q[S_T \cdot 1\{S_T > K\}] \) represents the expected value of \( S_T \) under \( Q \), conditioned on \( S_T > K \), multiplied by the probability of \( S_T > K \):</p>
+        \[
+        \mathbb{E}_Q[S_T \cdot 1\{S_T > K\}] = \int_K^\infty S_T f_Q(S_T) dS_T
+        \]
+        <p>Where \( f_Q(S_T) \) is the probability density of \( S_T \) under \( Q \).</p>
+        <h3>Expressing Call and Put Prices Under the Risk-Neutral Measure</h3>
+        <p>From the proposition, the call price \( C_0 \) is given by:</p>
+        \[
+        C_0 = e^{-rT} \mathbb{E}_Q[S_T \cdot 1\{S_T > K\}] - e^{-rT} K Q(S_T > K)
+        \]
+        <p>Similarly, the put price \( P_0 \) is given by:</p>
+        \[
+        P_0 = e^{-rT} \mathbb{E}_Q[K \cdot 1\{S_T \leq K\}] - e^{-rT} \mathbb{E}_Q[S_T \cdot 1\{S_T \leq K\}]
+        \]
+
+        <h3>Substitute Into the Put-Call Parity Formula</h3>
+        <p>Substituting the expressions for \( C_0 \) and \( P_0 \) into the parity formula:</p>
+        \[
+        (e^{-rT} \mathbb{E}_Q[S_T \cdot 1\{S_T > K\}] - e^{-rT} K Q(S_T > K)) - (e^{-rT} \mathbb{E}_Q[K \cdot 1\{S_T \leq K\}] - e^{-rT} \mathbb{E}_Q[S_T \cdot 1\{S_T \leq K\}]) = S_0 - K e^{-rT}
+        \]
+        <div class="expandable-box" onclick="toggleExpandableContent('expandable-work')">
+            Click to see work expanded
+        </div>
+        <div class="expandable-content" id="expandable-work">
+            <h3>Distribute the Negative Sign in the Put Term:</h3>
+            <p>Expand the negative sign over \( P_0 \):</p>
+            \[
+            C_0 - P_0 = e^{-rT} \mathbb{E}_Q[S_T \cdot 1\{S_T > K\}] - e^{-rT} K Q(S_T > K) - e^{-rT} \mathbb{E}_Q[K \cdot 1\{S_T \leq K\}] + e^{-rT} \mathbb{E}_Q[S_T \cdot 1\{S_T \leq K\}]
+            \]
+            <p>Simplify to:</p>
+            \[
+            C_0 - P_0 = e^{-rT} \mathbb{E}_Q[S_T \cdot 1\{S_T > K\}] + e^{-rT} \mathbb{E}_Q[S_T \cdot 1\{S_T \leq K\}] - e^{-rT} K Q(S_T > K) - e^{-rT} \mathbb{E}_Q[K \cdot 1\{S_T \leq K\}]
+            \]
+        
+            <h3> \( S_T \):</h3>
+            <p>Notice that the first two terms involve \( S_T \) over disjoint regions \( S_T > K \) and \( S_T \leq K \):</p>
+            \[
+            e^{-rT} \mathbb{E}_Q[S_T \cdot 1\{S_T > K\}] + e^{-rT} \mathbb{E}_Q[S_T \cdot 1\{S_T \leq K\}] = e^{-rT} \mathbb{E}_Q[S_T]
+            \]
+            <p>So now the expression becomes:</p>
+            \[
+            C_0 - P_0 = e^{-rT} \mathbb{E}_Q[S_T] - e^{-rT} K Q(S_T > K) - e^{-rT} \mathbb{E}_Q[K \cdot 1\{S_T \leq K\}]
+            \]
+        
+            <h3>Combine Terms for \( K \):</h3>
+            <p>Now focus on the \( K \)-related terms:</p>
+            \[
+            -e^{-rT} K Q(S_T > K) - e^{-rT} \mathbb{E}_Q[K \cdot 1\{S_T \leq K\}]
+            \]
+            <p>Factor out \( -e^{-rT} K \):</p>
+            \[
+            -e^{-rT} K (Q(S_T > K) + Q(S_T \leq K))
+            \]
+            <p>Since \( Q(S_T > K) + Q(S_T \leq K) = 1 \), this simplifies to:</p>
+            \[
+            -e^{-rT} K
+            \]
+        </div>
         
 
-        <h2>The Black–Scholes Model</h2>
-        <p>The Black–Scholes model uses continuous-time martingale pricing and risk-neutral valuation. In a risk-neutral world, the discounted price of an asset is a martingale.</p>
-        <div class="highlight-box">
-            \( \frac{\partial V}{\partial t} + \frac{1}{2} \sigma^2 S^2 \frac{\partial^2 V}{\partial S^2} + r S \frac{\partial V}{\partial S} - rV = 0 \)
-        </div>
-        <p>This partial differential equation governs option pricing.</p>
+        <h3>Simplify Expectations</h3>
+        <p>After expanding and simplifying, you observe that the terms involving \( S_T \) and \( K \) under the probabilities \( 1\{S_T > K\} \) and \( 1\{S_T \leq K\} \) will combine into the full expectation:</p>
+        \[
+        e^{-rT} \mathbb{E}_Q[S_T] - e^{-rT} K = S_0 - K e^{-rT}
+        \]
 
-        <h2>Hedging and Replication</h2>
-        <p>Delta-hedging involves replicating the payoff of an option by dynamically adjusting a portfolio of the underlying asset and risk-free bond. The martingale property ensures that the discounted value of this portfolio equals the option price.</p>
+        <h3>Rearrange and Focus on the Martingale Property</h3>
+        <p>The equality implies:</p>
+        \[
+        S_0 = e^{-rT} \mathbb{E}_Q[S_T]
+        \]
+        <p>This is exactly the definition of the martingale property: The current stock price \( S_0 \) equals the discounted expected future stock price \( e^{-rT} \mathbb{E}_Q[S_T] \), showing that the discounted stock price \( e^{-rt} S_t \) is a martingale under the risk-neutral measure \( Q \).</p>
+        <h2>Final Remarks: Martingales, (Sub)Supermartingales, and Arbitrage</h2>
+<p>
+Putting everything together, the condition 
+\[
+S_0 = e^{-rT} \mathbb{E}_Q[S_T]
+\]
+shows that the <em>discounted</em> stock price \( e^{-rt} S_t \) is a true martingale under the risk-neutral measure \(Q\). If this condition fails—for instance, if calls or puts are mispriced relative to put-call parity—then the discounted price process (or the portfolio you create using those instruments) can exhibit supermartingale or submartingale behavior instead. 
+</p>
 
-        <h2>Conclusion</h2>
-        <p>Martingale theory unifies key concepts in financial mathematics. It enforces no-arbitrage pricing, aids in understanding the Black–Scholes formula, and supports dynamic hedging strategies.</p>
-        <div class="highlight-box">
-            <strong>Key Takeaway:</strong> Martingales provided a theortical that markets, under the right measure, exhibit no drift other than the risk-free rate, guaranteeing consistent derivative pricing. However many times they replicate patterns with drift during periods, in which arbitrage may be available.
-        </div>
+<p>
+Why does that matter? If a discounted price process is a supermartingale, it tends to drift downward in expectation (after discounting), which signals a profitable short-selling opportunity for traders. Conversely, if it is a submartingale, it tends to drift upward, making it advantageous to hold a long position. Either scenario violates the “fair game” intuition behind martingales and thus uncovers <strong>arbitrage opportunities</strong>. 
+</p>
+<h2>Submartingales, Supermartingales, and Their Real Analysis Foundations</h2>
+
+<p>
+    In our discussion of no-arbitrage and put-call parity, we relied on the condition 
+    \[
+    S_0 = e^{-rT} \mathbb{E}_Q[S_T],
+    \]
+    which ensures that the <em>discounted</em> stock price process \( (e^{-rt} S_t) \) is a martingale under the risk-neutral measure \(Q\). 
+    But what happens if this condition is <em>violated</em>? 
+    It means \( (e^{-rt} S_t) \) can become a submartingale or supermartingale, thereby hinting at potential arbitrage opportunities. Below, we make these notions precise.
+</p>
+
+<div class="highlight-box">
+    <strong>Definition (Martingale/Submartingale/Supermartingale):</strong>
+    <p>
+    Let \( (X_t)_{t \ge 0} \) be a stochastic process adapted to a filtration \( (\mathcal{F}_t)_{t \ge 0} \) on a probability space \((\Omega, \mathcal{F}, \mathbb{P})\). We say \( X_t \) is:
+    </p>
+    <ul>
+        <li>
+            A <strong>martingale</strong> if 
+            \[
+            \mathbb{E}[X_{t+1} \mid \mathcal{F}_t] = X_t 
+            \quad \text{for all } t \ge 0,
+            \]
+            and \( \mathbb{E}[|X_t|] < \infty \) for all \( t \). 
+        </li>
+        <li>
+            A <strong>submartingale</strong> if 
+            \[
+            \mathbb{E}[X_{t+1} \mid \mathcal{F}_t] \; \ge \; X_t 
+            \quad \text{for all } t \ge 0.
+            \]
+        </li>
+        <li>
+            A <strong>supermartingale</strong> if
+            \[
+            \mathbb{E}[X_{t+1} \mid \mathcal{F}_t] \; \le \; X_t 
+            \quad \text{for all } t \ge 0.
+            \]
+        </li>
+    </ul>
+    <p>
+    The intuition is that a <em>submartingale</em> “tends to move upwards” in expectation (even after conditioning on the present), while a <em>supermartingale</em> “tends to move downwards.” A martingale is precisely balanced between these two.
+    </p>
+</div>
+
+<h3>Doob’s Decomposition: Linking (Sub)Supermartingales to Martingales</h3>
+<p>
+    A powerful result from real analysis and probability theory—<strong>Doob’s Decomposition Theorem</strong>—states that any submartingale \( Y_t \) can be written uniquely as
+    \[
+    Y_t = M_t + A_t,
+    \]
+    where \( M_t \) is a martingale, and \( A_t \) is an almost surely nondecreasing, predictable process with \( A_0 = 0 \). (Intuitively, “predictable” means \( A_t \) is determined by the past and present, not the future.)
+    Similarly, for a supermartingale \( Y_t \), one can write
+    \[
+    Y_t = M_t - B_t,
+    \]
+    where \( B_t \) is a nondecreasing predictable process.
+</p>
+<p>
+    This decomposition highlights that a submartingale differs from a martingale by an “increasing drift” component \( A_t \), while a supermartingale has a “decreasing drift” component \( B_t \). In finance terms: 
+</p>
+<ul>
+    <li>
+        If \( e^{-rt} S_t \) (the discounted stock price) is a <em>submartingale</em>, you effectively expect it to drift upwards (net of discounting). This suggests the market undervalues the asset today, creating profitable <em>long</em> positions.
+    </li>
+    <li>
+        If \( e^{-rt} S_t \) is a <em>supermartingale</em>, it is expected to drift downwards. This implies the market has overpriced the asset, making a <em>short</em> strategy lucrative.
+    </li>
+</ul>
+
+<h3>Real Analysis Ingredients: Fatou’s Lemma, Dominated Convergence, etc.</h3>
+<p>
+    The construction and proof of these (sub)supermartingale decompositions—and the fundamental theorems linking no-arbitrage to martingale pricing—rely heavily on measure-theoretic tools such as:
+</p>
+<ul>
+    <li>
+        <strong>Fatou’s Lemma:</strong> Ensures the lower bound on limits of expectations, used to prove convergence theorems for submartingales.
+    </li>
+    <li>
+        <strong>Dominated Convergence Theorem:</strong> Allows exchanging limits and integrals (or expectations) when variables are uniformly dominated by an integrable random variable. This is crucial in option pricing arguments and in the rigorous justification of the Optional Stopping Theorem.
+    </li>
+    <li>
+        <strong>Monotone Convergence Theorem:</strong> Another key lemma when dealing with nondecreasing sequences of random variables in submartingale or supermartingale contexts.
+    </li>
+    <li>
+        <strong>Optional Stopping Theorem:</strong> A cornerstone in martingale theory, often invoked to demonstrate that stopping a martingale at a bounded stopping time preserves its expectation. However, in the case of unbounded stopping times (like hitting times in random walks), caution is needed!
+    </li>
+</ul>
+<!-- This new section can go right after Doob’s Decomposition or wherever you see fit -->
+<div class="expandable-box" onclick="toggleExpandableContent('expandable-real-analysis')">
+    <strong>Click to see how these Real Analysis concepts are applied</strong>
+</div>
+<div class="expandable-content" id="expandable-real-analysis">
+    <h3>1) Fatou’s Lemma in Pricing and Risk Measures</h3>
+    <p>
+        <strong>Fatou’s Lemma</strong> states that for any sequence of nonnegative measurable functions \( \{f_n\} \):
+        \[
+        \mathbb{E}\left[\liminf_{n \to \infty} f_n \right] \; \le \; \liminf_{n \to \infty} \mathbb{E}[f_n].
+        \]
+        In finance, we often deal with nonnegative payoff processes (e.g., call and put payoffs). When analyzing limit behaviors—such as the limiting price of an option sequence or the payoff under extreme conditions—Fatou’s Lemma provides a lower bound on expected values. This is essential when proving, for instance, that certain limit operations preserve no-arbitrage or when showing the existence of a fair pricing measure.
+    </p>
+
+    <h3>2) Dominated Convergence Theorem (DCT) in Option Pricing</h3>
+    <p>
+        The <strong>Dominated Convergence Theorem</strong> allows us to interchange the limit and the expectation operator, provided there is a dominating integrable function. In finance:
+    </p>
+    <ul>
+        <li>
+            <em>Option Pricing:</em> We often approximate continuous processes (like Brownian motion) by discrete models. DCT justifies taking a limit of discrete-time pricing models without losing rigor. If you have a dominating function—for example, an exponential bound on the payoff—DCT ensures 
+            \[
+            \lim_{n \to \infty} \mathbb{E}[f_n] \;=\; \mathbb{E}[\lim_{n \to \infty} f_n].
+            \]
+        </li>
+        <li>
+            <em>Risk Measures:</em> When evaluating Value at Risk (VaR) or Expected Shortfall (ES), we deal with probabilities of large losses. DCT is crucial for exchanging limits and expectations in tail-related integrals, thus letting us handle continuous approximations of risk measures exactly.
+        </li>
+    </ul>
+
+    <h3>3) Optional Stopping and Martingale Techniques</h3>
+    <p>
+        The <strong>Optional Stopping Theorem</strong> (OST) says that for a suitable stopping time \(\tau\) (with integrability/boundedness conditions) and a martingale \(\{M_t\}\),
+        \[
+        \mathbb{E}[M_\tau] = \mathbb{E}[M_0].
+        \]
+        While OST itself is often discussed in probability textbooks, applying it in a rigorous measure-theoretic setting also depends on real-analysis results like dominated or monotone convergence to ensure conditions on integrability are met. For instance:
+    </p>
+    <ul>
+        <li>
+            <em>Barrier Options:</em> OST can be used to compute the fair price of barrier options by cleverly choosing \(\tau\) to be the hitting time of a barrier. Real-analysis tools guarantee that you can pass the limit inside the expectation when the barrier gets small or large.
+        </li>
+        <li>
+            <em>Martingale Representation Theorem:</em> Deriving a hedge or replication strategy for derivatives often uses the representation of any square-integrable martingale in terms of an integral with respect to Brownian motion. Monotone/Dominated Convergence are key steps in justifying these integral representations.
+        </li>
+    </ul>
+
+    <h3>4) Monotone Convergence in Sub-/Supermartingale Analysis</h3>
+    <p>
+        The <strong>Monotone Convergence Theorem</strong> helps when dealing with a nondecreasing sequence of random variables. In the analysis of submartingales, for example, we often take increasing <em>partial sums</em> or truncated processes \( Y_t^n = \min(Y_t, n) \). As \(n \to \infty\), these truncated processes converge monotonically to \(Y_t\). MCT then enables us to pass the limit inside the expectation:
+        \[
+        \mathbb{E}\left[ \lim_{n \to \infty} Y_t^n \right] 
+        = \lim_{n \to \infty} \mathbb{E}[Y_t^n].
+        \]
+        In finance, submartingales can correspond to processes that exhibit an “upward drift” after discounting—potentially pointing to mispricing that invites arbitrage. MCT ensures we handle these partial sums or truncated payoffs correctly when we prove or disprove no-arbitrage in limiting cases.
+    </p>
+
+    <h3>Putting It All Together in Finance</h3>
+    <p>
+        In short, these measure-theoretic pillars—Fatou’s Lemma, Dominated Convergence, Monotone Convergence, and Optional Stopping—each play a vital role in guaranteeing that our mathematical manipulations, limits, and expectation interchanges are justified. They ensure that:
+    </p>
+    <ul>
+        <li>No “illicit” steps are taken when deriving option prices or risk measures in the limit.</li>
+        <li>We have a well-defined and sound foundation for the martingale (or sub-/supermartingale) arguments that underpin no-arbitrage proofs and pricing formulas.</li>
+        <li>We can handle boundary behaviors (like extreme strike prices or infinite time horizons) without introducing spurious arbitrage or mathematically unjustified results.</li>
+    </ul>
+</div>
+
+
+<h3>Arbitrage Implications</h3>
+<p>
+    Translating these results back to finance, <strong>no-arbitrage</strong> precisely requires that the discounted price process \( (e^{-rt} S_t) \) is a <em>true martingale</em> under some equivalent measure \(Q\). If, instead, that discounted process were a sub- or supermartingale, it would imply 
+    \[
+    \mathbb{E}_Q[e^{-r(t+1)} S_{t+1} \mid \mathcal{F}_t] \;>\; e^{-rt} S_t 
+    \quad\text{(submartingale)}
+    \]
+    or 
+    \[
+    \mathbb{E}_Q[e^{-r(t+1)} S_{t+1} \mid \mathcal{F}_t] \;<\; e^{-rt} S_t
+    \quad\text{(supermartingale)}.
+    \]
+    Either case reveals a profit opportunity (by either going long or short accordingly), thus signaling <em>arbitrage</em>.
+</p>
+
+<p>
+    In essence, <em>put-call parity violations</em> are a simpler, concrete manifestation of such sub/supermartingale behavior. When put and call prices deviate from 
+    \[
+    C - P = S_0 - K e^{-rT},
+    \]
+    one can construct a portfolio that yields a guaranteed profit in all scenarios—exactly the hallmark of arbitrage. Hence, the market quickly corrects the mispricing, restoring the martingale property of discounted asset prices.
+</p>
+
+<div class="highlight-box">
+    <strong>Conclusion:</strong> 
+    Maintaining the martingale condition (under the appropriate measure) is <em>equivalent</em> to ruling out arbitrage. The submartingale or supermartingale “drift” components capture systematic opportunities for profit (or for hedging) that real-world markets cannot sustain for long. Finance can have some pretty cool mathemtical derivations inspired from Statisitcs and Physics. Concepts like Brownian motion and stochastic processes borrow heavily from physics, particularly in modeling random phenomena such as particle diffusion.
+
+<p>
+In practice, as soon as an arbitrage strategy is identified (for example, by finding a mismatch in put-call parity), traders will exploit it, driving prices back to levels consistent with the martingale (no-arbitrage) condition. Hence, the absence of arbitrage in well-functioning markets is precisely what enforces the equality 
+\[
+S_0 = e^{-rT}\mathbb{E}_Q[S_T]
+\]
+and preserves the martingale property of discounted asset prices under the risk-neutral measure.
+</p>
+
+        
+        
     </div>
+    <script>
+        function toggleExpandableContent(id) {
+            const content = document.getElementById(id);
+            content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+    
 </body>
 </html>
 

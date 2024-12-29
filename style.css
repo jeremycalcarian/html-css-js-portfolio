@@ -661,4 +661,22 @@ ul.coursework-list li {
 }
 
 
+/* BLOG ONE STYLES */
+
+.expandable-box {
+  background-color: #444;
+  border-left: 4px solid #888;
+  padding: 10px 20px;
+  margin: 20px 0;
+  color: #ddd;
+  cursor: pointer;
+}
+.expandable-content {
+  display: none;
+  padding: 10px 20px;
+  background-color: #555;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
 
