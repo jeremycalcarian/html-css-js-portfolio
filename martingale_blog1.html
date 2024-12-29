@@ -8,43 +8,110 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #2c2c2c;
-            color: white;
-            line-height: 1.6;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #333;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-        h1, h2 {
-            color: #f0f0f0;
-        }
-        p {
-            margin-bottom: 20px;
-            color: #ccc;
-        }
-        .highlight-box {
-            background-color: #444;
-            border-left: 4px solid #888;
-            padding: 10px 20px;
-            margin: 20px 0;
-            color: #ddd;
-        }
-        pre {
-            background-color: #444;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-            color: #f8f8f2;
-        }
+        /* General Body and Container Styling */
+body {
+    font-family: Arial, sans-serif;
+    font-size: 1rem; /* Default font size */
+    line-height: 1.5;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa; /* Light background for readability */
+}
+
+.container {
+    width: 90%; /* Scales with the screen size */
+    max-width: 1200px; /* Prevents it from becoming too wide on large screens */
+    margin: 0 auto; /* Centers the container */
+    padding: 1rem; /* Adds space around the content */
+}
+
+/* Header Styling */
+h1, h2, h3, h4 {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+/* Highlight Boxes */
+.highlight-box {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    background-color: #e9ecef; /* Light gray for highlight boxes */
+    border-radius: 5px; /* Rounded corners */
+}
+
+/* Expandable Content Styling */
+.expandable-box {
+    cursor: pointer; /* Shows that it's clickable */
+    padding: 1rem;
+    border: 1px solid #ccc;
+    background-color: #d6d8db; /* Slightly darker gray */
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.expandable-box:hover {
+    background-color: #c6c8ca; /* Darker gray on hover */
+}
+
+.expandable-content {
+    display: none; /* Hidden by default */
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+/* List Styling */
+ul, ol {
+    padding-left: 1.5rem; /* Indent lists */
+    margin-bottom: 1rem;
+}
+
+li {
+    margin-bottom: 0.5rem; /* Adds space between list items */
+}
+
+/* Responsive Design: Mobile Adjustments */
+@media (max-width: 768px) {
+    body {
+        font-size: 0.9rem; /* Slightly smaller font for mobile */
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    .container {
+        width: 95%; /* Use more screen width on smaller devices */
+        padding: 0.5rem; /* Reduce padding on mobile */
+    }
+
+    .highlight-box, .expandable-box, .expandable-content {
+        font-size: 0.85rem; /* Ensure smaller text fits well */
+        padding: 0.75rem;
+    }
+}
+
+/* Responsive Design: Tablet Adjustments */
+@media (max-width: 1024px) and (min-width: 769px) {
+    body {
+        font-size: 0.95rem;
+    }
+
+    .container {
+        padding: 1rem;
+    }
+}
+
     </style>
 </head>
 <body>
