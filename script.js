@@ -35,6 +35,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
     typeEffect();
 });
+// Typewriter Effect for Numbers
+const typewriterNumbers = document.querySelectorAll('.typewriter-number');
+typewriterNumbers.forEach(number => {
+    const target = +number.getAttribute('data-target');
+    const duration = 8000;
+    const interval = 50;
+    let current = 0;
+    const increment = target / (duration / interval);
+
+    const updateNumber = () => {
+        current += increment;
+        if (current < target) {
+            number.textContent = Math.ceil(current);
+            setTimeout(updateNumber, interval);
+        } else {
+            number.textContent = target;
+            number.classList.add('complete');
+        }
+    };
+    updateNumber();
+});
 
 document.addEventListener("DOMContentLoaded", function() {
     particlesJS('particles-js', {
