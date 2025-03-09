@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>VIX Formula Intuitive Breakdown</title>
+
+  <!-- MathJax for LaTeX rendering -->
+  <script
+    id="MathJax-script"
+    async
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+  ></script>
+
+  <style>
+    body {
+      background-color: #fff;
+      color: #333;
+      font-family: 'Poppins', sans-serif;
+      margin: 20px;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    p.intro {
+      text-align: center;
+      margin-bottom: 40px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.5;
+    }
+    .formula-container, .split-formula-container {
+      text-align: center;
+      font-size: 1.4em;
+      margin-bottom: 30px;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      overflow-x: visible;
+      white-space: normal;
+      word-wrap: break-word;
+    }
+    .formula-part {
+      display: inline-block;
+      margin: 0 8px;
+      padding: 5px 10px;
+      background-color: #f0f0f0;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.3s ease, color 0.3s ease, font-weight 0.3s ease;
+    }
+    .formula-part:hover::after {
+      content: attr(data-label);
+      position: absolute;
+      top: -35px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #333;
+      color: #fff;
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-size: 0.8em;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .formula-part.active {
+      transform: scale(1.2);
+      color: rgb(255, 0, 242);
+      font-weight: bold;
+    }
+    .explanation {
+      max-width: 700px;
+      margin: 30px auto 0 auto;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: #f7f7f7;
+      display: none;
+      font-size: 1em;
+    }
+    .variables-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    .variables-container h2 {
+      text-align: center;
+    }
+    .variable-item {
+      margin-bottom: 10px;
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+  <h1>VIX Formula Intuitive Breakdown</h1>
+
+  <p class="intro">
+    The VIX index is somehting I always thought was interesting. I looked at it pretty frequently. I was introduced to it during some classes at Penn, and learned more about it through a data science for finance course I took a while ago. Market fear is a decent way to put it, but I don't think it expresses what is under the hood for its mathematical expression. I decided it would be a good exercsie to derive this  calculation to better understand the nature of the index, but also as a way to communicate how I interpret the components of the derivation to explain the intution behind its formula. 
+    
+    The VIX (Volatility Index) formally measures expected market volatility over the next 30 days using S&P 500 option prices. 
+    Here, we break down the derivation into parts to better understand each component. This breakdown assumes some mathematical maturtiy and some finance knowledge, specifically put-call parity. I talked about put-call parity in my previous blog about Martingales. 
+  </p>
+
+  <!-- Full, Clean Version of the VIX Formula -->
+  <div class="formula-container">
+    \( \text{VIX} = 100 \times \sqrt{ \frac{2 e^{rT}}{T} \sum_{i}\Bigl(\frac{\Delta K_i}{K_i^2} Q(K_i)\Bigr) \;-\; \frac{1}{T}\Bigl(\frac{F}{K_0} - 1\Bigr)^2 } \)
+  </div>
+
+  <!-- Interactive Formula Breakdown -->
+  <div class="split-formula-container">
+    <span class="formula-part" data-part="p1" data-label="Part A">\( \text{VIX} \)</span>
+    <span class="formula-part" data-part="p2" data-label="Part B">\( = 100 \times \sqrt{}( \)</span>
+    <span class="formula-part" data-part="p3" data-label="Part C">\( \frac{2 e^{rT}}{T} \)</span>
+    <span class="formula-part" data-part="p4a" data-label="Part D1">\( \sum_{i} \Bigl(\frac{\Delta K_i}{K_i^2} Q(K_i) \Bigr) \)</span>
+    <span class="formula-part" data-part="p4b" data-label="Part D2">\( - \frac{1}{T}\Bigl(\frac{F}{K_0} - 1\Bigr)^2 \)</span>
+    <span class="formula-part" data-part="p5" data-label="Part E">\( \bigr) \)</span>
+  </div>
+
+  <!-- Explanation Box -->
+  <div class="explanation" id="explanationBox">
+    <p id="explanationText"></p>
+  </div>
+
+  <!-- Definitions of Variables -->
+  <div class="variables-container">
+    <h2>Variable Definitions</h2>
+    <div class="variable-item"><strong>\( r \)</strong>: The risk-free interest rate.</div>
+    <div class="variable-item"><strong>\( T \)</strong>: Time to expiration of the options used in the VIX calculation.</div>
+    <div class="variable-item"><strong>\( K_i \)</strong>: The strike price of an option contract.</div>
+    <div class="variable-item"><strong>\( \Delta K_i \)</strong>: The interval between adjacent strike prices.</div>
+    <div class="variable-item"><strong>\( Q(K_i) \)</strong>: Risk-neutral probability density for strike \( K_i \).</div>
+    <div class="variable-item"><strong>\( F \)</strong>: The forward price of the underlying S&P 500 index.</div>
+    <div class="variable-item"><strong>\( K_0 \)</strong>: The first strike price below the forward price \( F \).</div>
+  </div>
+  <h2> VIX Chart</h2>
+<p>
+  Below is an interactive chart showing the relationship between the VIX (Volatility Index) and the S&P 500 over time.
+  You can zoom in, hover over data points, and explore trends interactively.
+</p>
+
+<iframe src="vix_chart_embedded_color.html" width="100%" height="600px" style="border: none;"></iframe>
+
+
+  <script>
+    // Explanations for each part
+    const explanations = {
+  p1: "This denotes the VIX index, which represents expected market volatility.",
+
+  p2: "We multiply by 100 to express the result in percentage terms, and then take the square root of the expression inside. The square root is to cancel the squared component in a variance calculation.",
+
+  p3: `The term \\( \\frac{2 e^{rT}}{T} \\) scales the variance integral. This part is pretty cool. Let's walk through where each component comes from.<br><br>
+
+  The easier part to understand is \\( e^{rT} / T \\). Options are discounted at a risk-free rate to account for the time value of money—this is a fundamental concept in finance. Since our money is worth more today than in the future we must discount that. Since financial assets like stocks carry risk, investors usually demand $$ (a premium) above the risk-free rate. If you're getting yourself invovled in some risk, it should be above a risk-free payoff (in theory). In continuous discounting, the exponential discounting formula \\( e^{rT} \\) is commonly used, where:<br><br>
+  - \\( e \\) is Euler’s constant,<br>
+  - \\( r \\) is the risk-free rate, and<br>
+  - \\( T \\) is the time to expiration.<br><br>
+  
+  This term adjusts for how option prices reflect the time value of money in a risk-neutral world.<br><br>
+  
+  The factor of 2 is omre interesting to explain and comes from integration by parts in the derivation of a log contract’s payoff. It originates from variance swap pricing, where expected variance is expressed as an integral over all strikes. This sort of leakes into out next part's explanation but it all comes together:<br><br>
+
+  \\[
+  \\mathbb{E} \\left[ \\left( \\ln \\frac{F}{S_T} \\right)^2 \\right] \\propto \\int_0^{\\infty} \\frac{Q(K)}{K^2} dK.
+  \\]
+  This part looks intimidating at first but let simplify things a bit. 
+
+
+The tricky part—why is there a factor of \\( 2 \\)? This comes from integrating option prices to estimate the fair strike of a variance swap. The expected variance under risk-neutral pricing can be rewritten in terms of an integral over all strike prices:<br><br>
+
+  Why Does the 2 Appear?
+  In a risk-neutral world, the fair strike price of a variance swap is related to the expected squared log return:<br><br>
+
+  \\[
+  \\mathbb{E} \\left[ \\left( \\ln \\frac{F}{S_T} \\right)^2 \\right].
+  \\]
+
+  Using the natural log expansion around 1 (Taylor Series are useful):<br>
+
+  \\[
+  \\ln(1 + x) = x - \\frac{1}{2} x^2 + O(x^3),
+  \\]
+
+  we set \\( x = \\frac{F}{S} - 1 \\), which leads to:<br><br>
+
+  \\[
+  \\ln \\frac{S^*}{F} = \\left(\\frac{S^*}{F} - 1\\right) - \\frac{1}{2} \\left(\\frac{S^*}{F} - 1\\right)^2 + \\dots.
+  \\]
+
+  Model-free variance replication uses out-of-the-money (OTM) puts and calls to approximate instantaneous variance. The factor of 2 appears when rigorously deriving this relationship because both puts and calls contribute symmetrically in variance replication.<br><br>
+
+  In practice, we split the integral into two parts: one for put options (for strikes below the forward price \\( F \\)) and one for call options (for strikes above \\( F \\)):
+
+  \\[
+  \\sigma^2 \\propto \\int_0^F \\frac{P(K)}{K^2} dK + \\int_F^{\\infty} \\frac{C(K)}{K^2} dK.
+  \\]
+
+  Here:
+  \\( P(K) \\) and \\( C(K) \\) are the prices of put and call options, respectively.
+  The strikes are divided around the forward price \\( F \\), ensuring variance replication is symmetrical across both sides.<br><br>
+
+  This structure allows the variance swap to correctly track the instantaneous variance of the underlying asset, which ultimately explains why the factor of 2 appears in the VIX formula.`,
+  p4a: 
+  'Remember Riemann sums from introductory calculus? That’s exactly what’s happening here. Pretty neat. In a countinuous world, we’d integrate over infinite values of strike prices, but in practice, strike prices are discrete. This means we approximate the integral using a summation. Think of \\( \\Delta K_i \\) as the step size in a Riemann sum—it represents the width of each slice in our approximation of the variance integral from Part C. <br><br>'
+  + 'Since we can’t integrate directly, we sum these discrete parts (think of them as rectangles in a Riemann sum). The \\( K_i^2 \\) term plays a key role here—it normalizes the contribution of each strike price. This makes sense because higher strike prices, further from the current price, are less sensitive to changes in variance. In other words, as strike prices increase, the effect of variance on option prices decreases.<br><br>'
+
++'Why \\( \\frac{1}{K_i^2} \\)? This reflects how sensitivity to variance changes as the strike price moves away from the forward price. Options closer to the current price have a greater impact on the variance estimate, while those further away contribute less. If you look at \\( \\frac{\\Delta K}{K^2} \\), when \\( K \\) is small, the fraction is larger, meaning that near-the-money options have a stronger effect on the variance calculation.<br><br>'
+
++ 'Finally, \\( Q(K) \\) represents the mid-quote average bid-ask price for an option at strike \\( K \\). This ensures that we weight each option price appropriately when estimating the expected variance.',
+p4b: `The term \\( - \\frac{1}{T} (F/K_0 - 1)^2 \\) is a correction factor that adjusts for discretization effects around the forward price \\( F \\). Let’s break this down step by step.<br><br>
+
+Why do we have \\( K_0 \\)?<br>
+Since strike prices in options markets are discrete, we don’t always have an exact strike that matches the forward price \\( F \\). Instead, we take \\( K_0 \\), the strike price immediately below \\( F \\). If \\( F \\) is close to \\( K_0 \\), then their ratio approaches 1, meaning this term shrinks towards 0.<br><br>
+
+What does this term do?<br>
+This term corrects for the slight overestimation introduced by the Riemann sum approximation in the variance calculation. Think of the summation in Part D1: since we’re summing over discrete rectangles (strike intervals), there will always be some mismatch near the forward price. This adjustment ensures that we don’t overstate variance simply because of discrete steps in \\( K \\).<br><br>
+
+Why squared?<br>
+The squared term \\( (F/K_0 - 1)^2 \\) penalizes larger gaps between \\( F \\) and \\( K_0 \\). This behaves similarly to Root Mean Squared Error (RMSE), where large deviations are penalized more than small ones. The further \\( F \\) is from \\( K_0 \\), the larger the correction needed.<br><br>
+
+Why divide by \\( T \\)?<br>
+The factor \\( \\frac{1}{T} \\) normalizes the adjustment so that different expirations are scaled properly. Since options with different maturities have different time horizons, we need to ensure all volatility calculations are annualized for consistency.<br><br>
+
+So... take-away:<br>
+If we summed over discrete strike prices without correcting for \\( K_0 \\), we’d introduce a slight overestimation of variance. This term ensures our variance estimate remains unbiased, making the VIX calculation more precise.`,
+
+  p5: "This closes the square root expression, finalizing the volatility measure."
+};
+
+
+
+
+    // Remove active class
+    function clearActive() {
+      document.querySelectorAll('.formula-part').forEach(el => {
+        el.classList.remove('active');
+      });
+    }
+
+    // Show explanation
+    function showExplanation(partId) {
+      const explanationDiv = document.getElementById('explanationBox');
+      const explanationText = document.getElementById('explanationText');
+      explanationText.innerHTML = explanations[partId] || "No explanation provided.";
+      MathJax.typeset(); // Refresh MathJax rendering
+      explanationDiv.style.display = 'block';
+    }
+
+    // Attach click events
+    document.querySelectorAll('.formula-part').forEach(partEl => {
+      partEl.addEventListener('click', function() {
+        clearActive();
+        this.classList.add('active');
+        showExplanation(this.getAttribute('data-part'));
+      });
+    });
+  </script>
+</body>
+</html>
