@@ -215,20 +215,40 @@ The tricky part—why is there a factor of \\( 2 \\)? This comes from integratin
 + 'Finally, \\( Q(K) \\) represents the mid-quote average bid-ask price for an option at strike \\( K \\). This ensures that we weight each option price appropriately when estimating the expected variance.',
 p4b: `The term \\( - \\frac{1}{T} (F/K_0 - 1)^2 \\) is a correction factor that adjusts for discretization effects around the forward price \\( F \\). Let’s break this down step by step.<br><br>
 
-Why do we have \\( K_0 \\)?<br>
-Since strike prices in options markets are discrete, we don’t always have an exact strike that matches the forward price \\( F \\). Instead, we take \\( K_0 \\), the strike price immediately below \\( F \\). If \\( F \\) is close to \\( K_0 \\), then their ratio approaches 1, meaning this term shrinks towards 0.<br><br>
+<b>Why do we have \\( K_0 \\)?</b><br>
+Since strike prices in options markets are discrete, we don’t always have an exact strike that matches the forward price \\( F \\). Instead, we take \\( K_0 \\), the strike price immediately below \\( F \\). This serves as the closest reference point when approximating the integral. If \\( F \\) is close to \\( K_0 \\), then \\( F/K_0 \\approx 1 \\), meaning this term shrinks toward 0.<br><br>
 
-What does this term do?<br>
-This term corrects for the slight overestimation introduced by the Riemann sum approximation in the variance calculation. Think of the summation in Part D1: since we’re summing over discrete rectangles (strike intervals), there will always be some mismatch near the forward price. This adjustment ensures that we don’t overstate variance simply because of discrete steps in \\( K \\).<br><br>
+<b>Why is it specifically \\( F/K_0 \\)?</b><br>
+- \\( F \\) represents the true forward price, the expected value of the underlying asset at expiration.<br>
+- \\( K_0 \\) is the nearest available strike price below \\( F \\), since strike prices in options markets are discrete.<br>
+- The ratio \\( F/K_0 \\) captures how much the actual forward price deviates from the closest available strike.<br>
+- If we used \\( K_0/F \\) instead, the direction would be unintuitive. We care about how much \\( F \\) overshoots \\( K_0 \\), which is best represented by \\( F/K_0 \\).<br><br>
 
-Why squared?<br>
-The squared term \\( (F/K_0 - 1)^2 \\) penalizes larger gaps between \\( F \\) and \\( K_0 \\). This behaves similarly to Root Mean Squared Error (RMSE), where large deviations are penalized more than small ones. The further \\( F \\) is from \\( K_0 \\), the larger the correction needed.<br><br>
+<b>Why do we subtract 1?</b><br>
+- If \\( F/K_0 = 1 \\), then no correction is needed since the forward price and strike price are aligned.<br>
+- If \\( F/K_0 \\neq 1 \\), we need to measure how far off we are. The simplest way to do this is:<br>
+  - If \\( F/K_0 = 1.05 \\), then the correction term is 0.05, meaning we slightly overestimated variance.<br>
+  - If \\( F/K_0 = 1.1 \\), then the correction term is 0.1, meaning we significantly overestimated variance.<br>
+  - This subtraction ensures that the correction shrinks to zero when no adjustment is needed.<br><br>
 
-Why divide by \\( T \\)?<br>
-The factor \\( \\frac{1}{T} \\) normalizes the adjustment so that different expirations are scaled properly. Since options with different maturities have different time horizons, we need to ensure all volatility calculations are annualized for consistency.<br><br>
+<b>Why is it squared?</b><br>
+- Squaring \\( (F/K_0 - 1) \\) makes the correction behave like an RMSE (Root Mean Squared Error).<br>
+- Small deviations are penalized less.<br>
+- Large deviations are penalized more.<br>
+- The further \\( F \\) is from \\( K_0 \\), the larger the error in our variance estimate, so squaring it makes the penalty proportional to the size of the mismatch.<br><br>
 
-So... take-away:<br>
-If we summed over discrete strike prices without correcting for \\( K_0 \\), we’d introduce a slight overestimation of variance. This term ensures our variance estimate remains unbiased, making the VIX calculation more precise.`,
+<b>Why divide by \\( T \\)?</b><br>
+- This normalizes the correction so that it is comparable across different option expirations.<br>
+- Since VIX is an annualized volatility measure, dividing by \\( T \\) ensures that all expirations contribute in a consistent way.<br><br>
+
+<b>Final Takeaway:</b><br>
+- We are correcting for an overestimation caused by discrete strike prices.<br>
+- The term \\( F/K_0 - 1 \\) measures how much the forward price deviates from the nearest strike.<br>
+- Squaring it ensures larger mismatches get penalized more, similar to RMSE.<br>
+- Dividing by \\( T \\) keeps the adjustment scaled properly across different maturities.<br>
+- Without this correction, the VIX formula would slightly overestimate variance due to discrete summation errors.<br><br>
+
+This term ensures our variance estimate remains unbiased, making the VIX calculation more precise.`,
 
   p5: "This closes the square root expression, finalizing the volatility measure."
 };
