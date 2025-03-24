@@ -102,7 +102,7 @@
   <h1>VIX Formula Intuitive Breakdown</h1>
 
   <p class="intro">
-    The VIX index is something I always thought was interesting. I looked at it pretty frequently. I was introduced to it during some classes at Penn, and learned more about it through a data science for finance course I took a while ago. Market fear is a decent way to put it, but I don't think it expresses what is under the hood for its mathematical expression. I decided it would be a good exercsie to derive this  calculation to better understand the nature of the index, but also as a way to communicate how I interpret the components of the derivation to explain the intution behind its formula. 
+    The VIX index is something I always thought was interesting. I looked at it pretty frequently. I was introduced to it during some classes at Penn, and learned more about it through a data science for finance course I took a while ago. Market fear is a decent way to put it, but I don't think it expresses what is under the hood for its mathematical expression. I decided it would be a good exercsie to derive this calculation to better understand the nature of the index, but also as a way to communicate how I interpret the components of the derivation to explain the intution behind its formula. 
     
     The VIX (Volatility Index) formally measures expected market volatility over the next 30 days using S&P 500 option prices. 
     Here, we break down the derivation into parts to better understand each component. This breakdown assumes some mathematical maturtiy and some finance knowledge, specifically put-call parity. I talked about put-call parity in my previous blog about Martingales. 
@@ -164,7 +164,7 @@
   
   This term adjusts for how option prices reflect the time value of money in a risk-neutral world.<br><br>
   
-  The factor of 2 is omre interesting to explain and comes from integration by parts in the derivation of a log contract’s payoff. It originates from variance swap pricing, where expected variance is expressed as an integral over all strikes. This sort of leaks into out next part's explanation but it all comes together:<br><br>
+  The factor of 2 is more interesting to explain and comes from integration by parts in the derivation of a log contract’s payoff. It originates from variance swap pricing, where expected variance is expressed as an integral over all strikes. This sort of leaks into out next part's explanation but it all comes together:<br><br>
 
   \\[
   \\mathbb{E} \\left[ \\left( \\ln \\frac{F}{S_T} \\right)^2 \\right] \\propto \\int_0^{\\infty} \\frac{Q(K)}{K^2} dK.
