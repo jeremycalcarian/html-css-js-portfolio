@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vasicek Model: Step-by-Step</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background: #fff;
+      color: #111;
+      line-height: 1.6;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1, h2 {
+      font-family: Georgia, serif;
+      margin-bottom: 0.5rem;
+      color: #000;
+    }
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 1.75rem; margin-top: 2.5rem; }
+    .intro {
+      border-left: 4px solid #333;
+      padding-left: 1rem;
+      margin-bottom: 2rem;
+      color: #333;
+    }
+    .timeline {
+      position: relative;
+      margin-left: 1rem;
+      padding-left: 2rem;
+      border-left: 2px solid #333;
+      counter-reset: step;
+    }
+    .step {
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .step::before {
+      content: counter(step);
+      counter-increment: step;
+      position: absolute;
+      left: -2.8rem;
+      top: 0;
+      background: #333;
+      color: #fff;
+      width: 2rem;
+      height: 2rem;
+      line-height: 2rem;
+      text-align: center;
+      border-radius: 50%;
+      font-weight: bold;
+    }
+    .eq {
+      background: #f5f5f5;
+      border-left: 4px solid #333;
+      padding: 0.75rem 1rem;
+      margin: 1rem 0;
+      font-family: 'Courier New', monospace;
+    }
+    code {
+      background: #eee;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+    }
+    h3 { margin: 1rem 0 0.5rem; font-size: 1.1rem; }
+    ul { margin: 0.5rem 0 1rem 1.5rem; }
+  </style>
+</head>
+<body>
+  <h1>One-Factor Vasicek Model: Rigorous Step-by-Step</h1>
+
+  <p class="intro">
+    The Vasicek model posits that the instantaneous short rate $r_t$ follows an 
+    Ornstein–Uhlenbeck process. Below we derive its explicit solution, 
+    moments, and zero-coupon bond price—**every** calculus and stochastic integral 
+    step shown in detail.
+  </p>
+
+  <div class="timeline">
+    <div class="step">
+      <h2>1. Model Setup</h2>
+      <p>Under the physical measure $\mathbb{P}$, the SDE is</p>
+      <div class="eq">
+        \[
+          dr_t = k(\theta - r_t)\,dt + \sigma\,dW_t^{\mathbb{P}}.
+        \]
+      </div>
+      <p>
+        <strong>Parameters:</strong> $k>0$ (speed), $\theta$ (mean), 
+        $\sigma>0$ (volatility), $W_t^{\mathbb{P}}$ Brownian motion.
+      </p>
+    </div>
+
+    <div class="step">
+      <h2>2. Integrating Factor &amp; Product Rule</h2>
+      <p>Multiply both sides by $e^{kt}$:</p>
+      <div class="eq">
+        \[
+          e^{kt}\,dr_t + k\,e^{kt}r_t\,dt
+          = k\theta\,e^{kt}\,dt + \sigma\,e^{kt}\,dW_t^{\mathbb{P}}.
+        \]
+      </div>
+      <p>This left side is the differential of $e^{kt}r_t$. We break down its derivation:</p>
+
+      <h3>a) Why use Itô’s Lemma?</h3>
+      <p>Because $r_t$ includes a Brownian component $dW_t^{\mathbb P}$, it has nonzero quadratic variation. Ordinary calculus ignores the $(dW_t)^2=dt$ correction. Itô’s lemma correctly accounts for this extra term when differentiating functions of stochastic processes.</p>
+
+      <h3>b) Ordinary Product Rule</h3>
+      <p>For finite-variation processes,</p>
+      <div class="eq">
+        \[
+          d(X_tY_t) = X_t\,dY_t + Y_t\,dX_t.
+        \]
+      </div>
+      <p>Let $X_t=e^{kt}$, $Y_t=r_t$. Then $dX_t=k e^{kt}dt$, $dY_t=dr_t$, giving</p>
+      <div class="eq">
+        \[
+          d(e^{kt}r_t) = e^{kt}\,dr_t + k e^{kt}r_t\,dt.
+        \]
+      </div>
+
+      <h3>c) Itô’s Lemma</h3>
+      <p>For $f(t,r)=e^{kt}r$, Itô’s formula reads:</p>
+      <div class="eq">
+        \[
+          df(t,r_t) = f_t\,dt + f_r\,dr_t + \tfrac12 f_{rr}(dr_t)^2.
+        \]
+      </div>
+      <p>Compute partial derivatives:</p>
+      <ul>
+        <li>$f_t = \partial_t(e^{kt}r)=k e^{kt}r$</li>
+        <li>$f_r = \partial_r(e^{kt}r)=e^{kt}$</li>
+        <li>$f_{rr}=0$</li>
+      </ul>
+      <p>Since $(dr_t)^2=\sigma^2 dt$ and $f_{rr}=0$, the correction term is zero, yielding:</p>
+      <div class="eq">
+        \[
+          d(e^{kt}r_t) = k e^{kt}r_t\,dt + e^{kt}\,dr_t.
+        \]
+      </div>
+
+      <h3>d) Why the Methods Agree</h3>
+      <p>With $f_{rr}=0$, Itô’s lemma collapses to the ordinary product rule. Both correctly give:</p>
+      <div class="eq">
+        \[
+          d(e^{kt}r_t) = e^{kt}\,dr_t + k e^{kt}r_t\,dt.
+        \]
+      </div>
+    </div>
+
+    <div class="step">
+      <h2>3. Integrate from $0$ to $t$</h2>
+      <p>We have</p>
+      <div class="eq">
+        \[
+          d(e^{ks}r_s) = k\theta e^{ks}\,ds + \sigma e^{ks}\,dW_s^{\mathbb{P}}.
+        \]
+      </div>
+      <p>Integrate both sides:</p>
+      <div class="eq">
+        \[
+          \int_0^t d(e^{ks}r_s) = \int_0^t k\theta e^{ks}\,ds + \int_0^t \sigma e^{ks}\,dW_s^{\mathbb{P}}.
+        \]
+      </div>
+      <p>The left gives $e^{kt}r_t - r_0$. The first integral is:</p>
+      <div class="eq">
+        \[
+          \int_0^t k\theta e^{ks}\,ds = \theta(e^{kt}-1).
+        \]
+      </div>
+      <p>Thus:</p>
+      <div class="eq">
+        \[
+          e^{kt}r_t - r_0 = \theta(e^{kt}-1) + \sigma\int_0^t e^{ks}\,dW_s^{\mathbb{P}}.
+        \]
+      </div>
+    </div>
+
+    <div class="step">
+      <h2>4. Explicit Solution</h2>
+      <div class="eq">
+        \[
+          r_t = \theta + (r_0-\theta)e^{-kt} + \sigma\int_0^t e^{-k(t-s)}dW_s^{\mathbb{P}}.
+        \]
+      </div>
+    </div>
+
+    <div class="step">
+      <h2>5. Conditional Mean & Variance</h2>
+      <div class="eq">
+        \[
+          r_t|r_0 \sim \mathcal{N}\bigl(\theta+(r_0-\theta)e^{-kt},\tfrac{\sigma^2}{2k}(1-e^{-2kt})\bigr).
+        \]
+      </div>
+    </div>
+
+    <div class="step">
+      <h2>6. Risk-Neutral Measure</h2>
+      <p>Under $\mathbb{Q}$: $dr_t = k(\theta^*-r_t)dt + \sigma dW_t^{\mathbb{Q}}$ (same form with $\theta^*$).</p>
+    </div>
+
+    <div class="step">
+      <h2>7. Bond Price</h2>
+      <div class="eq">
+        \[
+          P(t,T)=\mathbb{E}_t^{\mathbb{Q}}[e^{-\int_t^T r_u du}] = e^{-A(t,T)-B(t,T)r_t}.
+        \]
+      </div>
+      <div class="eq">
+        \[
+          B(t,T)=\frac{1-e^{-k(T-t)}}{k},\quad A(t,T)=(\theta^*-\tfrac{\sigma^2}{2k^2})(B-(T-t))-\tfrac{\sigma^2}{4k}B^2.
+        \]
+      </div>
+    </div>
+
+    <div class="step">
+      <h2>8. Duration & Convexity</h2>
+      <p>$\partial_r P=-B P \implies$ Duration $=B$, Convexity $=B^2 P$.</p>
+    </div>
+
+  </div>
+</body>
+</html>
