@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Empowerr Dashboard – Showcase</title>
+
+  <!-- (optional global) -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="mediaqueries.css" />
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+
+  <style>
+    /*********  GLOBAL DARK BASE  *********/
+    body.empowerr-page{background:#0a0a0a;color:#fff;margin:0;font-family:'Helvetica Neue',sans-serif}
+    #particles-js,#particles-js canvas{background:transparent;position:fixed;inset:0;z-index:-1}
+
+    /* compact section spacing */
+    section{padding:50px 18px}
+    .parallax-section{padding:60px 18px 40px}
+
+    /* headings */
+    h2.section-heading{margin:0 0 6px;font-size:1.9rem;text-align:center}
+    h2.section-heading::after{content:"";display:block;width:50px;height:3px;background:#00d4a7;margin:10px auto}
+
+    /* hero */
+    .parallax-section h1{font-size:2.6rem;margin:0 0 14px}
+    .parallax-section p{max-width:520px;font-size:1.05rem;opacity:.85;margin:0 auto}
+
+    /* stack accordion (unchanged) */
+    .stack-wrapper{display:flex;flex-direction:column;gap:14px;max-width:620px;margin:40px auto 0}
+    .stack-card{background:rgba(255,255,255,.06);border-left:4px solid #00d4a7;border-radius:10px;padding:20px 26px;cursor:pointer;transition:.25s}
+    .stack-card h3{margin:0;font-size:1.3rem;display:flex;justify-content:space-between;align-items:center}
+    .stack-card ul{margin:12px 0 0;padding-left:20px;font-size:.93rem;line-height:1.4;opacity:.85;display:none}
+    .stack-card.open{transform:translateY(-3px);box-shadow:0 8px 22px rgba(0,212,167,.25)}
+    .stack-card.open ul{display:block}
+    .stack-card.open .chevron{transform:rotate(90deg)}
+    .chevron{display:inline-block;transition:.25s;margin-left:8px}
+
+    /* feature grid */
+    .feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:28px;margin-top:40px}
+    .feature-card{background:rgba(255,255,255,.05);border-radius:14px;padding:24px;transition:.25s}
+    .feature-card:hover{transform:translateY(-6px)}
+    .feature-icon{font-size:34px;color:#00d4a7;margin-bottom:14px}
+
+    /* security split */
+    .security-split{display:flex;flex-wrap:wrap;gap:30px;padding:50px 18px}
+    .security-code pre{padding:16px;font-size:.8rem;background:none}
+
+    /* admin portal image & screenshots smaller */
+    .admin-portal{padding:80px 18px}
+    .portal-frame{max-width:780px;margin:0 auto;border-radius:20px;overflow:hidden;transition:transform .6s cubic-bezier(.3,.6,.3,1)}
+    .portal-frame:hover{transform:perspective(800px) rotateX(5deg) rotateY(-4deg)}
+    .portal-frame img{width:100%;display:block}
+
+    .screenshot{max-width:680px;width:70%;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.4);margin:30px auto;display:block}
+
+    /* progress ring */
+    .progress-ring-section{text-align:center;padding:80px 18px}
+    .ring-wrapper{display:inline-block;position:relative}
+    .ring-bg{fill:none;stroke:#222;stroke-width:15}
+    .ring-bar{fill:none;stroke:#00d4a7;stroke-width:15;stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;stroke-dasharray:628;stroke-dashoffset:628;transition:stroke-dashoffset 1.5s}
+    .ring-label{font-size:2rem;fill:#fff;text-anchor:middle}
+    .ring-caption{opacity:.8;margin-top:18px}
+
+    /* purpose blurb */
+    .purpose{max-width:680px;margin:0 auto;font-size:1rem;text-align:center;line-height:1.55}
+    .purpose p{margin:0 0 14px}
+    .purpose{
+        color: white
+    }
+    .purpose, .purpose p, .purpose em, .purpose strong {
+  color: #fff !important;
+  opacity: 1 !important;
+}
+
+
+    /* CTA */
+    .cta{padding:50px 18px;text-align:center}
+    .btn-color-2{background:#00d4a7;color:#0a0a0a;padding:10px 22px;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:.25s}
+    .btn-color-2:hover{transform:translateY(-2px);box-shadow:0 0 14px rgba(0,212,167,.45)}
+
+    a:focus,button:focus{outline:2px solid #00d4a7;outline-offset:2px}
+    .security-code pre {
+  color: #0fd;
+  padding: 16px;
+  font-size: 0.8rem;
+  background: none;
+  white-space: pre-wrap;
+}
+
+  </style>
+</head>
+
+<body class="empowerr-page">
+  <div id="particles-js"></div>
+
+  <!-- Hero -->
+  <section class="parallax-section" data-aos="fade-in">
+    <h1 data-aos="fade-up">Empowerr Dashboard</h1>
+    <p data-aos="fade-up" data-aos-delay="80">
+      A modern internal platform for managing meetings, attendance,
+      volunteer hours &mdash; and now device push-notifications.
+    </p>
+  </section>
+
+  <!-- Stack accordion -->
+  <section class="architecture" data-aos="fade-up">
+    <h2 class="section-heading">How It’s Built</h2>
+    <div class="stack-wrapper">
+      <div class="stack-card" data-aos-delay="0">
+        <h3>Backend (Firebase) <span class="chevron">&#9656;</span></h3>
+        <ul>
+          <li>Firebase Authentication</li>
+          <li>Cloud Firestore (meetings &amp; attendance)</li>
+          <li>Cloud Functions (admin helpers)</li>
+        </ul>
+      </div>
+      <div class="stack-card" data-aos-delay="60">
+        <h3>Cloud Messaging <span class="chevron">&#9656;</span></h3>
+        <ul>
+          <li>Firebase Cloud Messaging push service</li>
+          <li>Volunteer reminders &amp; by-law alerts</li>
+          <li>Admin operation warnings</li>
+        </ul>
+      </div>
+      <div class="stack-card" data-aos-delay="120">
+        <h3>Frontend (Next.js) <span class="chevron">&#9656;</span></h3>
+        <ul>
+          <li>Next.js API routes &amp; React client</li>
+          <li>TailwindCSS for rapid theming</li>
+          <li>Real-time Firestore listeners</li>
+        </ul>
+      </div>
+      <div class="stack-card" data-aos-delay="180">
+        <h3>User Device <span class="chevron">&#9656;</span></h3>
+        <ul>
+          <li>Responsive PWA on phone / desktop</li>
+          <li>Google-authenticated sessions</li>
+          <li>Push notifications, offline caching</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core features -->
+  <section class="features" data-aos="fade-up">
+    <h2 class="section-heading">Core Features</h2>
+    <div class="feature-grid">
+      <div class="feature-card"><div class="feature-icon">🔒</div><h3>Secure Google Auth</h3><p>Only verified @empowerr.org accounts gain entry.</p></div>
+      <div class="feature-card"><div class="feature-icon">📅</div><h3>Meeting Scheduler</h3><p>Create events with integrated attendance tracking.</p></div>
+      <div class="feature-card"><div class="feature-icon">⏱️</div><h3>Hours Tracker</h3><p>Volunteer time auto-syncs to Firestore in real-time.</p></div>
+    </div>
+  </section>
+
+  <!-- Purpose text -->
+  <section class="purpose" data-aos="fade-up">
+    <h2 class="section-heading">Why This Matters</h2>
+    <p>
+      High-school volunteers juggle <em>a lot</em>&nbsp;&mdash; classes, sports, clubs,
+      part-time jobs. It’s easy to forget Empowerr’s bylaws or lose track of
+      volunteer-hour milestones as the semester rushes by.
+    </p>
+    <p>
+      The Empowerr Dashboard keeps everyone on track. Google sign-in removes
+      friction, real-time attendance logs show exactly where you stand, and
+      push notifications nudge you <em>before</em> you fall out of compliance.
+      Admins see instant warnings if critical data is missing, so no one slips
+      through the cracks.
+    </p>
+    <p>
+      The result? Less administrative chaos, more time spent on the work that
+      <strong>actually empowers</strong> our community.
+    </p>
+  </section>
+
+  <!-- Security snippet -->
+  <section class="security-split" data-aos="fade-up">
+    <div class="security-text">
+      <h2><span class="lock">🔐</span> Enterprise-grade Security</h2>
+      <p>Firestore rules restrict data to <code>@empowerr.org</code> accounts with admin claims.</p>
+    </div>
+    <div class="security-code"><pre>// condensed rules
+match /users/{uid}{
+  allow read, write: if
+    request.auth.token.email.endsWith("@empowerr.org") &&
+    request.auth.token.admin == true;
+}</pre></div>
+  </section>
+
+  <!-- Admin screenshot -->
+  <section class="admin-portal" data-aos="zoom-in">
+    <h2 class="section-heading">Admin Portal &mdash; Create Meetings</h2>
+    <div class="portal-frame"><img src="./assets/empowerr-dashboard-adminportal.png" alt="Admin portal" /></div>
+  </section>
+
+  <!-- Progress ring -->
+  <section class="progress-ring-section" data-aos="fade-up">
+    <h2 class="section-heading">Volunteer Hours Progress</h2>
+    <div class="ring-wrapper">
+      <svg class="progress-ring" width="220" height="220">
+        <circle class="ring-bg" cx="110" cy="110" r="100" />
+        <circle class="ring-bar" cx="110" cy="110" r="100" />
+        <text class="ring-label" x="50%" y="50%" dy=".3em">0%</text>
+      </svg>
+    </div>
+    <p class="ring-caption">Real-time tracker synced from Firestore.</p>
+  </section>
+
+  <!-- Screenshot showcase -->
+  <section class="showcase" data-aos="fade-up">
+    <h2 class="section-heading">Designed for Simplicity</h2>
+    <img src="./assets/empowerr-dashboard-screenshot.png" alt="Dashboard preview" class="screenshot" />
+    <p>Built with Next.js&nbsp;13, Firebase Auth, and Firestore.</p>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" data-aos="fade-up">
+    <button class="btn-color-2" onclick="location.href='index.html#projects'">← Back to Portfolio</button>
+  </section>
+
+  <!-- JS libs -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" defer></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded',()=>{
+      AOS.init({duration:650,easing:'ease-out-quart',once:true});
+
+      particlesJS('particles-js',{background:{color:'#0a0a0a'},
+        particles:{number:{value:60},color:{value:'#00d4a7'},shape:{type:'circle'},
+          opacity:{value:0.45},size:{value:3},move:{enable:true,speed:1}}});
+
+      /* accordion */
+      document.querySelectorAll('.stack-card').forEach(card=>{
+        card.addEventListener('click',()=>card.classList.toggle('open'));
+      });
+
+      /* progress ring */
+      const sec=document.querySelector('.progress-ring-section');
+      const bar=document.querySelector('.ring-bar');
+      const lbl=document.querySelector('.ring-label');
+      const r=100,circ=2*Math.PI*r,target=82;
+      function animate(){let p=0;const tick=()=>{p++;bar.style.strokeDashoffset=circ-(circ*p/100);lbl.textContent=p+'%';if(p<target)requestAnimationFrame(tick)};requestAnimationFrame(tick);}
+      new IntersectionObserver(([e],o)=>{if(e.isIntersecting){animate();o.disconnect()}},{threshold:0.55}).observe(sec);
+    });
+  </script>
+</body>
+</html>

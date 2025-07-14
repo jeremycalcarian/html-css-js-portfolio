@@ -712,4 +712,131 @@ pre {
 
 }
 
+/* EMPOWERR dashboard project*/
+.dashboard-preview {
+  max-width: 800px;
+  margin: 20px auto;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
+}
 
+.dashboard-preview:hover {
+  transform: scale(1.02);
+}
+
+.dashboard-screenshot {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.project-description {
+  max-width: 800px;
+  margin: 20px auto;
+  text-align: center;
+  font-size: 1rem;
+  color: #aaa;
+  line-height: 1.6;
+}
+/* ================================
+   Scoped Empowerr Showcase Styles
+   ================================ */
+
+/* page‐wide dark theme only on this page */
+.empowerr-page {
+  background-color: #0a0a0a;
+  color: #ffffff;
+}
+
+/* Hero parallax background */
+.empowerr-page .parallax-section {
+  background-image: url('./assets/empowerr-background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.empowerr-page .hero h1 {
+  font-size: 3rem;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+  color: #fff;
+}
+.empowerr-page .hero p {
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  opacity: 0.8;
+  color: #ddd;
+}
+
+/* Feature grid & cards */
+.empowerr-page .feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  margin-top: 60px;
+  padding: 0 20px;
+}
+.empowerr-page .feature-card {
+  background: rgba(255,255,255,0.05);
+  border-radius: 16px;
+  padding: 30px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 rgba(0,212,167,0);
+}
+.empowerr-page .feature-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0,212,167,0.3);
+}
+.empowerr-page .feature-icon {
+  font-size: 40px;
+  margin-bottom: 20px;
+  color: #00d4a7;
+}
+
+/* Screenshot showcase */
+.empowerr-page .screenshot {
+  max-width: 80%;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  margin: 40px auto;
+  display: block;
+}
+
+/* Call‐to‐action button */
+.empowerr-page .cta {
+  text-align: center;
+  padding: 80px 20px;
+}
+.empowerr-page .cta .btn-color-2 {
+  background: #00d4a7;
+  color: #0a0a0a;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+.empowerr-page .cta .btn-color-2:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(0,212,167,0.5);
+}
+
+/* Particles background */
+.empowerr-page .particles-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
