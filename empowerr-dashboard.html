@@ -11,83 +11,195 @@
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
 
   <style>
-    /*********  GLOBAL DARK BASE  *********/
-    body.empowerr-page{background:#0a0a0a;color:#fff;margin:0;font-family:'Helvetica Neue',sans-serif}
-    #particles-js,#particles-js canvas{background:transparent;position:fixed;inset:0;z-index:-1}
+  /*********  GLOBAL DARK BASE  *********/
+  body.empowerr-page{
+    background:#0a0a0a;
+    color:#fff;
+    margin:0;
+    font-family:'Helvetica Neue',sans-serif;
+    scroll-behavior:smooth;
+  }
+  #particles-js,#particles-js canvas{background:transparent;position:fixed;inset:0;z-index:-1}
 
-    /* compact section spacing */
-    section{padding:50px 18px}
-    .parallax-section{padding:60px 18px 40px}
+  /* compact spacing */
+  section{padding:38px 18px}               /* ⬅ was 50px */
+  .parallax-section{padding:48px 18px 34px}/* ⬅ was 60/40 */
 
-    /* headings */
-    h2.section-heading{margin:0 0 6px;font-size:1.9rem;text-align:center}
-    h2.section-heading::after{content:"";display:block;width:50px;height:3px;background:#00d4a7;margin:10px auto}
+  /* headings */
+  h2.section-heading{margin:0 0 4px;font-size:1.9rem;text-align:center}
+  h2.section-heading::after{content:"";display:block;width:46px;height:3px;background:#00d4a7;margin:8px auto}
 
-    /* hero */
-    .parallax-section h1{font-size:2.6rem;margin:0 0 14px}
-    .parallax-section p{max-width:520px;font-size:1.05rem;opacity:.85;margin:0 auto}
+  /* hero */
+  .parallax-section h1{font-size:2.55rem;margin:0 0 12px}
+  .parallax-section p{max-width:520px;font-size:1.03rem;opacity:.85;margin:0 auto}
 
-    /* stack accordion (unchanged) */
-    .stack-wrapper{display:flex;flex-direction:column;gap:14px;max-width:620px;margin:40px auto 0}
-    .stack-card{background:rgba(255,255,255,.06);border-left:4px solid #00d4a7;border-radius:10px;padding:20px 26px;cursor:pointer;transition:.25s}
-    .stack-card h3{margin:0;font-size:1.3rem;display:flex;justify-content:space-between;align-items:center}
-    .stack-card ul{margin:12px 0 0;padding-left:20px;font-size:.93rem;line-height:1.4;opacity:.85;display:none}
-    .stack-card.open{transform:translateY(-3px);box-shadow:0 8px 22px rgba(0,212,167,.25)}
-    .stack-card.open ul{display:block}
-    .stack-card.open .chevron{transform:rotate(90deg)}
-    .chevron{display:inline-block;transition:.25s;margin-left:8px}
+  /* ---------- “Apple-y” easing helper ---------- */
+  :root{--ease: cubic-bezier(.36,.66,.04,1)} /* fast-out, slow-in */
 
-    /* feature grid */
-    .feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:28px;margin-top:40px}
-    .feature-card{background:rgba(255,255,255,.05);border-radius:14px;padding:24px;transition:.25s}
-    .feature-card:hover{transform:translateY(-6px)}
-    .feature-icon{font-size:34px;color:#00d4a7;margin-bottom:14px}
+  /* stack accordion */
+  .stack-wrapper{display:flex;flex-direction:column;gap:10px;max-width:620px;margin:28px auto 0}
+  .stack-card{
+    background:rgba(255,255,255,.06);
+    border-left:4px solid #00d4a7;
+    border-radius:10px;
+    padding:18px 24px;
+    cursor:pointer;
+    transition:transform .35s var(--ease),box-shadow .35s var(--ease),background .35s var(--ease);
+    backdrop-filter:blur(2px);
+  }
+  .stack-card h3{margin:0;font-size:1.26rem;display:flex;justify-content:space-between;align-items:center}
+  .stack-card ul{margin:10px 0 0;padding-left:20px;font-size:.92rem;line-height:1.4;opacity:.85;display:none}
+  .stack-card.open{
+    transform:translateY(-2px);
+    box-shadow:0 8px 22px rgba(0,212,167,.28);
+    background:rgba(0,212,167,.08);
+  }
+  .stack-card.open ul{display:block}
+  .stack-card.open .chevron{transform:rotate(90deg)}
+  .chevron{display:inline-block;transition:transform .35s var(--ease);margin-left:8px}
 
-    /* security split */
-    .security-split{display:flex;flex-wrap:wrap;gap:30px;padding:50px 18px}
-    .security-code pre{padding:16px;font-size:.8rem;background:none}
+  /* feature grid */
+  .feature-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:22px;                               /* ⬅ was 28px */
+    margin-top:34px;
+  }
+  .feature-card{
+    background:rgba(255,255,255,.05);
+    border-radius:14px;
+    padding:22px;
+    transition:transform .35s var(--ease),box-shadow .35s var(--ease);
+    box-shadow:0 4px 12px rgba(0,0,0,.25);
+  }
+  .feature-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 26px rgba(0,212,167,.25);
+  }
+  .feature-icon{font-size:32px;color:#00d4a7;margin-bottom:12px}
 
-    /* admin portal image & screenshots smaller */
-    .admin-portal{padding:80px 18px}
-    .portal-frame{max-width:780px;margin:0 auto;border-radius:20px;overflow:hidden;transition:transform .6s cubic-bezier(.3,.6,.3,1)}
-    .portal-frame:hover{transform:perspective(800px) rotateX(5deg) rotateY(-4deg)}
-    .portal-frame img{width:100%;display:block}
+  /* security split */
+  .security-split{display:flex;flex-wrap:wrap;gap:24px;padding:38px 18px}
+  .security-code pre{padding:14px;font-size:.8rem;background:none}
 
-    .screenshot{max-width:680px;width:70%;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.4);margin:30px auto;display:block}
+  /* admin portal image & screenshots */
+  .admin-portal{padding:66px 18px}
+  .portal-frame{
+    max-width:760px;
+    margin:0 auto;
+    border-radius:20px;
+    overflow:hidden;
+    transition:transform .7s var(--ease);
+  }
+  .portal-frame:hover{transform:perspective(900px) rotateX(5deg) rotateY(-4deg)}
+  .portal-frame img{width:100%;display:block}
 
-    /* progress ring */
-    .progress-ring-section{text-align:center;padding:80px 18px}
-    .ring-wrapper{display:inline-block;position:relative}
-    .ring-bg{fill:none;stroke:#222;stroke-width:15}
-    .ring-bar{fill:none;stroke:#00d4a7;stroke-width:15;stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;stroke-dasharray:628;stroke-dashoffset:628;transition:stroke-dashoffset 1.5s}
-    .ring-label{font-size:2rem;fill:#fff;text-anchor:middle}
-    .ring-caption{opacity:.8;margin-top:18px}
+  /* universal screenshot */
+  .screenshot{
+    max-width:640px;
+    width:70%;
+    border-radius:14px;
+    margin:26px auto;
+    display:block;
+  }
 
-    /* purpose blurb */
-    .purpose{max-width:680px;margin:0 auto;font-size:1rem;text-align:center;line-height:1.55}
-    .purpose p{margin:0 0 14px}
-    .purpose{
-        color: white
-    }
-    .purpose, .purpose p, .purpose em, .purpose strong {
-  color: #fff !important;
-  opacity: 1 !important;
+  /* attendance screenshot – elevated “card” feel */
+  .screenshot.attendance{
+    background:linear-gradient(135deg,#101010 0%,#0f1a1a 100%);
+    padding:18px;
+    width:68%;
+    border-radius:22px;
+    box-shadow:
+      0 6px 18px rgba(0,0,0,.55),
+      0 0 0 1px rgba(255,255,255,.05);
+    transition:transform .6s var(--ease),box-shadow .6s var(--ease);
+  }
+  .screenshot.attendance:hover{
+    transform:perspective(800px) rotateX(3deg) rotateY(-3deg) translateY(-4px);
+    box-shadow:
+      0 16px 30px rgba(0,212,167,.30),
+      0 0 0 1px rgba(255,255,255,.08);
+  }
+
+  /* progress ring */
+  .progress-ring-section{text-align:center;padding:66px 18px}
+  .ring-wrapper{display:inline-block;position:relative}
+  .ring-bg{fill:none;stroke:#222;stroke-width:14}
+  .ring-bar{fill:none;stroke:#00d4a7;stroke-width:14;stroke-linecap:round;
+    transform:rotate(-90deg);transform-origin:50% 50%;
+    stroke-dasharray:628;stroke-dashoffset:628;transition:stroke-dashoffset 1.5s var(--ease)}
+  .ring-label{font-size:1.9rem;fill:#fff;text-anchor:middle}
+  .ring-caption{opacity:.8;margin-top:14px}
+
+  /* purpose blurb */
+  .purpose{max-width:660px;margin:0 auto;font-size:.98rem;text-align:center;line-height:1.53}
+  .purpose p{margin:0 0 12px}
+  .purpose, .purpose *{color:#fff!important;opacity:1!important;}
+
+  /* CTA */
+  .cta{padding:38px 18px;text-align:center}
+  .btn-color-2{
+    background:#00d4a7;
+    color:#0a0a0a;
+    padding:10px 22px;
+    border:none;
+    border-radius:8px;
+    font-weight:600;
+    cursor:pointer;
+    transition:transform .35s var(--ease),box-shadow .35s var(--ease);
+  }
+  .btn-color-2:hover{
+    transform:translateY(-2px);
+    box-shadow:0 0 14px rgba(0,212,167,.45);
+  }
+
+  a:focus,button:focus{outline:2px solid #00d4a7;outline-offset:2px}
+
+  /* code tint */
+  .security-code pre{
+    color:#0fd;
+    padding:14px;
+    font-size:.8rem;
+    background:none;
+    white-space:pre-wrap;
+  }
+  /* -------- attendance-dot highlight -------- */
+.hist-dots{
+  display:flex;
+  justify-content:center;
+  gap:7px;
+  margin-top:10px;         /* snug under the screenshot */
+  list-style:none;
+  padding:0;
 }
 
-
-    /* CTA */
-    .cta{padding:50px 18px;text-align:center}
-    .btn-color-2{background:#00d4a7;color:#0a0a0a;padding:10px 22px;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:.25s}
-    .btn-color-2:hover{transform:translateY(-2px);box-shadow:0 0 14px rgba(0,212,167,.45)}
-
-    a:focus,button:focus{outline:2px solid #00d4a7;outline-offset:2px}
-    .security-code pre {
-  color: #0fd;
-  padding: 16px;
-  font-size: 0.8rem;
-  background: none;
-  white-space: pre-wrap;
+.dot{
+  --size: 12px;
+  width:var(--size);
+  height:var(--size);
+  border-radius:50%;
+  position:relative;
 }
+
+/* colours */
+.present{background:#00d4a7;}
+.absent {background:#2f3b46;}   /* muted grey-blue */
+
+/* pulsing “ping” */
+@keyframes ping{
+  0%   { box-shadow:0 0 0 0 rgba(0,212,167,.7); }
+  70%  { box-shadow:0 0 0 12px rgba(0,212,167,0); }
+  100% { box-shadow:0 0 0 0 rgba(0,212,167,0); }
+}
+
+/* sequential delay so the glow walks across the row */
+.present{
+  animation:ping 2.6s cubic-bezier(.36,.66,.04,1) infinite;
+}
+.present:nth-child(2){ animation-delay:.5s; }
+.present:nth-child(3){ animation-delay:1s;  }  /* if marked present */
+.present:nth-child(4){ animation-delay:1.5s; }
+.present:nth-child(5){ animation-delay:2s; }
 
   </style>
 </head>
@@ -147,9 +259,21 @@
   <section class="features" data-aos="fade-up">
     <h2 class="section-heading">Core Features</h2>
     <div class="feature-grid">
-      <div class="feature-card"><div class="feature-icon">🔒</div><h3>Secure Google Auth</h3><p>Only verified @empowerr.org accounts gain entry.</p></div>
-      <div class="feature-card"><div class="feature-icon">📅</div><h3>Meeting Scheduler</h3><p>Create events with integrated attendance tracking.</p></div>
-      <div class="feature-card"><div class="feature-icon">⏱️</div><h3>Hours Tracker</h3><p>Volunteer time auto-syncs to Firestore in real-time.</p></div>
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Secure Google Auth</h3>
+        <p>Only verified @empowerr.org accounts gain entry.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📅</div>
+        <h3>Meeting Scheduler</h3>
+        <p>Create events with integrated attendance tracking.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⏱️</div>
+        <h3>Hours Tracker</h3>
+        <p>Volunteer time auto-syncs to Firestore in real-time.</p>
+      </div>
     </div>
   </section>
 
@@ -165,8 +289,9 @@
       The Empowerr Dashboard keeps everyone on track. Google sign-in removes
       friction, real-time attendance logs show exactly where you stand, and
       push notifications nudge you <em>before</em> you fall out of compliance.
-      Admins see instant warnings if critical data is missing, so no one slips
-      through the cracks.
+      Admins see instant warnings if data is missing, can view member-participation
+      analytics, and quickly review a member’s previous five attendance records
+      via the roster interface.
     </p>
     <p>
       The result? Less administrative chaos, more time spent on the work that
@@ -188,10 +313,33 @@ match /users/{uid}{
 }</pre></div>
   </section>
 
+  <!-- Attendance Record Preview -->
+  <section class="attendance-preview" data-aos="fade-up">
+    <h2 class="section-heading">Attendance History</h2>
+    <img
+      src="./assets/EMPDASH_AttendancePreview.png"
+      alt="Attendance history preview"
+      class="screenshot attendance"
+    />
+<ul class="hist-dots">
+  <li class="dot present"></li>
+  <li class="dot present"></li>
+  <li class="dot absent"></li>
+  <li class="dot present"></li>
+  <li class="dot present"></li>
+</ul>
+
+    <p class="purpose">
+      Admins can view a member’s last five attendance statuses directly in the roster. All retrieved by Firestore collections.
+    </p>
+  </section>
+
   <!-- Admin screenshot -->
   <section class="admin-portal" data-aos="zoom-in">
-    <h2 class="section-heading">Admin Portal &mdash; Create Meetings</h2>
-    <div class="portal-frame"><img src="./assets/empowerr-dashboard-adminportal.png" alt="Admin portal" /></div>
+    <h2 class="section-heading">Admin Portal &mdash; Manage Meetings, Events, Member Analytics</h2>
+    <div class="portal-frame">
+      <img src="./assets/EMPDASH_UpdatedAdminView.png" alt="Admin portal" />
+    </div>
   </section>
 
   <!-- Progress ring -->
@@ -210,7 +358,7 @@ match /users/{uid}{
   <!-- Screenshot showcase -->
   <section class="showcase" data-aos="fade-up">
     <h2 class="section-heading">Designed for Simplicity</h2>
-    <img src="./assets/empowerr-dashboard-screenshot.png" alt="Dashboard preview" class="screenshot" />
+    <img src="./assets/EMPDASH_UpdatedDashView.png" alt="Dashboard preview" class="screenshot" />
     <p>Built with Next.js&nbsp;13, Firebase Auth, and Firestore.</p>
   </section>
 
@@ -224,25 +372,58 @@ match /users/{uid}{
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
 
   <script>
-    document.addEventListener('DOMContentLoaded',()=>{
-      AOS.init({duration:650,easing:'ease-out-quart',once:true});
+    document.addEventListener('DOMContentLoaded', () => {
+      /* AOS */
+      AOS.init({
+        duration: 650,
+        easing: 'ease-out-quart',
+        once: true,
+      });
 
-      particlesJS('particles-js',{background:{color:'#0a0a0a'},
-        particles:{number:{value:60},color:{value:'#00d4a7'},shape:{type:'circle'},
-          opacity:{value:0.45},size:{value:3},move:{enable:true,speed:1}}});
+      /* particles */
+      particlesJS('particles-js', {
+        background: { color: '#0a0a0a' },
+        particles: {
+          number: { value: 60 },
+          color: { value: '#00d4a7' },
+          shape: { type: 'circle' },
+          opacity: { value: 0.45 },
+          size: { value: 3 },
+          move: { enable: true, speed: 1 },
+        },
+      });
 
       /* accordion */
-      document.querySelectorAll('.stack-card').forEach(card=>{
-        card.addEventListener('click',()=>card.classList.toggle('open'));
+      document.querySelectorAll('.stack-card').forEach((card) => {
+        card.addEventListener('click', () => card.classList.toggle('open'));
       });
 
       /* progress ring */
-      const sec=document.querySelector('.progress-ring-section');
-      const bar=document.querySelector('.ring-bar');
-      const lbl=document.querySelector('.ring-label');
-      const r=100,circ=2*Math.PI*r,target=82;
-      function animate(){let p=0;const tick=()=>{p++;bar.style.strokeDashoffset=circ-(circ*p/100);lbl.textContent=p+'%';if(p<target)requestAnimationFrame(tick)};requestAnimationFrame(tick);}
-      new IntersectionObserver(([e],o)=>{if(e.isIntersecting){animate();o.disconnect()}},{threshold:0.55}).observe(sec);
+      const sec = document.querySelector('.progress-ring-section');
+      const bar = document.querySelector('.ring-bar');
+      const lbl = document.querySelector('.ring-label');
+      const r = 100,
+        circ = 2 * Math.PI * r,
+        target = 82;
+      function animate() {
+        let p = 0;
+        const tick = () => {
+          p++;
+          bar.style.strokeDashoffset = circ - (circ * p) / 100;
+          lbl.textContent = p + '%';
+          if (p < target) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+      new IntersectionObserver(
+        ([e], o) => {
+          if (e.isIntersecting) {
+            animate();
+            o.disconnect();
+          }
+        },
+        { threshold: 0.55 }
+      ).observe(sec);
     });
   </script>
 </body>
