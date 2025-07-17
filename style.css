@@ -840,3 +840,76 @@ pre {
   height: 100%;
   z-index: -1;
 }
+/* House recommendation style */
+.house-recommender {
+  text-align: center;
+  margin: 1rem auto;
+  max-width: 400px;
+}
+
+.house-recommender h2 {
+  margin-bottom: 0.5rem;
+}
+
+.house-recommender p {
+  margin-bottom: 0.5rem;
+  color: black;
+}
+/* Smoother pop-in for the iframe */
+@keyframes popSmooth {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.85);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.recommendation {
+  margin-top: 1.5rem;
+  opacity: 0;
+  transform: scale(0.85) translateY(20px);
+}
+
+.recommendation.show {
+  animation: popSmooth 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* “Interested in more?” message */
+.more-msg {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: black;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  text-align: center;
+}
+
+.more-msg.show {
+  opacity: 1;
+}
+
+.more-msg a {
+  color: rgb(93, 93, 93);
+  text-decoration: underline;
+}
+
+/*tighten up spaces*/
+#blog {
+  margin-bottom: 0.1rem !important;
+}
+
+#house-recommender {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+#contact {
+  margin-top: 0.1rem;
+}
