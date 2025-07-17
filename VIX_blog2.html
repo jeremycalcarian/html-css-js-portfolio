@@ -262,8 +262,6 @@ This term ensures our variance estimate remains unbiased, making the VIX calcula
         el.classList.remove('active');
       });
     }
-
-    // Show explanation
     function showExplanation(partId) {
       const explanationDiv = document.getElementById('explanationBox');
       const explanationText = document.getElementById('explanationText');
@@ -272,7 +270,7 @@ This term ensures our variance estimate remains unbiased, making the VIX calcula
       explanationDiv.style.display = 'block';
     }
 
-    // Attach click events
+    //click events
     document.querySelectorAll('.formula-part').forEach(partEl => {
       partEl.addEventListener('click', function() {
         clearActive();
