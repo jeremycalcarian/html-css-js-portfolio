@@ -186,7 +186,6 @@ document.addEventListener("DOMContentLoaded", function() {
     '0xaXwvcjq7aAKwMKe22Bw7',
     '1aNUSKBe6UMyMk3pEu9ws7',
     '4zRvloWWpWHVgtdete6b1A',
-    '23RoR84KodL5HWvUTneQ1w',
     '59NraMJsLaMCVtwXTSia8i',
     '39iL6MNqs9MIile4ohbx6K',
     '0FBdJP7yzvq88bG1keGgt4',
@@ -199,7 +198,9 @@ document.addEventListener("DOMContentLoaded", function() {
     '6q6GR1UxIkyaVJuUNYtEjw',
     '78nx0HDJIFD5xDq2L5420Z',
     '1iKiLPkFnYhbCm5uvaDwjS',
-    '2y7UV3mw1igF35pj4b3xn7'
+    '2y7UV3mw1igF35pj4b3xn7',
+    '1AS1oLvEr6PNsCLnuEUmCi',
+    '38tYIX8o2VDBpfowqBVPYK'
   ];
   
   const btn     = document.getElementById('recommend-btn');
