@@ -1,380 +1,375 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="mediaqueries.css">
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HF7S0ZZ3GT"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jeremy Calcarian</title>
 
-      gtag('config', 'G-HF7S0ZZ3GT');
-    </script>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HF7S0ZZ3GT"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date()); gtag('config', 'G-HF7S0ZZ3GT');
+  </script>
+
+  <!-- Vendor -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" defer></script>
+
+  <!-- ==========  NEON-GREEN THEME  ========== -->
+  <style>
+  :root{
+    --green:#00ff88;
+    --cyan:#00ffff;
+    --text:#e8e8e8;
+    --sub:#9ca3af;
+    --bg:#080b0b;
+    --glass:rgba(0,255,136,.07);
+    --border:rgba(0,255,136,.25);
+    --r:18px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',system-ui,sans-serif}
+  html{scroll-behavior:smooth} body{background:linear-gradient(135deg,var(--bg),#000);color:var(--text);overflow-x:hidden;line-height:1.6}
+
+  /* ===== background ===== */
+  #particles-js,.grid{position:fixed;inset:0;z-index:-2}
+  .grid{background-image:linear-gradient(var(--glass)1px,transparent 1px),
+                        linear-gradient(90deg,var(--glass)1px,transparent 1px);
+        background-size:60px 60px;opacity:.06;animation:grid 6s ease-in-out infinite}
+  @keyframes grid{50%{opacity:.11}}
+
+  /* floating formulas */
+  .formula{position:fixed;font-family:'Times New Roman',serif;color:rgba(0,255,136,.18);
+           font-size:1.55rem;pointer-events:none;z-index:-1;animation:float 9s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-24px)}}
+  .f1{top:14%;left:6%;animation-delay:-2s}.f2{top:38%;right:8%;animation-delay:-4s}
+  .f3{bottom:28%;left:12%;animation-delay:-1s}.f4{top:68%;right:22%;animation-delay:-3s}
+  .f5{top:24%;left:72%;animation-delay:-5s}.f6{top:52%;left:45%;animation-delay:-6s}
+
+  /* ===== nav ===== */
+  nav{position:fixed;top:0;width:100%;padding:18px 32px;background:rgba(10,15,12,.9);
+      backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:1000}
+  .nav-row{max-width:1200px;margin:auto;display:flex;justify-content:space-between;align-items:center}
+  .logo{font-size:22px;font-weight:700;color:var(--green);cursor:pointer}
+  .links{list-style:none;display:flex;gap:32px}
+  .links a{color:var(--text);text-decoration:none;font-weight:500;position:relative}
+  .links a::after{content:'';position:absolute;left:0;bottom:-4px;width:0;height:2px;background:var(--green);transition:.3s}
+  .links a:hover{color:var(--green)} .links a:hover::after{width:100%}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+  .burger span{width:26px;height:3px;background:var(--green)}
+
+  @media(max-width:820px){.burger{display:flex}
+    .links{display:none;position:absolute;top:64px;right:32px;flex-direction:column;
+           background:rgba(5,10,7,.96);padding:24px 32px;border:1px solid var(--border);
+           border-radius:var(--r);width:200px}
+    .links.open{display:flex}}
+
+  /* ===== general ===== */
+  section{max-width:1200px;margin:auto;padding:110px 32px 80px}
+  .title{font-size:3.6rem;font-weight:800;color:var(--green);text-align:center;margin-bottom:18px}
+  .subtitle{text-align:center;color:var(--sub);margin-bottom:56px;font-size:1.15rem}
+  .btn{display:inline-block;padding:14px 34px;border-radius:30px;font-weight:600;text-decoration:none;transition:.25s}
+  .btn-green{background:linear-gradient(135deg,var(--green),var(--cyan));color:#000;box-shadow:0 8px 24px rgba(0,255,136,.28)}
+  .btn-green:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(0,255,136,.35)}
+  .btn-outline{color:var(--green);border:2px solid var(--green)}
+  .btn-outline:hover{background:var(--green);color:#000}
+
+  /* hero */
+  #hero{display:flex;flex-direction:column;align-items:center;text-align:center}
+  #hero h1{font-size:4rem;color:var(--green);margin-bottom:18px}
+  #hero p{font-size:1.5rem;color:var(--sub);max-width:620px}
+  .hero-btns{margin-top:48px;display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
+
+  /* grid helpers */
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:60px}
+  .g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:32px}
+  .glass{background:var(--glass);border:1px solid var(--border);border-radius:var(--r);padding:32px}
+
+  /* about */
+  .about-card{text-align:center;transition:.25s}.about-card:hover{transform:translateY(-6px);border-color:var(--green)}
+  .about-card h3{color:var(--green);margin:14px 0 8px;font-size:1.4rem}
+
+  /* coursework – animated */
+  .course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px}
+  .course-item{background:var(--glass);border:1px solid var(--border);border-radius:var(--r);padding:22px;
+               font-weight:600;text-align:center;position:relative;overflow:hidden;transition:.25s}
+  .course-item::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+                       background:linear-gradient(90deg,transparent,rgba(0,255,136,.13),transparent);
+                       transition:left .45s ease-out}
+  .course-item:hover::before{left:100%}
+  .course-item:hover{transform:translateY(-5px);border-color:var(--cyan)}
+
+  /* tabs */
+  .tabs{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-bottom:42px}
+  .tab{padding:10px 26px;border-radius:24px;border:2px solid var(--green);background:transparent;color:var(--green);
+       cursor:pointer;font-weight:600;transition:.25s}
+  .tab.active,.tab:hover{background:var(--green);color:#000}
+
+  /* skills */
+  .skill-box h3{color:var(--green);text-align:center;margin-bottom:24px}
+  .skill-list{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .skill{display:flex;gap:12px;align-items:center}.skill span{width:22px;height:22px;border-radius:50%;background:var(--green)}
+
+  /* cards (projects & blog) – animated */
+  .card{background:var(--glass);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;
+        transition:.25s;position:relative}
+  .card::after{content:'';position:absolute;top:0;left:0;width:100%;height:4px;
+               background:linear-gradient(90deg,var(--green),var(--cyan));transform:scaleX(0);
+               transform-origin:left;transition:transform .3s ease}
+  .card:hover::after{transform:scaleX(1)}
+  .card:hover{transform:translateY(-6px);border-color:var(--green)}
+  .card img{width:100%;height:190px;object-fit:cover}
+  .pad{padding:26px}.pad h3{color:var(--green);margin-bottom:12px;transition:.3s}.card:hover h3{color:var(--cyan)}
+  .pad p{color:var(--sub);margin-bottom:22px}
+
+  /* music recommender */
+  .music{background:var(--glass);border:1px solid var(--border);border-radius:var(--r);text-align:center;padding:46px}
+  #recommendation iframe{border:none;border-radius:8px;width:100%}
+  #recommendation{margin-top:24px;display:none} #recommendation.show{display:block}
+
+  footer{margin-top:80px;padding:46px 0;text-align:center;color:var(--sub);font-size:.9rem;border-top:1px solid var(--border)}
+
+  @media(max-width:930px){.g2{grid-template-columns:1fr}}
+  </style>
 </head>
+
 <body>
-    <div id="particles-js"></div>
-    <nav id="desktop-nav">
-        <div class="logo"> Jeremy Calcarian </div>
-        <div>
-            <ul class="nav-links">
-                <li> <a href="#about">About</a> </li>
-                <li> <a href="#coursework">Coursework</a> </li>
-                <li> <a href="#experience">Experience</a> </li>
-                <li> <a href="#projects">Projects</a> </li>
-                <li> <a href="#contact">Contact</a> </li>
-            </ul>
-        </div>
-    </nav>
-    <nav id="hamburger-nav">
-      <div class="logo">Jeremy Calcarian</div>
-      <div class="hamburger-menu">
-          <div class="hamburger-icon" onclick="toggleMenu()">
-              <span></span>
-              <span></span>
-              <span></span>
-          </div>
-          <ul class="menu-links">
-              <li><a href="#about" onclick="toggleMenu()">About</a></li>
-              <li><a href="#coursework" onclick="toggleMenu()">Coursework</a></li>
-              <li><a href="#experience" onclick="toggleMenu()">Experience</a></li>
-              <li><a href="#projects" onclick="toggleMenu()">Projects</a></li>
-              <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
-          </ul>
-      </div>
+  <!-- layers -->
+  <div id="particles-js"></div><div class="grid"></div>
+
+  <!-- floating formulas -->
+  <div class="formula f1">E[ M<sub>t</sub> | 𝔽<sub>s</sub>] = M<sub>s</sub></div>
+  <div class="formula f2">dS<sub>t</sub> = μS<sub>t</sub>dt + σS<sub>t</sub>dW<sub>t</sub></div>
+  <div class="formula f3">dX<sub>t</sub> = μdt + σdW<sub>t</sub></div>
+  <div class="formula f4">𝔼[e<sup>-rt</sup>S<sub>t</sub>] = S<sub>0</sub></div>
+  <div class="formula f5">Var(W<sub>t</sub>) = t</div>
+  <div class="formula f6">⟨M⟩<sub>t</sub> = ∫<sub>0</sub><sup>t</sup>σ²(s)ds</div>
+
+  <!-- nav -->
+  <nav>
+    <div class="nav-row">
+      <div class="logo" onclick="location='#hero'">Jeremy Calcarian</div>
+      <ul class="links" id="navLinks">
+        <li><a href="#about">About</a></li><li><a href="#coursework">Coursework</a></li>
+        <li><a href="#experience">Experience</a></li><li><a href="#projects">Projects</a></li>
+        <li><a href="#blog">Blog</a></li><li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="burger" onclick="toggleNav()"><span></span><span></span><span></span></div>
+    </div>
   </nav>
-  
-    <section id="profile">
-        <div class="section__text">
-            <p class="section__text__p1"> Hello, I'm</p>
-            <h1 class="title">
-                <span id="animated-text"></span>
-            </h1>
-            <div class="btn-container">
-                <button 
-                    class="btn btn-color-1" 
-                    onclick="location.href = './#contact'"
-                >
-                    Contact Info
-                </button>
-            </div>
-            <div id="socials-container">
-                <img src="./Assets/linkedin.png" 
-                    alt="My LinkedIn Profile"
-                    class="icon" 
-                    onclick="location.href = 'https://www.linkedin.com/in/jeremycalcarian/'" />
-                <img src="./Assets/github.png" 
-                    alt="My GitHub Profile"
-                    class="icon" 
-                    onclick="location.href = 'https://github.com/jeremycalcarian'" />
-            </div>
-        </div>
-    </section>
 
-    <section id="about">
-        <p class="section__text__p1">Get To Know More</p>
-        <h1 class="title">About Me</h1>
-        
-        <div class="about-content-wrapper">
-          <!-- Experience and Education cards -->
-          <div class="about-cards">
-            <div class="about-card">
-              <img src="./Assets/portfolio.png" alt="Experience icon" class="uniform_icon">
-              <h3>Experience</h3>
-              <p>Currently @Niura</p>
-            </div>
-            <div class="about-card">
-              <img src="./Assets/penn-logo-black-and-white.png" alt="Education icon" class="uniform_icon2">
-              <h3>Education</h3>
-              <p>B.S<br>Finance, Statistics, Computer Science, Data Science</p>
-            </div>
-          </div>
-      
-          <!-- About text -->
-          <div class="about-description">
-            <p>
-              I have a strong interest in probablistic modeling, especially their applications in finance and sports. I also love learning about what people are working on in the tech space. 
-              I’ve worked on a range of machine learning projects and am very interested in neurotech. I enjoy weightlifting, and do some videography here and there. 
-            </p>
-          </div>
-        </div>
-      </section>
-      
-
-    <section id="coursework">
-      <p class="section__text__p1">Dive Into My</p>
-      <h1 class="title">Selected Coursework</h1>
-      <div class="slideshow-headers">
-          <div class="slideshow-header active" onclick="showSlide(0)">Technical Coursework</div>
-          <div class="slideshow-header" onclick="showSlide(1)">Non-Technical Courswork</div>
-      </div>
-      <div class="slideshow-container">
-          <div class="slideshow-slide active">
-              <ul class="coursework-list">
-                  <li>Machine Learning</li>
-                  <li>Computer Systems</li>
-                  <li>Algorithms</li>
-                  <li>Natural Language Processing</li>
-                  <li>Investment Management</li>
-                  <li>International Markets</li>
-                  <li>Sports Analytics</li>
-                  <li>Applied Probability Models in Marketing</li>
-                  <li>Financial Derivatives</li>
-                  <li>Stochastic Processes</li>
-                  <li>Big Data Analytics</li>
-                  <li>Advanced Topics in Deep Learning</li>
-              </ul>
-          </div>
-          <div class="slideshow-slide">
-              <ul class="coursework-list">
-                  <li>Entrepreneurship through Acquisitions</li>
-                  <li>Entrepreneurship and Technology Innovation</li>
-                  <li>Consumer Behavior</li>
-                  <li>Marketing Strategy For Technology Platforms</li>
-                  <li>Business Communication for Impact</li>
-                  <li>Teamwork & Interpersonal Influence</li>
-                  <li>Negotiations</li>
-              </ul>
-          </div>
-      </div>
-      <script>
-          const slides = document.querySelectorAll('.slideshow-slide');
-          const headers = document.querySelectorAll('.slideshow-header');
-
-          function showSlide(index) {
-              slides.forEach((slide, i) => {
-                  slide.classList.remove('active');
-                  headers[i].classList.remove('active');
-                  if (i === index) {
-                      slide.classList.add('active');
-                      headers[i].classList.add('active');
-                  }
-              });
-          }
-      </script>
+  <!-- hero -->
+  <section id="hero">
+    <h1>Jeremy Calcarian</h1>
+    <p>University of Pennsylvania </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-green">View Work</a>
+      <a href="#contact"  class="btn btn-outline">Get in Touch</a>
+    </div>
   </section>
 
-    <section id="experience">
-        <p class="section__text__p1">Explore My</p>
-        <h1 class="title">Experience</h1>
-        <div class="experience-details-container">
-            <div class="about-containers">
-                <div class="details-container">
-                    <h2 class="experience-sub-title">Programming</h2>
-                    <div class="article-container">
-                        <article>
-                            <img
-                                src="./assets/checkmark.png"
-                                alt="Experience icon"
-                                class="icon"
-                            />
-                            <div>
-                                <h3>Java</h3>
-                                <p>Experienced</p>
-                            </div>
-                        </article>
-                        <article>
-                            <img
-                                src="./assets/checkmark.png"
-                                alt="Experience icon"
-                                class="icon"
-                            />
-                            <div>
-                                <h3>Python</h3>
-                                <p>Experienced</p>
-                            </div>
-                        </article>
-                        <article>
-                            <img
-                                src="./assets/checkmark.png"
-                                alt="Experience icon"
-                                class="icon"
-                            />
-                            <div>
-                                <h3>C</h3>
-                                <p>Basic</p>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-                <div class="details-container">
-                    <h2 class="experience-sub-title">Software</h2>
-                    <div class="article-container">
-                        <article>
-                            <img
-                                src="./assets/checkmark.png"
-                                alt="Experience icon"
-                                class="icon"
-                            />
-                            <div>
-                                <h3>TensorFlow</h3>
-                                <p>Experienced</p>
-                            </div>
-                        </article>
-                        <article>
-                            <img
-                                src="./assets/checkmark.png"
-                                alt="Experience icon"
-                                class="icon"
-                            />
-                            <div>
-                                <h3>PySpark</h3>
-                                <p>Intermediate</p>
-                            </div>
-                        </article>
-                        <article>
-                            <img
-                                src="./assets/checkmark.png"
-                                alt="Experience icon"
-                                class="icon"
-                            />
-                            <div>
-                                <h3>Microsoft Suite</h3>
-                                <p>Experienced</p>
-                            </div>
-                        </article>
-                        <article>
-                            <img
-                                src="./assets/checkmark.png"
-                                alt="Experience icon"
-                                class="icon"
-                            />
-                            <div>
-                                <h3>AWS</h3>
-                                <p>Intermediate</p>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <img
-          src="./assets/arrow.png"
-          alt="Arrow icon"
-          class="icon arrow"
-          onclick="location.href='./#projects'"
-        />
-    </section>
+  <!-- about -->
+  <section id="about">
+    <h2 class="title">About Me</h2>
+    <p class="subtitle">Get to know more</p>
 
-    <section id="projects">
-        <p class="section__text__p1">Browse My Recent</p>
-        <h1 class="title">Projects</h1>
-        <div class="project-container">
-            <div class="project-item">
-                <img src="./assets/stochastic.png" alt="Option Pricing Simulation" class="project-img">
-                <h2 class="project-title">Option Pricing Simulation</h2>
-                <p>Visualizes real-time options pricing using stochastic modeling and Black-Scholes.</p>
-                <button class="btn btn-color-2 project-btn" onclick="location.href='option-pricing.html'">Learn More</button>
-            </div>
-            <div class="project-item">
-                <img src="./assets/eeg_icon.png" alt="EEG Dashboard" class="project-img">
-                <h2 class="project-title">EEG Dashboard</h2>
-                <p>Analyzes EEG signals for stress detection and brain activity insights.</p>
-                <button class="btn btn-color-2 project-btn" onclick="location.href='eeg-dashboard.html'">Learn More</button>
-            </div>
-            <div class="project-item">
-                <img src="./assets/empowerrlogo.png" alt="" class = "project-img">
-              <h2 class="project-title">EMPOWERR</h2>
-              <p>Founded a non-profit focused on community initiatives. I currently serve as a consultant to the ongoing group. </p>
-              <button class="btn btn-color-2 project-btn" onclick="location.href='empowerrmd.html'">Learn More</button>
-          </div>
-          <div class="project-item">
-            <img src="./assets/Dashboard_ProjectPreview.jpeg" alt="Empowerr Dashboard preview" class="project-img">
-            <h2 class="project-title">Nonprofit Internal Dashboard</h2>
-            <p>An internal dashboard for managing meetings, attendance, and volunteer resources at Empowerr.</p>
-            <button 
-              class="btn btn-color-2 project-btn" 
-              onclick="location.href='empowerr-dashboard.html'"
-            >
-              View Showcase
-            </button>
-          </div>
-          
+    <div class="g2">
+      <div>
+        <div class="glass about-card">
+          <h3>Experience</h3>
+          <p>Currently @Niura<br></p>
         </div>
-    </section>    
-    
-  
-
-    <section id="blog" style="margin-top: 50px;">
-      <p class="section__text__p1">Insights & Learnings</p>
-      <h1 class="title">Blog</h1>
-      <div class="blog-container">
-          <div class="blog-item" onclick="location.href='martingale_blog1.html'">
-              <h2 class="blog-title">Martingales and Put-Call Parity</h2>
-              <p class="blog-summary">Showing no-arbitrage pricing, and its relation to Martingale Properties</p>
-          </div>
-          <div class="blog-item" onclick="location.href='VIX_blog2.html'">
-            <h2 class="blog-title">VIX Index Intuitive Derivation</h2>
-            <p class="blog-summary">I break down the different parts that form the calculation of the popular VIX Index</p>
-        </div>
-        <div class="blog-item" onclick="location.href='trading-blog.html'">
-            <h2 class="blog-title">All In: Betting My College Scholarship on the Market</h2>
-            <p class="blog-summary">How I repeatedly risked my semester refunds and rent money on disciplined investments, strategic trades, and high-stakes decisions.</p>
+        <div class="glass about-card" style="margin-top:32px">
+          <h3>Education</h3>
+          <p>Finance &amp; Statistics<br>CS &amp; Data Science</p>
         </div>
       </div>
+      <div class="glass">
+        <p>I’m fascinated by probabilistic models—especially when they power real decisions in finance and sports.
+           Outside of data science you’ll find me lifting weights or filming short projects with my camera.</p>
+      </div>
+    </div>
   </section>
-  <section id="house-recommender" class="house-recommender">
-    <h2>Need a new house song?</h2>
-    <p>Whether you’re into house music or not, it’s all I listen to—so I’ve got plenty of recs.</p>
-    <button id="recommend-btn" class="btn btn-color-1">Surprise me</button>
-    <div id="recommendation" class="recommendation"></div>
-    <div id="more-msg" class="more-msg">
-        Interested in more? 
-        <a href="https://open.spotify.com/playlist/79Iw2kzLEGwRbxB8UG6l4b?si=c515b4be08ec4b9b" target="_blank">
-          Check out my full playlist!
-        </a>
-      </div>      
+
+  <!-- coursework -->
+  <section id="coursework">
+    <h2 class="title">Selected Coursework</h2>
+    <p class="subtitle">Dive into my favourite classes</p>
+
+    <div class="tabs">
+      <button class="tab active" onclick="showTab(0)">Technical</button>
+      <button class="tab"        onclick="showTab(1)">Non-Technical</button>
+    </div>
+
+    <div class="course-grid" id="techTab">
+      <div class="course-item">Machine Learning</div><div class="course-item">Computer Systems</div>
+      <div class="course-item">Algorithms</div><div class="course-item">Natural Language Processing</div>
+      <div class="course-item">Investment Management</div><div class="course-item">International Markets</div>
+      <div class="course-item">Sports Analytics</div><div class="course-item">Applied Probability Models in Marketing</div>
+      <div class="course-item">Financial Derivatives</div><div class="course-item">Stochastic Processes</div>
+      <div class="course-item">Big Data Analytics</div><div class="course-item">Advanced Topics in Deep Learning</div>
+    </div>
+
+    <div class="course-grid" id="nonTab" style="display:none">
+      <div class="course-item">Entrepreneurship through Acquisitions</div>
+      <div class="course-item">Entrepreneurship &amp; Tech Innovation</div>
+      <div class="course-item">Consumer Behavior</div>
+      <div class="course-item">Marketing Strategy for Tech Platforms</div>
+      <div class="course-item">Business Communication for Impact</div>
+      <div class="course-item">Teamwork &amp; Interpersonal Influence</div>
+      <div class="course-item">Negotiations</div>
+    </div>
   </section>
-  <div id="more-msg" class="more-msg">
-  Interested in more? 
-  <a href="https://open.spotify.com/playlist/79Iw2kzLEGwRbxB8UG6l4b?si=c515b4be08ec4b9b" target="_blank">
-    Check out my full playlist!
-  </a>
-</div>
 
+  <!-- experience -->
+  <section id="experience">
+    <h2 class="title">Experience</h2>
+    <p class="subtitle">Explore my skills</p>
 
-    <section id="contact">
-        <p class="section__text__p1">Get in Touch</p>
-        <h1 class="title">Contact Me</h1>
-        <div class="contact-info-upper-container">
-            <div class="contact-info-container">
-                <img
-                    src="./assets/email.png"
-                    alt="Email icon"
-                    class="icon contact-icon email-icon"
-                />
-                <p><a href="mailto:calcajer@wharton.upenn.edu">calcajer@wharton.upenn.edu</a></p>
-            </div>
-            <div class="contact-info-container">
-                <img
-                    src="./assets/linkedin.png"
-                    alt="LinkedIn icon"
-                    class="icon contact-icon"
-                />
-                <p><a href="https://www.linkedin.com/in/jeremycalcarian/">LinkedIn</a></p>
-            </div>
+    <div class="g2">
+      <div class="glass skill-box">
+        <h3>Programming</h3>
+        <div class="skill-list">
+          <div class="skill"><span></span>Java — Experienced</div>
+          <div class="skill"><span></span>Python — Experienced</div>
+          <div class="skill"><span></span>C — Basic</div>
         </div>
-    </section>
+      </div>
 
-    <footer>
-        <nav>
-            <div class="nav-links-container">
-                <ul class="nav-links">
-                    <li> <a href="#about">About</a> </li>
-                    <li> <a href="#coursework">Coursework</a> </li>
-                    <li> <a href="#experience">Experience</a> </li>
-                    <li> <a href="#projects">Projects</a> </li>
-                    <li> <a href="#contact">Contact</a> </li>
-                </ul>
-            </div>
-        </nav>
-        <p>Copyright &#169; 2024 Jeremy Calcarian</p>
-    </footer>
-    <script src="script.js"></script>
+      <div class="glass skill-box">
+        <h3>Software</h3>
+        <div class="skill-list">
+          <div class="skill"><span></span>TensorFlow — Experienced</div>
+          <div class="skill"><span></span>PySpark — Intermediate</div>
+          <div class="skill"><span></span>Microsoft Suite — Experienced</div>
+          <div class="skill"><span></span>AWS — Intermediate</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- projects -->
+  <section id="projects">
+    <h2 class="title">Projects</h2>
+    <p class="subtitle">Browse my recent work</p>
+
+    <div class="g3">
+      <div class="card">
+        <img src="./assets/stochastic.png" alt="">
+        <div class="pad">
+          <h3>Option Pricing Simulation</h3>
+          <p>Black-Scholes &amp; Monte-Carlo visualiser with live greeks.</p>
+          <a href="option-pricing.html" class="btn btn-outline">Learn More</a>
+        </div>
+      </div>
+      <div class="card">
+        <img src="./assets/eeg_icon.png" alt="">
+        <div class="pad">
+          <h3>EEG Dashboard</h3>
+          <p>Interactive stress-detection dashboard for EEG signals.</p>
+          <a href="eeg-dashboard.html" class="btn btn-outline">Learn More</a>
+        </div>
+      </div>
+      <div class="card">
+        <img src="./assets/empowerrlogo.png" alt="">
+        <div class="pad">
+          <h3>EMPOWERR</h3>
+          <p>Community non-profit I founded; now an advisor.</p>
+          <a href="empowerrmd.html" class="btn btn-outline">Learn More</a>
+        </div>
+      </div>
+      <div class="card">
+        <img src="./assets/Dashboard_ProjectPreview.jpeg" alt="">
+        <div class="pad">
+          <h3>Volunteer Dashboard</h3>
+          <p>Next.js / Firebase portal for meetings &amp; hours.</p>
+          <a href="empowerr-dashboard.html" class="btn btn-outline">View Showcase</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- blog -->
+  <section id="blog">
+    <h2 class="title">Blog</h2>
+    <p class="subtitle">Insights &amp; learnings</p>
+
+    <div class="g3">
+      <div class="card" onclick="location.href='martingale_blog1.html'">
+        <div class="pad"><h3>Martingales &amp; Put-Call Parity</h3><p>No-arbitrage pricing and the martingale connection.</p></div>
+      </div>
+      <div class="card" onclick="location.href='VIX_blog2.html'">
+        <div class="pad"><h3>VIX Index Intuitive Derivation</h3><p>Breaking down the VIX step by step.</p></div>
+      </div>
+      <div class="card" onclick="location.href='trading-blog.html'">
+        <div class="pad"><h3>All In: Betting Scholarship Money</h3><p>How disciplined trades financed my tuition.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- music -->
+  <section id="house-recommender">
+    <h2 class="title">Need a new house song?</h2>
+    <p class="subtitle" style="margin-bottom:32px">Let me pick one for you.</p>
+
+    <div class="music">
+      <button id="recommend-btn" class="btn btn-green">Surprise Me</button>
+      <div id="recommendation"></div>
+      <p id="more-msg" style="display:none;margin-top:14px;color:var(--sub)">
+        🎧 addicted? <a href="https://open.spotify.com/playlist/79Iw2kzLEGwRbxB8UG6l4b" target="_blank"
+        style="color:var(--cyan);text-decoration:none">full playlist</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- contact -->
+  <section id="contact">
+    <h2 class="title">Contact Me</h2>
+    <p class="subtitle">Get in touch</p>
+
+    <div class="g2" style="gap:40px">
+      <div class="glass" style="display:flex;gap:14px;align-items:center">
+        <span style="font-size:1.6rem;color:var(--green)"></span>
+        <a href="mailto:calcajer@wharton.upenn.edu"
+           style="color:var(--text);text-decoration:none;font-weight:500">calcajer [at] wharton [dot] upenn [dot] edu</a>
+      </div>
+      <div class="glass" style="display:flex;gap:14px;align-items:center">
+        <span style="font-size:1.6rem;color:var(--green)"></span>
+        <a href="https://www.linkedin.com/in/jeremycalcarian/"
+           style="color:var(--text);text-decoration:none;font-weight:500">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>© 2024 Jeremy Calcarian</footer>
+
+  <!-- ===== scripts ===== -->
+  <script>
+    /* particles */
+    particlesJS('particles-js',{
+      particles:{number:{value:100,density:{enable:true,value_area:800}},
+      color:{value:'#00ff88'},shape:{type:'circle'},opacity:{value:.3,random:true},
+      size:{value:3,random:true},line_linked:{enable:true,distance:140,color:'#00ff88',opacity:.18,width:1},
+      move:{enable:true,speed:2,out_mode:'out'}},
+      interactivity:{detect_on:'canvas',events:{onhover:{enable:true,mode:'repulse'},
+      onclick:{enable:true,mode:'push'},resize:true}},retina_detect:true});
+
+    /* nav */
+    function toggleNav(){document.getElementById('navLinks').classList.toggle('open')}
+
+    /* coursework tabs */
+    function showTab(i){
+      document.querySelectorAll('.tab').forEach((t,idx)=>t.classList.toggle('active',idx===i));
+      document.getElementById('techTab').style.display=i===0?'grid':'none';
+      document.getElementById('nonTab').style.display=i===1?'grid':'none';
+    }
+
+    /* smooth scroll */
+    document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
+      const h=a.getAttribute('href');if(h.length>1){e.preventDefault();document.querySelector(h).scrollIntoView({behavior:'smooth'})}}));
+  </script>
+
+  <script src="script.js" defer></script>
 </body>
 </html>
+
