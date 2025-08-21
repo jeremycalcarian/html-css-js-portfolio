@@ -62,6 +62,23 @@ nav{position:fixed;top:0;width:100%;padding:14px 22px;z-index:100; background:rg
   filter: blur(0px) brightness(1) contrast(1); 
   transform: scale(1) translateZ(0);
 }
+@media (max-width: 768px) {
+  /* Keep the overlay fixed and stop scroll chaining to the page */
+  #djOverlay {
+    overflow: hidden;
+    overscroll-behavior: contain;
+    touch-action: pan-y; /* allow vertical scroll only */
+  }
+
+  /* Make the section inside the overlay the scroller */
+  #dj {
+    max-height: 100dvh;                 /* safe on iOS for browser UI */
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;  /* smooth iOS scrolling */
+    overscroll-behavior: contain;       /* don't bubble to page */
+  }
+}
+
 .intro{max-width:840px;margin:0 auto 18px;text-align:center}
 .intro h1{font-family:Orbitron,system-ui,sans-serif;font-size:2.1rem;font-weight:800;color:var(--text);letter-spacing:.5px}
 .intro .tag{color:var(--green);font-weight:700;margin-top:6px}
@@ -369,12 +386,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 @keyframes scan{to{background-position:-240px 0}}
 .skip-hint{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;color:var(--sub);font-size:.9rem;cursor:pointer;transition:.3s}
 .skip-hint:hover{color:var(--green)}
-@media(max-width:768px){
-  .skip-hint{bottom:20px;font-size:0.8rem;gap:6px}
-}
-@media(max-width:480px){
-  .skip-hint{bottom:15px;font-size:0.75rem;gap:4px}
-}
+
 #launchDJ{position:fixed;right:16px;bottom:16px;z-index:80}
 @media(max-width:768px){
   #launchDJ{right:12px;bottom:12px}
@@ -531,6 +543,12 @@ footer{margin-top:80px;padding:46px 0;text-align:center;color:var(--sub);font-si
     -webkit-overflow-scrolling: touch; /* smooth iOS scroll */
   }
 }
+@media (max-width: 768px) {
+  .skip-hint { 
+    display: none !important;
+  }
+}
+
 
 
 
@@ -655,7 +673,7 @@ footer{margin-top:80px;padding:46px 0;text-align:center;color:var(--sub);font-si
 
   <section id="about">
     <h2 class="title">About Me</h2>
-    <p class="subtitle">Finance × Data Science × Sound</p>
+    <p class="subtitle">Finance × Data Science × Computer Science x Statistics</p>
     <div class="g2">
       <div class="glass-section"><h3 style="color:var(--green);margin-bottom:8px">Experience</h3><p>Currently @Niura. Past work spans data analytics, venture capital, and nonprofit operations.</p></div>
       <div class="glass-section"><h3 style="color:var(--green);margin-bottom:8px">What drives me</h3><p>I'm fascinated by probabilistic models in finance and sports. I enjoy weightlifting, playing soccer, and iPhone videography.</p></div>
