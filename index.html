@@ -548,8 +548,14 @@ footer{margin-top:80px;padding:46px 0;text-align:center;color:var(--sub);font-si
     display: none !important;
   }
 }
-
-
+/* Desktop: shrink the DJ board a bit so 100% zoom ≈ your 90% look */
+@media (min-width: 1024px) {
+  .dj-scale-wrapper {
+    transform: scale(.85);
+    transform-origin: top center;
+    will-change: transform;
+  }
+}
 
 
   </style>
