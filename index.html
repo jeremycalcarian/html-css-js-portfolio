@@ -13,552 +13,373 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet"/>
   <style>
-  :root{
-  --green:#00ff88; --cyan:#00e5ff; --text:#e7f4ef; --sub:#9ca3af; --bg:#050709;
-  --glass:rgba(0,255,136,.08); --border:rgba(0,255,136,.22); --r:18px;
-  --tempo:1; --rpm:12s; --shadow:0 20px 60px rgba(0,0,0,.35);
-}
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{font-family:Inter,system-ui,sans-serif;background:radial-gradient(1200px 700px at 20% -10%, #0a0f14 0%, #050709 45%, #000 100%);color:var(--text);overflow-x:hidden;line-height:1.6}
-body.lock{overflow:hidden}
-#particles-js,.grid{position:fixed;inset:0;z-index:-3}
-.grid{background-image:linear-gradient(rgba(0,255,136,.05) 1px,transparent 1px), linear-gradient(90deg,rgba(0,255,136,.05) 1px,transparent 1px);
-      background-size:60px 60px;animation:grid 6s ease-in-out infinite;opacity:.35}
-@keyframes grid{50%{opacity:.55}}
-.scanline{position:fixed;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.0) 0 2px,rgba(0,255,136,.03) 2px 3px);mix-blend-mode:overlay;pointer-events:none;z-index:-1}
-nav{position:fixed;top:0;width:100%;padding:14px 22px;z-index:100; background:rgba(6,10,9,.75);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
-.nav-row{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between}
-.logo{font-family:Orbitron,system-ui,sans-serif;font-weight:800;letter-spacing:.5px;color:var(--green);font-size:20px;cursor:pointer}
-.links{list-style:none;display:flex;gap:26px}
-.links a{color:var(--text);text-decoration:none;position:relative;font-weight:600}
-.links a::after{content:'';position:absolute;left:0;bottom:-6px;height:2px;width:0;background:linear-gradient(90deg,var(--green),var(--cyan));transition:.3s}
-.links a:hover{color:var(--green)} .links a:hover::after{width:100%}
-.burger{display:none;flex-direction:column;gap:5px;cursor:pointer}
-.burger span{width:26px;height:3px;background:var(--green)}
-@media(max-width:860px){
-  .burger{display:flex}
-  .links{display:none;position:absolute;top:56px;right:22px;flex-direction:column;background:rgba(5,10,9,.96);padding:18px 22px;border:1px solid var(--border);border-radius:12px}
-  .links.open{display:flex}
-}
-.overlay{position:fixed;inset:0;z-index:900;display:grid;place-items:center;background:linear-gradient(180deg,rgba(0,0,0,.995),rgba(0,0,0,.99));backdrop-filter:blur(6px) brightness(.6);transition:opacity .7s ease, visibility .7s ease; opacity:0; visibility:hidden}
-.overlay::before{content:'';position:absolute;inset:0;background:radial-gradient(1000px 600px at 50% 30%, rgba(0,255,136,.06), transparent 60%);pointer-events:none}
-.overlay.open{opacity:1;visibility:visible}
-.overlay.closing{pointer-events:none}
-.overlay.closed{opacity:0;visibility:hidden}
-.overlay.intro-phase-1 #dj .intro { opacity: 0; transform: translateY(20px); }
-.overlay.intro-phase-1 .dj-wrap { 
-  opacity: 0; 
-  filter: blur(20px) brightness(0.1); 
-  transform: scale(0.85) translateZ(0);
-}
-.overlay.intro-phase-2 .dj-wrap { 
-  opacity: 0.3; 
-  filter: blur(8px) brightness(0.4) contrast(2); 
-  transform: scale(0.92) translateZ(0);
-}
-.overlay.intro-phase-3 .dj-wrap { 
-  opacity: 1; 
-  filter: blur(0px) brightness(1) contrast(1); 
-  transform: scale(1) translateZ(0);
-}
-@media (max-width: 768px) {
-  /* Keep the overlay fixed and stop scroll chaining to the page */
-  #djOverlay {
-    overflow: hidden;
-    overscroll-behavior: contain;
-    touch-action: pan-y; /* allow vertical scroll only */
-  }
-
-  /* Make the section inside the overlay the scroller */
-  #dj {
-    max-height: 100dvh;                 /* safe on iOS for browser UI */
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;  /* smooth iOS scrolling */
-    overscroll-behavior: contain;       /* don't bubble to page */
-  }
-}
-
-.intro{max-width:840px;margin:0 auto 18px;text-align:center}
-.intro h1{font-family:Orbitron,system-ui,sans-serif;font-size:2.1rem;font-weight:800;color:var(--text);letter-spacing:.5px}
-.intro .tag{color:var(--green);font-weight:700;margin-top:6px}
-.intro .lead{color:#cbd5d1;margin-top:10px;line-height:1.65}
-@media(max-width:768px){
-  .intro h1{font-size:1.6rem}
-  .intro .lead{font-size:0.9rem}
-}
-.topbar{max-width:1200px;width:100%;margin:0 auto 10px;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:8px 10px;border:1px solid #1b2421;border-radius:12px;background:linear-gradient(180deg,#0b0f0e,#090d0c);box-shadow:inset 0 1px 0 rgba(255,255,255,.04);transition:all 0.5s cubic-bezier(0.4, 0, 0.2, 1)}
-.tb-left{display:flex;align-items:center;gap:14px}
-.knob{width:34px;height:34px;border-radius:50%;background:radial-gradient(circle at 30% 30%, #29302e, #0f1413 60%);border:1px solid #1c2623;position:relative;transition:transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)}
-.knob::after{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:2px;height:8px;background:#dce7e1;border-radius:2px;transition:transform 0.3s ease}
-.knob:hover{transform:rotate(15deg)}
-.knob:hover::after{background:var(--green)}
-.tb-label{color:#9fb2ab;font-size:.78rem;letter-spacing:.6px}
-.tb-right{display:flex;flex-wrap:wrap;gap:8px}
-.topbtn{appearance:none;border:1px solid #1c2623;border-radius:10px;padding:8px 12px;background:linear-gradient(180deg,#0d1312,#0b0f0f);color:#d9e9e3;font-weight:700;font-size:.8rem;letter-spacing:.3px;box-shadow:inset 0 1px 0 rgba(255,255,255,.04), 0 6px 16px rgba(0,0,0,.25);cursor:pointer;transition:all 0.2s cubic-bezier(0.4, 0, 0.2, 1)}
-.topbtn:hover{transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 8px 20px rgba(0,0,0,.35)}
-.topbtn:active{transform:translateY(0px)}
-@media(max-width:768px){
-  .topbar{flex-direction:column;gap:12px;padding:12px}
-  .tb-left{justify-content:center}
-  .tb-right{justify-content:center}
-  .topbtn{font-size:0.75rem;padding:6px 10px}
-}
-#dj{max-width:1200px;width:100%;padding:20px 22px 28px;transform-style:preserve-3d}
-.dj-wrap{
-  display:grid;
-  grid-template-columns:1fr 1.05fr 1fr;
-  gap:18px;
-  align-items:center;
-  transform-origin:center;
-  transform-style:preserve-3d;
-  transition:all 0.6s cubic-bezier(0.4, 0, 0.2, 1)
-}
-@media(max-width:1020px){
-  .dj-wrap{grid-template-columns:1fr;gap:16px}
-}
-@media(max-width:768px){
-  #dj{padding:15px 10px 20px;overflow-x:hidden}
-  .dj-wrap{
-    display:grid;
-    grid-template-areas:
-      "left-deck right-deck"
-      "mixer mixer";
-    grid-template-columns:1fr 1fr;
-    grid-template-rows:auto auto;
-    gap:12px;
-    max-width:100vw;
-  }
-  .deck:nth-child(1){grid-area:left-deck}
-  .deck:nth-child(2){grid-area:mixer}
-  .deck:nth-child(3){grid-area:right-deck}
-}
-@media(max-width:480px){
-  .dj-wrap{gap:8px}
-  #dj{padding:10px 5px 15px}
-}
-.deck{
-  background:linear-gradient(180deg,#0c1110,#0a0e0d);
-  border:1px solid #1b2421;
-  border-radius:18px;
-  padding:16px;
-  box-shadow:0 22px 60px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.04);
-  position:relative;
-  overflow:hidden;
-  transform-style:preserve-3d;
-  transition:transform 0.3s ease
-}
-@media(max-width:768px){
-  .deck{
-    padding:12px;
-    border-radius:12px;
-  }
-}
-@media(max-width:480px){
-  .deck{
-    padding:8px;
-    border-radius:10px;
-  }
-}
-.deck::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg, rgba(255,255,255,.02), rgba(255,255,255,.02) 1px, transparent 1px, transparent 6px);opacity:.15;mix-blend-mode:overlay;pointer-events:none}
-.deck:nth-child(1) { transform: translateZ(-10px); }
-.deck:nth-child(2) { transform: translateZ(0px); }
-.deck:nth-child(3) { transform: translateZ(-10px); }
-.dj-wrap:hover .deck:nth-child(1) { transform: translateZ(-8px) translateX(-2px); }
-.dj-wrap:hover .deck:nth-child(2) { transform: translateZ(5px); }
-.dj-wrap:hover .deck:nth-child(3) { transform: translateZ(-8px) translateX(2px); }
-@media(max-width:768px){
-  .deck:nth-child(1) { transform: none; }
-  .deck:nth-child(2) { transform: none; }
-  .deck:nth-child(3) { transform: none; }
-  .dj-wrap:hover .deck:nth-child(1) { transform: none; }
-  .dj-wrap:hover .deck:nth-child(2) { transform: none; }
-  .dj-wrap:hover .deck:nth-child(3) { transform: none; }
-}
-.platter{
-  aspect-ratio:1/1;
-  border-radius:50%;
-  position:relative;
-  background:radial-gradient(circle at 50% 45%, #1a1f1e 0%, #121514 58%, #0b0f0f 100%);
-  border:8px solid #0f1513;
-  box-shadow:inset 0 0 18px rgba(0,0,0,.6), inset 0 0 90px rgba(0,255,136,.04);
-  transition:transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-style:preserve-3d
-}
-@media(max-width:768px){
-  .platter{border:6px solid #0f1513}
-}
-@media(max-width:480px){
-  .platter{border:4px solid #0f1513}
-}
-.grooves{position:absolute;inset:14%;border-radius:50%;background:conic-gradient(from 0deg, rgba(255,255,255,.03) 0 2deg, transparent 2deg 6deg);mask:radial-gradient(circle at 50% 50%, transparent 56%, #000 57%)}
-.label{position:absolute;inset:39% 39%;border-radius:50%;background:radial-gradient(circle, #0e1714 0%, #0f1b16 60%, #0e1714 100%);transform-style:preserve-3d}
-.spindle{position:absolute;inset:49% 49%;border-radius:50%;background:#cfe5dd;transform:translateZ(2px)}
-.arm{position:absolute;width:46%;height:6px;background:linear-gradient(90deg,#2a302e,#6a746f);top:68%;left:54%;transform-origin:left center;transform:rotate(15deg);border-radius:4px;transition:transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)}
-.arm::after{content:'';position:absolute;right:-6px;top:-4px;width:18px;height:18px;border-radius:50%;background:#dbe8e2}
-@media(max-width:480px){
-  .arm{height:4px}
-  .arm::after{width:14px;height:14px;right:-4px;top:-5px}
-}
-.spin{animation:spin calc(var(--rpm) / var(--tempo)) linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.platter.intro-spin { animation: introSpin 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-.arm.intro-nudge { animation: armNudge 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-.knob.intro-turn { animation: knobTurn 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-@keyframes introSpin {
-  0% { transform: rotate(0deg); }
-  35% { transform: rotate(180deg); }
-  65% { transform: rotate(185deg); }
-  100% { transform: rotate(180deg); }
-}
-@keyframes armNudge {
-  0% { transform: rotate(15deg); }
-  25% { transform: rotate(12deg); }
-  50% { transform: rotate(18deg); }
-  75% { transform: rotate(14deg); }
-  100% { transform: rotate(15deg); }
-}
-@keyframes knobTurn {
-  0% { transform: rotate(0deg); }
-  40% { transform: rotate(25deg); }
-  70% { transform: rotate(-5deg); }
-  100% { transform: rotate(0deg); }
-}
-.mixer{display:grid;grid-template-rows:auto auto 1fr auto;gap:14px}
-@media(max-width:768px){
-  .mixer{gap:10px}
-}
-@media(max-width:480px){
-  .mixer{gap:8px}
-}
-.branding{display:flex;align-items:center;justify-content:center;gap:10px}
-.branding h1{font-family:Orbitron,system-ui,sans-serif;font-size:1.4rem;color:#e4efe9}
-@media(max-width:768px){
-  .branding h1{font-size:1.1rem}
-}
-@media(max-width:480px){
-  .branding h1{font-size:1rem}
-}
-.vu{display:flex;gap:4px;align-items:flex-end;justify-content:center;height:34px}
-.vu span{width:6px;border-radius:2px;background:linear-gradient(180deg,#6be3ff,#21d69a);height:10px;animation:vu 1s ease-in-out infinite alternate;opacity:.85}
-.vu span:nth-child(odd){animation-duration:1.2s}
-.vu span:nth-child(3n){animation-duration:.9s}
-@keyframes vu{0%{transform:scaleY(.35)}100%{transform:scaleY(1)}}
-@media(max-width:768px){
-  .vu{height:28px;gap:3px}
-  .vu span{width:4px}
-}
-@media(max-width:480px){
-  .vu{height:24px;gap:2px}
-  .vu span{width:3px}
-}
-.pads{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-@media(max-width:768px){
-  .pads{grid-template-columns:repeat(2,1fr);gap:8px}
-}
-@media(max-width:480px){
-  .pads{grid-template-columns:repeat(2,1fr);gap:6px}
-}
-.pad{
-  position:relative;
-  border-radius:12px;
-  padding:14px 10px;
-  text-align:center;
-  font-weight:700;
-  cursor:pointer;
-  background:linear-gradient(180deg,#0d1312,#0b0f0f);
-  border:1px solid #1c2623;
-  color:#d9e9e3;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.04), 0 10px 24px rgba(0,0,0,.35)
-}
-@media(max-width:768px){
-  .pad{padding:10px 8px;border-radius:8px}
-}
-@media(max-width:480px){
-  .pad{padding:8px 6px;border-radius:6px}
-}
-.pad:hover{transform:translateY(-2px)}
-.pad.active{outline:2px solid var(--green)}
-.pad .led{display:block;width:8px;height:8px;border-radius:50%;background:#2b3230;margin:0 auto 6px}
-.pad.active .led{background:var(--green);box-shadow:0 0 10px rgba(0,255,136,.4)}
-.pad .pad-title{display:block;letter-spacing:.3px}
-.pad .mini{display:block;color:#9fb2ab;font-weight:600;font-size:.74rem;margin-top:4px}
-@media(max-width:480px){
-  .pad .pad-title{font-size:0.8rem}
-  .pad .mini{font-size:0.65rem}
-}
-.faders{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:768px){
-  .faders{gap:8px}
-}
-@media(max-width:480px){
-  .faders{gap:6px}
-}
-.fader{background:#0a0f0e;border:1px solid #1c2623;padding:10px;border-radius:10px}
-@media(max-width:768px){
-  .fader{padding:8px;border-radius:8px}
-}
-@media(max-width:480px){
-  .fader{padding:6px;border-radius:6px}
-}
-.fader label{display:block;font-size:.78rem;color:#98aba4;margin-bottom:6px}
-@media(max-width:480px){
-  .fader label{font-size:0.7rem;margin-bottom:4px}
-}
-input[type=range] {
-  -webkit-appearance:none;
-  appearance:none;
-  -moz-appearance:none;
-  width:100%;
-  height:6px;
-  background:linear-gradient(90deg,rgba(0,255,136,.28),rgba(0,229,255,.28));
-  border-radius:10px;
-  outline:none;
-}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--cyan))}
-@media(max-width:480px){
-  input[type=range]{height:4px}
-  input[type=range]::-webkit-slider-thumb{width:12px;height:12px}
-}
-.screen-housing{margin:10px 0 14px;position:relative}
-@media(max-width:768px){
-  .screen-housing{margin:8px 0 10px}
-}
-@media(max-width:480px){
-  .screen-housing{margin:6px 0 8px}
-}
-.bezel{background:linear-gradient(180deg,#0a0e0d,#060a09);border:1px solid #1f2a26;border-radius:12px;padding:8px;box-shadow:inset 0 1px 0 rgba(255,255,255,.04), 0 8px 26px rgba(0,0,0,.4)}
-@media(max-width:768px){
-  .bezel{padding:6px;border-radius:8px}
-}
-@media(max-width:480px){
-  .bezel{padding:4px;border-radius:6px}
-}
-.glass{background:linear-gradient(180deg,#0b0f0f,#090d0c);border:1px solid #24332f;border-radius:8px;padding:10px 10px 12px;position:relative;overflow:hidden}
-@media(max-width:768px){
-  .glass{padding:8px 8px 10px;border-radius:6px}
-}
-@media(max-width:480px){
-  .glass{padding:6px 6px 8px;border-radius:4px}
-}
-.glass::after{content:'';position:absolute;inset:0;background:linear-gradient(30deg,rgba(255,255,255,.06),transparent 35%);pointer-events:none}
-.screw{position:absolute;width:8px;height:8px;border-radius:50%;background:#0f1513;border:1px solid #1d2623;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
-.screw.tl{top:8px;left:8px}.screw.tr{top:8px;right:8px}.screw.bl{bottom:8px;left:8px}.screw.br{bottom:8px;right:8px}
-@media(max-width:480px){
-  .screw{width:6px;height:6px}
-  .screw.tl{top:6px;left:6px}.screw.tr{top:6px;right:6px}.screw.bl{bottom:6px;left:6px}.screw.br{bottom:6px;right:6px}
-}
-.scr-head{display:flex;justify-content:space-between;align-items:center;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;color:#bde7d7;font-size:.78rem;letter-spacing:.4px;margin-bottom:8px}
-@media(max-width:768px){
-  .scr-head{font-size:0.7rem;margin-bottom:6px}
-}
-@media(max-width:480px){
-  .scr-head{font-size:0.65rem;margin-bottom:4px}
-}
-.scr-meta{opacity:.9}
-.scr-time{opacity:.8}
-.wave-wrap{position:relative;height:70px;border-radius:6px;background:#0d1312;border:1px solid #20302b;overflow:hidden}
-@media(max-width:768px){
-  .wave-wrap{height:50px;border-radius:4px}
-}
-@media(max-width:480px){
-  .wave-wrap{height:40px;border-radius:3px}
-}
-.wave{position:absolute;inset:0;background:repeating-linear-gradient(90deg, rgba(0,255,136,.35) 0 8px, rgba(0,229,255,.35) 8px 16px, rgba(0,0,0,0) 16px 18px);background-size:240px 100%;animation:scan 2.4s linear infinite;opacity:.85}
-.wave.b{filter:blur(2px);opacity:.4}
-.playhead{position:absolute;top:0;bottom:0;left:50%;width:2px;background:linear-gradient(180deg,#bde7d7,#2ad39e);box-shadow:0 0 10px rgba(0,255,136,.3)}
-.scr-foot{display:flex;align-items:center;gap:10px;margin-top:10px}
-@media(max-width:768px){
-  .scr-foot{gap:8px;margin-top:8px}
-}
-@media(max-width:480px){
-  .scr-foot{gap:6px;margin-top:6px}
-}
-.scr-title{font-weight:800;color:#e4efe9;font-size:.85rem}
-@media(max-width:768px){
-  .scr-title{font-size:0.75rem}
-}
-@media(max-width:480px){
-  .scr-title{font-size:0.7rem}
-}
-.progress{flex:1;height:6px;border-radius:6px;background:#0e1513;overflow:hidden;border:1px solid #20302b}
-.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--cyan));transition:width .65s cubic-bezier(.2,.8,.2,1)}
-@keyframes scan{to{background-position:-240px 0}}
-.skip-hint{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;color:var(--sub);font-size:.9rem;cursor:pointer;transition:.3s}
-.skip-hint:hover{color:var(--green)}
-
-#launchDJ{position:fixed;right:16px;bottom:16px;z-index:80}
-@media(max-width:768px){
-  #launchDJ{right:12px;bottom:12px}
-}
-section{max-width:1200px;margin:auto;padding:110px 22px 80px}
-@media(max-width:768px){
-  section{padding:80px 16px 60px}
-}
-@media(max-width:480px){
-  section{padding:70px 12px 50px}
-}
-.title{font-family:Orbitron,system-ui,sans-serif;font-size:3rem;font-weight:800;color:var(--green);text-align:center;margin-bottom:10px}
-@media(max-width:768px){
-  .title{font-size:2.2rem}
-}
-@media(max-width:480px){
-  .title{font-size:1.8rem}
-}
-.subtitle{text-align:center;color:var(--sub);margin-bottom:42px}
-@media(max-width:768px){
-  .subtitle{margin-bottom:32px;font-size:0.9rem}
-}
-@media(max-width:480px){
-  .subtitle{margin-bottom:24px;font-size:0.85rem}
-}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
-@media(max-width:930px){.g2{grid-template-columns:1fr}}
-.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px}
-@media(max-width:768px){
-  .g3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-}
-@media(max-width:480px){
-  .g3{grid-template-columns:1fr;gap:12px}
-}
-.glass-section{background:var(--glass);border:1px solid var(--border);border-radius:var(--r);padding:22px}
-@media(max-width:768px){
-  .glass-section{padding:16px}
-}
-@media(max-width:480px){
-  .glass-section{padding:12px}
-}
-.card{背景:var(--glass);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:.25s;position:relative}
-.card::after{content:'';position:absolute;top:0;left:0;width:100%;height:4px;background:linear-gradient(90deg,var(--green),var(--cyan));transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
-.card:hover::after{transform:scaleX(1)} .card:hover{transform:translateY(-6px);border-color:var(--green)}
-.card img{width:100%;height:190px;object-fit:cover}
-@media(max-width:768px){
-  .card img{height:150px}
-}
-@media(max-width:480px){
-  .card img{height:120px}
-}
-.pad-24{padding:22px}
-@media(max-width:768px){
-  .pad-24{padding:16px}
-}
-@media(max-width:480px){
-  .pad-24{padding:12px}
-}
-.pad-24 h3{color:var(--green);margin-bottom:10px}
-.pad-24 p{color:var(--sub);margin-bottom:18px}
-@media(max-width:768px){
-  .pad-24 h3{margin-bottom:8px;font-size:1.1rem}
-  .pad-24 p{margin-bottom:14px;font-size:0.9rem}
-}
-@media(max-width:480px){
-  .pad-24 h3{margin-bottom:6px;font-size:1rem}
-  .pad-24 p{margin-bottom:12px;font-size:0.85rem}
-}
-.course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
-@media(max-width:768px){
-  .course-grid{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
-}
-@media(max-width:480px){
-  .course-grid{grid-template-columns:1fr;gap:10px}
-}
-.course-item{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:16px;font-weight:700;text-align:center;position:relative;overflow:hidden}
-@media(max-width:768px){
-  .course-item{padding:12px;border-radius:10px}
-}
-@media(max-width:480px){
-  .course-item{padding:10px;border-radius:8px;font-size:0.9rem}
-}
-.course-item::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(0,255,136,.13),transparent);transition:left .45s ease-out}
-.course-item:hover::before{left:100%}
-.music{background:var(--glass);border:1px solid var(--border);border-radius:var(--r);text-align:center;padding:34px}
-@media(max-width:768px){
-  .music{padding:24px}
-}
-@media(max-width:480px){
-  .music{padding:18px}
-}
-#recommendation{margin-top:18px;display:none}
-#recommendation.show{display:block}
-#recommendation iframe{width:100%;border:none;border-radius:10px;height:172px}
-@media(max-width:768px){
-  #recommendation{margin-top:14px}
-  #recommendation iframe{height:150px;border-radius:8px}
-}
-@media(max-width:480px){
-  #recommendation{margin-top:12px}
-  #recommendation iframe{height:130px;border-radius:6px}
-}
-footer{margin-top:80px;padding:46px 0;text-align:center;color:var(--sub);font-size:.9rem;border-top:1px solid var(--border)}
-@media(max-width:768px){
-  footer{margin-top:60px;padding:36px 16px;font-size:0.85rem}
-}
-@media(max-width:480px){
-  footer{margin-top:50px;padding:28px 12px;font-size:0.8rem}
-}
-.btn{display:inline-block;padding:12px 28px;border-radius:28px;font-weight:700;text-decoration:none;transition:.25s;cursor:pointer}
-@media(max-width:768px){
-  .btn{padding:10px 24px;border-radius:24px;font-size:0.9rem}
-}
-@media(max-width:480px){
-  .btn{padding:8px 20px;border-radius:20px;font-size:0.85rem}
-}
-.btn-green{background:linear-gradient(135deg,var(--green),var(--cyan));color:#001b12;box-shadow:0 8px 28px rgba(0,255,136,.28)}
-.btn-green:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,255,136,.36)}
-.btn-outline{color:var(--green);border:2px solid var(--green)}
-.btn-outline:hover{background:var(--green);color:#001b12}
-.dj-container-wrapper { width: 100%; overflow-x: hidden; display: flex; justify-content: center; }
-.dj-container { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 100%; }
-@media (max-width: 768px) {
-  .dj-container { transform: scale(0.85); transform-origin: top center; }
-  .dj-container-wrapper { padding: 0 10px; }
-}
-@media (max-width: 480px) {
-  .dj-container { transform: scale(0.75); transform-origin: top center; }
-  .dj-container-wrapper { padding: 0 5px; }
-}
-@media (max-width: 768px) {
-  body { overflow-x: hidden; }
-  * { max-width: 100vw; }
-  .dj-wrap { max-width: 100%; overflow: visible; }
-}
-@media (hover: none) and (pointer: coarse) {
-  .pad:hover { transform: none; }
-  .pad:active { transform: translateY(-2px); }
-  .knob:hover { transform: none; }
-  .knob:active { transform: rotate(15deg); }
-  .topbtn:hover { transform: none; }
-  .topbtn:active { transform: translateY(-1px); }
-  .card:hover { transform: none; border-color: var(--border); }
-  .card:hover::after { transform: scaleX(0); }
-}
-@media (max-width: 768px) {
-  body {
-    overscroll-behavior: none; /* disable page bounce/pull-to-refresh */
-  }
-
-  #dj-board {
-    max-height: 100vh;
-    overflow-y: auto; /* still allow scrolling inside the board */
-    -webkit-overflow-scrolling: touch; /* smooth iOS scroll */
-  }
-}
-@media (max-width: 768px) {
-  .skip-hint { 
-    display: none !important;
-  }
-}
-/* Desktop: shrink the DJ board a bit so 100% zoom ≈ your 90% look */
-@media (min-width: 1024px) {
-  .dj-scale-wrapper {
-    transform: scale(.85);
-    transform-origin: top center;
-    will-change: transform;
-  }
-}
-
-
-  </style>
+    /* ================================
+       THEME & GLOBAL
+    ================================ */
+    :root{
+      --green:#00ff88; --cyan:#00e5ff; --text:#e7f4ef; --sub:#9ca3af; --bg:#050709;
+      --glass:rgba(0,255,136,.08); --border:rgba(0,255,136,.22); --r:18px;
+      --rpm:3s; --shadow:0 20px 60px rgba(0,0,0,.35);
+      --board-w:min(1400px,95vw); --chassis-r:24px;
+      --vibe:var(--green);
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:Inter,system-ui,sans-serif; line-height:1.6; color:var(--text);
+      background:radial-gradient(1200px 700px at 20% -10%, #0a0f14 0%, #050709 45%, #000 100%);
+      overflow-x:hidden;
+    }
+    #particles-js,.grid{position:fixed;inset:0;z-index:-3}
+    .grid{
+      background-image:
+        linear-gradient(rgba(0,255,136,.05) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,255,136,.05) 1px,transparent 1px);
+      background-size:60px 60px; animation:grid 6s ease-in-out infinite; opacity:.35;
+    }
+    @keyframes grid{50%{opacity:.55}}
+    .scanline{
+      position:fixed;inset:0;pointer-events:none;z-index:-1;
+      background:repeating-linear-gradient(0deg,rgba(0,0,0,.0) 0 2px,rgba(0,255,136,.03) 2px 3px);
+    }
+    
+    /* ================================
+       NAV (desktop + hamburger)
+    ================================ */
+    nav{
+      position:fixed; top:0; width:100%; z-index:100;
+      padding:14px 22px; background:rgba(6,10,9,.75); backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-row{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between}
+    .logo{font-family:Orbitron,system-ui,sans-serif;font-weight:800;letter-spacing:.5px;color:var(--green);font-size:20px;cursor:pointer}
+    .links{list-style:none;display:flex;gap:26px}
+    .links a{color:var(--text);text-decoration:none;position:relative;font-weight:600}
+    .links a::after{content:'';position:absolute;left:0;bottom:-6px;height:2px;width:0;background:linear-gradient(90deg,var(--green),var(--cyan));transition:.3s}
+    .links a:hover{color:var(--green)} .links a:hover::after{width:100%}
+    
+    /* Hamburger */
+    #hamburger-nav{display:none}
+    .hamburger-menu{position:relative;display:inline-block}
+    .hamburger-icon{display:flex;flex-direction:column;justify-content:space-between;height:24px;width:30px;cursor:pointer}
+    .hamburger-icon span{width:100%;height:2px;background-color:var(--text);transition:all .3s ease}
+    .menu-links{
+      position:absolute; top:100%; right:0; width:min(88vw,320px);
+      background:rgba(5,10,9,.96); border:1px solid var(--border); border-radius:12px;
+      box-shadow:0 8px 24px rgba(0,0,0,.35); overflow:hidden;
+      max-height:0; transition:max-height .3s ease; z-index:1000;
+    }
+    .menu-links.open{max-height:340px}
+    .menu-links li{list-style:none}
+    .menu-links a{display:block;padding:10px 16px;color:var(--text);text-decoration:none}
+    .menu-links a:hover{background:var(--glass)}
+    .hamburger-icon.open span:first-child{transform:rotate(45deg) translate(5px,5px)}
+    .hamburger-icon.open span:nth-child(2){opacity:0}
+    .hamburger-icon.open span:last-child{transform:rotate(-45deg) translate(5px,-5px)}
+    @media(max-width:860px){ nav .links{display:none!important} #hamburger-nav{display:inline-block} }
+    @media(min-width:861px){ #hamburger-nav{display:none!important} }
+    
+    /* ================================
+       OVERLAY + INTRO
+    ================================ */
+    .overlay{
+      position:fixed;inset:0;z-index:900;display:grid;place-items:center;
+      background:linear-gradient(180deg,rgba(0,0,0,.995),rgba(0,0,0,.99));
+      backdrop-filter:blur(6px) brightness(.6);
+      opacity:0; visibility:hidden; transition:opacity .7s ease, visibility .7s ease;
+    }
+    .overlay::before{
+      content:'';position:absolute;inset:0;
+      background:radial-gradient(1000px 600px at 50% 30%, rgba(0,255,136,.06), transparent 60%);
+      pointer-events:none;
+    }
+    .overlay.open{opacity:1;visibility:visible}
+    .intro{max-width:840px;margin:0 auto 18px;text-align:center}
+    .intro h1{font-family:Orbitron,system-ui,sans-serif;font-size:2.1rem;font-weight:800;color:var(--text);letter-spacing:.5px}
+    .intro .tag{color:var(--green);font-weight:700;margin-top:6px}
+    .intro .lead{color:#cbd5d1;margin-top:10px;line-height:1.65}
+    @media(max-width:768px){ .intro h1{font-size:1.6rem} .intro .lead{font-size:.95rem} }
+    
+    /* phones: scroll inside overlay only */
+    @media (max-width:520px){
+      #djOverlay{overscroll-behavior:contain}
+      #dj{max-height:100dvh; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain}
+    }
+    
+    /* Prevent body scroll when overlay is open */
+    body.lock{overflow:hidden}
+    
+    /* ================================
+       CONTROLLER
+    ================================ */
+    #dj{max-width:1600px;width:100%;padding:18px 18px 22px}
+    .dj-scale-wrapper{width:var(--board-w);margin-inline:auto}
+    .controller{
+      position:relative; overflow:hidden;
+      background:linear-gradient(180deg,#1a1d1b 0%,#0f1210 20%,#0a0d0b 100%);
+      border:2px solid #2a2f2d; border-radius:var(--chassis-r); padding:24px;
+      box-shadow:0 0 0 1px rgba(0,0,0,.8), 0 20px 80px rgba(0,0,0,.7),
+                 inset 0 1px 0 rgba(255,255,255,.08), inset 0 -1px 0 rgba(0,0,0,.5);
+    }
+    .controller::before{
+      content:"PIONEER DJ"; position:absolute; top:12px; right:24px;
+      font-family:Orbitron,system-ui,sans-serif; font-size:10px; font-weight:800; color:#666; letter-spacing:1px;
+    }
+    .controller-layout{display:grid; align-items:start; gap:24px; grid-template-columns:1fr 380px 1fr}
+    
+    /* Decks */
+    .deck-section{display:flex;flex-direction:column;align-items:center;gap:16px}
+    
+    /* Jog wheels */
+    .jog-wheel{
+      width:280px;height:280px;border-radius:50%;position:relative;cursor:pointer;transition:.2s;
+      background:radial-gradient(circle at 45% 35%, #2d3330 0%, #1a1f1d 40%, #0f1412 100%);
+      border:4px solid #0a0e0c; box-shadow:0 0 0 2px #1f2421, 0 0 0 4px #0d1210,
+                                         inset 0 0 30px rgba(0,0,0,.6), 0 8px 24px rgba(0,0,0,.4);
+    }
+    .jog-wheel:hover{box-shadow:0 0 0 2px #1f2421,0 0 0 4px #0d1210,inset 0 0 30px rgba(0,0,0,.6),0 8px 32px rgba(0,0,0,.5),0 0 20px rgba(0,255,136,.1)}
+    .platter{position:absolute;inset:20px;border-radius:50%;overflow:hidden;border:1px solid #0f1513;
+      background:radial-gradient(circle at 50% 50%, #1e2320 0%, #151918 60%, #0d1110 100%)}
+    .platter-inner{
+      position:absolute;inset:8px;border-radius:50%;
+      background:conic-gradient(from 0deg, rgba(255,255,255,.06) 0deg 2deg, transparent 2deg 6deg, rgba(255,255,255,.06) 6deg 8deg, transparent 8deg 12deg);
+      animation:spin var(--rpm) linear infinite; animation-play-state:paused;
+    }
+    .spin .platter-inner{animation-play-state:running}
+    .center-label{
+      position:absolute;inset:35%;border-radius:50%;
+      background:radial-gradient(circle,#0e1714 0%,#0f1b16 60%,#0e1714 100%),
+                 radial-gradient(circle at 50% 50%, rgba(0,229,255,.15), rgba(0,255,136,.15) 60%, transparent 70%);
+      display:flex;align-items:center;justify-content:center;font-family:Orbitron,system-ui,sans-serif;font-size:8px;color:#666;letter-spacing:.5px
+    }
+    .spindle{position:absolute;inset:48%;border-radius:50%;background:#cfe5dd;box-shadow:0 2px 4px rgba(0,0,0,.3)}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    
+    /* Deck knobs */
+    .deck-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:280px}
+    .pro-knob{display:flex;flex-direction:column;align-items:center;gap:6px}
+    .knob-control{
+      width:36px;height:36px;border-radius:50%;position:relative;cursor:pointer;transition:.2s;
+      background:radial-gradient(circle at 35% 25%, #3a403d 0%, #2d3330 50%, #1a1f1d 100%); border:2px solid #0f1412;
+      box-shadow:0 2px 8px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.1);
+    }
+    .knob-control::after{content:'';position:absolute;top:4px;left:50%;transform:translateX(-50%);width:2px;height:12px;background:#dce7e1;border-radius:2px;transition:.2s}
+    .knob-control:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.15), 0 0 8px rgba(0,255,136,.1)}
+    .knob-control:hover::after{background:var(--green)}
+    .knob-label{font-size:8px;color:#8a9490;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+    
+    /* Pads */
+    .pad-row{display:flex;gap:10px;margin-top:12px;width:100%;max-width:320px}
+    .pad-btn{
+      flex:1;padding:14px 12px;text-align:center;text-transform:uppercase;letter-spacing:.35px;
+      background:linear-gradient(180deg,#1a1f1d,#0f1412); color:#8a9490; font-size:11px; font-weight:800;
+      border:2px solid #2a2f2d; border-radius:10px; cursor:pointer; transition:.15s, color .2s, border-color .2s, box-shadow .2s;
+    }
+    .pad-btn:hover{transform:translateY(-1px)}
+    .pad-btn:focus-visible{outline:2px solid var(--vibe);outline-offset:2px}
+    .pad-btn.active{color:var(--vibe);border-color:var(--vibe);box-shadow:0 0 0 2px rgba(0,0,0,.4),0 0 12px rgba(0,255,136,.35)}
+    
+    /* ================================
+       CENTER MIXER (restored)
+    ================================ */
+    .mixer-section{
+      display:flex;flex-direction:column;gap:16px;min-height:500px;padding:20px;border-radius:12px;
+      background:linear-gradient(180deg,#1a1d1b 0%,#0f1210 50%,#0a0d0b 100%); border:1px solid #2a2f2d;
+    }
+    
+    /* Top screen with proper layering (waveform behind text) */
+    .mixer-display{
+      background:#000; border:2px solid #1a1f1d; border-radius:8px; padding:12px;
+      position:relative; height:120px; overflow:hidden;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.04), 0 8px 26px rgba(0,0,0,.40);
+    }
+    .mixer-display::after{content:'';position:absolute;inset:0;background:linear-gradient(30deg,rgba(255,255,255,.06),transparent 35%);pointer-events:none}
+    .mixer-display::before{
+      content:'';position:absolute;inset:0;
+      background:
+        radial-gradient(circle,#0f1513 5px, transparent 6px) 8px 8px,
+        radial-gradient(circle,#0f1513 5px, transparent 6px) calc(100% - 8px) 8px,
+        radial-gradient(circle,#0f1513 5px, transparent 6px) 8px calc(100% - 8px),
+        radial-gradient(circle,#0f1513 5px, transparent 6px) calc(100% - 8px) calc(100% - 8px);
+      background-size:8px 8px; background-repeat:no-repeat; opacity:.5; pointer-events:none;
+    }
+    .display-content{color:var(--green);font-family:ui-monospace,monospace;font-size:12px;position:relative;z-index:1}
+    .waveform{
+      position:absolute;top:30px;left:12px;right:12px;height:60px;border-radius:4px;z-index:0; pointer-events:none;
+      background:repeating-linear-gradient(90deg,rgba(0,255,136,.4) 0 4px, rgba(0,229,255,.4) 4px 8px, transparent 8px 10px);
+      background-size:150px 100%; animation:waveScroll 2s linear infinite;
+    }
+    @keyframes waveScroll{to{background-position:-150px 0}}
+    @keyframes fillBar{from{width:0} to{width:100%}}
+    #screenProgress{background:linear-gradient(90deg,var(--green),var(--cyan))}
+    #screenProgress.loading{animation:fillBar .9s ease-out forwards}
+    
+    /* Center console knobs & faders */
+    .mixer-controls{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .channel-strip{display:flex;flex-direction:column;gap:8px;align-items:center}
+    .eq-knob{
+      width:24px;height:24px;border-radius:50%;
+      background:radial-gradient(circle at 35% 25%,#2d3330,#1a1f1d 70%);
+      border:1px solid #0f1412;position:relative;cursor:pointer;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.06), 0 4px 12px rgba(0,0,0,.25);
+    }
+    .eq-knob::after{content:'';position:absolute;top:2px;left:50%;transform:translateX(-50%);width:1.5px;height:8px;background:#cfe5dd;border-radius:2px}
+    .channel-fader{width:8px;height:80px;background:#0d1110;border:1px solid #1a1f1d;border-radius:4px;position:relative}
+    .fader-handle{position:absolute;width:14px;height:20px;background:linear-gradient(180deg,#3a403d,#2d3330);border:1px solid #4a504d;border-radius:2px;left:-3px;top:30px}
+    
+    /* Tempo & Vibe sliders */
+    .bottom-controls{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:16px}
+    .slider-section{display:flex;flex-direction:column;align-items:center;gap:8px}
+    .pro-slider{
+      width:120px;height:8px;background:#0d1110;border:1px solid #1a1f1d;border-radius:4px;position:relative;cursor:pointer
+    }
+    .slider-track{
+      position:absolute;inset:0;height:100%;background:linear-gradient(90deg, var(--green), var(--cyan));
+      border-radius:4px;width:50%;transition:width .3s ease
+    }
+    .slider-handle{
+      position:absolute;width:16px;height:16px;background:linear-gradient(180deg, #fff, #ccc);
+      border:1px solid #999;border-radius:50%;top:-4px;left:calc(50% - 8px);cursor:grab;transition:all .15s ease
+    }
+    .slider-handle:hover{background:linear-gradient(180deg, #fff, #ddd);box-shadow:0 0 8px rgba(0,255,136,.3)}
+    .slider-label{font-size:10px;color:#8a9490;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+    
+    /* ================================
+       PAGE SECTIONS / CARDS / BUTTONS
+    ================================ */
+    section{max-width:1200px;margin:auto;padding:110px 22px 80px}
+    .title{font-family:Orbitron,system-ui,sans-serif;font-size:3rem;font-weight:800;color:var(--green);text-align:center;margin-bottom:10px}
+    .subtitle{text-align:center;color:var(--sub);margin-bottom:42px}
+    
+    /* About / Experience / Contact shared layout */
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+    @media(max-width:930px){.g2{grid-template-columns:1fr}}
+    .glass-section{
+      background:var(--glass);
+      border:1px solid var(--border);
+      border-radius:var(--r);
+      padding:22px;
+    }
+    @media(max-width:768px){.glass-section{padding:16px}}
+    @media(max-width:480px){.glass-section{padding:12px}}
+    
+    /* Coursework grid */
+    .course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+    .course-item{
+      background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:16px;font-weight:700;text-align:center;
+      position:relative;overflow:hidden;word-break:normal;hyphens:auto;line-height:1.25;
+    }
+    .course-item::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(0,255,136,.13),transparent);transition:left .45s ease-out}
+    .course-item:hover::before{left:100%}
+    
+    /* Projects */
+    .g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px}
+    .card{background:var(--glass);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:.25s;position:relative}
+    .card::after{content:'';position:absolute;top:0;left:0;width:100%;height:4px;background:linear-gradient(90deg,var(--green),var(--cyan));transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+    .card:hover::after{transform:scaleX(1)} .card:hover{transform:translateY(-6px);border-color:var(--green)}
+    .card img{width:100%;aspect-ratio:1/1;height:auto;object-fit:cover;object-position:center}
+    .pad-24{padding:22px}
+    .pad-24 h3{color:var(--green);margin-bottom:10px}
+    .pad-24 p{color:var(--sub);margin-bottom:18px}
+    
+    /* Music */
+    .music{background:var(--glass);border:1px solid var(--border);border-radius:var(--r);text-align:center;padding:34px}
+    #recommendation{margin-top:18px;display:none}
+    #recommendation.show{display:block}
+    #recommendation iframe{width:100%;border:none;border-radius:10px;height:172px}
+    
+    /* Footer & buttons */
+    footer{margin-top:80px;padding:46px 0;text-align:center;color:var(--sub);font-size:.9rem;border-top:1px solid var(--border)}
+    .btn{display:inline-block;padding:12px 28px;border-radius:28px;font-weight:700;text-decoration:none;transition:.25s;cursor:pointer}
+    .btn-green{background:linear-gradient(135deg,var(--green),var(--cyan));color:#001b12;box-shadow:0 8px 28px rgba(0,255,136,.28)}
+    .btn-green:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,255,136,.36)}
+    .btn-outline{color:var(--green);border:2px solid var(--green)}
+    .btn-outline:hover{background:var(--green);color:#001b12}
+    
+    /* Launch DJ button */
+    #launchDJ{position:fixed;right:10px;bottom:10px;z-index:120}
+    @media(max-width:520px){ #launchDJ{ bottom:10px } }
+    
+    /* Scroll hint */
+    .skip-hint{
+      position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+      display:flex;align-items:center;gap:8px;color:var(--sub);
+      font-size:.9rem;cursor:pointer;transition:opacity .35s ease, transform .35s ease; z-index:910;
+    }
+    body.loaded .skip-hint{opacity:0;pointer-events:none;transform:translate(-50%,10px)}
+    @media (max-width:768px){ .skip-hint{display:none!important} }
+    
+    /* ================================
+       RESPONSIVE TUNING
+    ================================ */
+    @media(max-width:1020px){
+      .controller-layout{grid-template-columns:1fr 320px 1fr;gap:18px}
+      .jog-wheel{width:220px;height:220px}
+    }
+    @media(max-width:768px){
+      section{padding:80px 16px 60px}
+      .title{font-size:2.2rem}
+      .subtitle{margin-bottom:32px;font-size:.95rem}
+      .g3{grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+      .pad-24{padding:16px}
+      #dj{padding:15px 10px 18px}
+      .controller{padding:16px}
+      .jog-wheel{width:180px;height:180px}
+      .deck-controls{max-width:240px}
+      .pad-row{max-width:260px}
+    }
+    
+    /* ===== PHONE REBUILD (≤520px) ===== */
+    .mobile-nav{display:none}
+    @media(max-width:520px){
+      .dj-scale-wrapper{transform:none;width:100%}
+      .controller-layout{
+        display:grid; gap:10px;
+        grid-template-areas:
+          "screen screen"
+          "left   right"
+          "pads   pads";
+        grid-template-columns:1fr 1fr;
+      }
+      .mixer-section{grid-area:screen;min-height:auto;padding:12px}
+      .mixer-display{height:90px; padding:10px}
+      /* tighter spacing inside screen (override inline margins) */
+      .display-content > div[style*="margin-bottom:8px"]{margin-bottom:4px !important}
+      .display-content > div[style*="margin-top:8px"]{margin-top:4px !important}
+      /* hide the big waveform & center strips on tiny phones */
+      .waveform,.mixer-controls{display:none!important}
+    
+      .controller-layout > .deck-section:first-of-type{grid-area:left}
+      .controller-layout > .deck-section:last-of-type{grid-area:right}
+    
+      .jog-wheel{ width:calc(50vw - 36px); height:calc(50vw - 36px); min-width:120px; min-height:120px }
+      .deck-controls{max-width:none;gap:6px}
+      .knob-control{width:28px;height:28px}
+      .knob-label{font-size:7px}
+    
+      .deck-section .pad-row{display:none!important}
+      .mobile-nav{
+        display:grid; grid-area:pads;
+        grid-template-columns:repeat(3,1fr); gap:8px; margin-top:4px;
+      }
+      .mobile-nav .pad-btn{
+        padding:12px 10px; font-size:12px; border-radius:12px;
+        white-space:normal; word-break:break-word; line-height:1.15;
+      }
+    
+      .bottom-controls{display:none}
+      .card img{aspect-ratio:1/1}
+    }
+    
+    /* Touch friendliness */
+    @media (hover:none) and (pointer:coarse){
+      .pad-btn:hover{transform:none}
+      .pad-btn:active{transform:translateY(-1px);border-color:var(--vibe);color:var(--vibe)}
+      .knob-control:hover{transform:none}
+    }
+    </style>
+    
+    
 </head>
 <body>
   <div id="particles-js"></div>
@@ -567,7 +388,9 @@ footer{margin-top:80px;padding:46px 0;text-align:center;color:var(--sub);font-si
 
   <nav>
     <div class="nav-row">
-      <div class="logo" onclick="launchOverlay()">JEREMY // LIVE</div>
+      <div class="logo" onclick="launchOverlay()">JEREMY // Calcarian</div>
+  
+      <!-- Desktop nav -->
       <ul class="links" id="navLinks">
         <li><a href="#about">About</a></li>
         <li><a href="#experience">Experience</a></li>
@@ -577,7 +400,22 @@ footer{margin-top:80px;padding:46px 0;text-align:center;color:var(--sub);font-si
         <li><a href="#house-recommender">New House Song</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
-      <div class="burger" onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span><span></span><span></span></div>
+  
+      <!-- Mobile hamburger nav (hidden on desktop via CSS) -->
+      <div id="hamburger-nav" class="hamburger-menu" aria-label="Mobile menu">
+        <div id="hamburgerBtn" class="hamburger-icon" aria-expanded="false" aria-controls="hamburgerMenu" role="button" tabindex="0">
+          <span></span><span></span><span></span>
+        </div>
+        <ul id="hamburgerMenu" class="menu-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#coursework">Coursework</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#blog">Blog</a></li>
+          <li><a href="#house-recommender">New House Song</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
     </div>
   </nav>
 
@@ -586,85 +424,190 @@ footer{margin-top:80px;padding:46px 0;text-align:center;color:var(--sub);font-si
       <div class="intro">
         <h1>Hey, I'm Jeremy Calcarian.</h1>
         <div class="tag">University of Pennsylvania</div>
-        <p class="lead">During my free time at Penn I sometimes practiced spinning the deck and loved it. Use the deck to learn more about me. If you want some house music recs, I have a few for you.</p>
+        <p class="lead"> Every now and then I practice spinning the deck. Use the deck to learn more about me. If you want some house music recs, I have a few for you.</p>
       </div>
 
       <div class="dj-scale-wrapper">
-        <div class="dj-wrap">
-          <div class="deck" aria-label="Left turntable">
-            <div class="platter spin" id="leftPlatter">
-              <div class="grooves spin"></div>
-              <div class="label"></div>
-              <div class="spindle"></div>
-              <div class="arm"></div>
+        <div class="controller">
+          <div class="controller-layout">
+            <!-- LEFT DECK -->
+            <div class="deck-section">
+              <div class="jog-wheel spin" id="leftJog">
+                <div class="platter">
+                  <div class="platter-inner"></div>
+                  <div class="center-label">HOUSE</div>
+                  <div class="spindle"></div>
+                </div>
+              </div>
+            
+              <!-- Keep all knobs -->
+              <div class="deck-controls">
+                <div class="pro-knob">
+                  <div class="knob-control"></div>
+                  <div class="knob-label">Gain</div>
+                </div>
+                <div class="pro-knob">
+                  <div class="knob-control"></div>
+                  <div class="knob-label">High</div>
+                </div>
+                <div class="pro-knob">
+                  <div class="knob-control"></div>
+                  <div class="knob-label">Mid</div>
+                </div>
+                <div class="pro-knob">
+                  <div class="knob-control"></div>
+                  <div class="knob-label">Low</div>
+                </div>
+                <div class="pro-knob">
+                  <div class="knob-control"></div>
+                  <div class="knob-label">Filter</div>
+                </div>
+                <div class="pro-knob">
+                  <div class="knob-control"></div>
+                  <div class="knob-label">Cue</div>
+                </div>
+              </div>
+            
+              <!-- Pads go BELOW the knobs -->
+              <div class="pad-row">
+                <button class="pad-btn" data-target="#about">About</button>
+                <button class="pad-btn" data-target="#experience">Experience</button>
+                <button class="pad-btn" data-target="#coursework">Coursework</button>
+              </div>
             </div>
-          </div>
+            
 
-          <div class="deck" aria-label="Center mixer">
-            <div class="branding">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M3 12h6l3-6 3 12 3-6h3" stroke="url(#g)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <defs>
-                  <linearGradient id="g" x1="0" y1="0" x2="24" y2="0">
-                    <stop stop-color="#00ff88"/>
-                    <stop offset="1" stop-color="#00e5ff"/>
-                  </linearGradient>
-                </defs>
-              </svg>
-              <h1>House Mode</h1>
-            </div>
+            <!-- CENTER MIXER -->
+            <div class="mixer-section">
+              <div class="mixer-display">
+                <div class="display-content">
+                  <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                    <span id="screenMeta">Queue • 124 BPM • KEY 11A</span>
+                    <span id="screenTime">00:00</span>
+                  </div>
+                  <div class="waveform"></div>
+                  <div style="display:flex;align-items:center;gap:12px;margin-top:8px;">
+                    <span id="screenTitle" style="color:#fff;font-weight:700;">Ready</span>
+                    <div style="flex:1;height:4px;background:#333;border-radius:2px;">
+                      <div id="screenProgress" style="height:100%;width:0;background:var(--green);border-radius:2px;transition:width .6s ease;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mixer-controls">
+                <div class="channel-strip">
+                  <div class="eq-knob"></div>
+                  <div class="eq-knob"></div>
+                  <div class="eq-knob"></div>
+                  <div class="channel-fader">
+                    <div class="fader-handle"></div>
+                  </div>
+                </div>
+                <div class="channel-strip">
+                  <div class="eq-knob"></div>
+                  <div class="eq-knob"></div>
+                  <div class="eq-knob"></div>
+                  <div class="channel-fader">
+                    <div class="fader-handle"></div>
+                  </div>
+                </div>
+                <div class="channel-strip">
+                  <div class="eq-knob"></div>
+                  <div class="eq-knob"></div>
+                  <div class="eq-knob"></div>
+                  <div class="channel-fader">
+                    <div class="fader-handle"></div>
+                  </div>
+                </div>
+                <div class="channel-strip">
+                  <div class="eq-knob"></div>
+                  <div class="eq-knob"></div>
+                  <div class="eq-knob"></div>
+                  <div class="channel-fader">
+                    <div class="fader-handle"></div>
+                  </div>
+                </div>
+              </div>
 
-            <div class="screen-housing">
-              <div class="bezel">
-                <div class="glass" id="screen">
-                  <span class="screw tl"></span><span class="screw tr"></span>
-                  <span class="screw bl"></span><span class="screw br"></span>
-                  <div class="scr-head">
-                    <span class="scr-meta" id="screenMeta">Queue • 124 BPM • KEY 11A</span>
-                    <span class="scr-time" id="screenTime">00:00</span>
+              <div class="bottom-controls">
+                <div class="slider-section">
+                  <div class="slider-label">Tempo</div>
+                  <div class="pro-slider" id="tempoSlider">
+                    <div class="slider-track" id="tempoTrack"></div>
+                    <div class="slider-handle" id="tempoHandle"></div>
                   </div>
-                  <div class="wave-wrap">
-                    <div class="wave a"></div><div class="playhead"></div><div class="wave b"></div>
-                  </div>
-                  <div class="scr-foot">
-                    <span class="scr-title" id="screenTitle">Ready</span>
-                    <div class="progress"><span id="screenProgress"></span></div>
+                </div>
+                <div class="slider-section">
+                  <div class="slider-label">Vibe</div>
+                  <div class="pro-slider" id="vibeSlider">
+                    <div class="slider-track" id="vibeTrack"></div>
+                    <div class="slider-handle" id="vibeHandle"></div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="vu" aria-hidden="true">
-              <span></span><span></span><span></span><span></span><span></span>
-              <span></span><span></span><span></span><span></span><span></span>
+            <!-- RIGHT DECK -->
+            <div class="deck-section">
+              <div class="jog-wheel spin" id="rightJog">
+                <div class="platter">
+                  <div class="platter-inner"></div>
+                  <div class="center-label">MUSIC</div>
+                  <div class="spindle"></div>
+                </div>
+              </div>
+            
+              <!-- Keep all knobs -->
+              <div class="deck-controls">
+                <div class="pro-knob">
+                  <div class="knob-control"></div>
+                  <div class="knob-label">Gain</div>
+                </div>
+                <div class="pro-knob">
+                  <div class="knob-control"></div>
+                  <div class="knob-label">High</div>
+                </div>
+                <div class="pro-knob">
+                  <div class="knob-control"></div>
+                  <div class="knob-label">Mid</div>
+                </div>
+                <div class="pro-knob">
+                  <div class="knob-control"></div>
+                  <div class="knob-label">Low</div>
+                </div>
+                <div class="pro-knob">
+                  <div class="knob-control"></div>
+                  <div class="knob-label">Filter</div>
+                </div>
+                <div class="pro-knob">
+                  <div class="knob-control"></div>
+                  <div class="knob-label">Cue</div>
+                </div>
+              </div>
+            
+              <!-- Pads go BELOW the knobs -->
+              <div class="pad-row">
+                <button class="pad-btn" data-target="#projects">Projects</button>
+                <button class="pad-btn" data-target="#blog">Blog</button>
+                <button class="pad-btn" data-target="#contact">Contact</button>
+              </div>
+            </div>
+            <div class="mobile-nav">
+              <button class="pad-btn" data-target="#about">About</button>
+              <button class="pad-btn" data-target="#experience">Experience</button>
+              <button class="pad-btn" data-target="#coursework">Coursework</button>
+              <button class="pad-btn" data-target="#projects">Projects</button>
+              <button class="pad-btn" data-target="#blog">Blog</button>
+              <button class="pad-btn" data-target="#contact">Contact</button>
+            </div>            
+            
             </div>
 
-            <div class="pads">
-              <button class="pad" data-target="#about"><span class="led"></span><span class="pad-title">About</span><span class="mini">overview & intro</span></button>
-              <button class="pad" data-target="#blog"><span class="led"></span><span class="pad-title">Blog</span><span class="mini">articles & insights</span></button>
-              <button class="pad" data-target="#experience"><span class="led"></span><span class="pad-title">Experience</span><span class="mini">roles & skills</span></button>
-              <button class="pad" data-target="#projects"><span class="led"></span><span class="pad-title">Projects</span><span class="mini">portfolio & work</span></button>
-              <button class="pad" data-target="#coursework"><span class="led"></span><span class="pad-title">Coursework</span><span class="mini">classes I loved</span></button>
-              <button class="pad" data-target="#contact"><span class="led"></span><span class="pad-title">Contact</span><span class="mini">reach out</span></button>
-              <button class="pad" data-target="#house-recommender"><span class="led"></span><span class="pad-title">New Track</span><span class="mini">recommendation</span></button>
-            </div>
-
-            <div class="faders">
-              <div class="fader"><label for="tempo">Tempo</label><input id="tempo" type="range" min="0.6" max="1.8" step="0.01" value="1" /></div>
-              <div class="fader"><label for="vibe">Vibe (Color)</label><input id="vibe" type="range" min="0" max="360" step="1" value="150" /></div>
-            </div>
-          </div>
-
-          <div class="deck" aria-label="Right turntable">
-            <div class="platter spin" id="rightPlatter">
-              <div class="grooves spin"></div>
-              <div class="label"></div>
-              <div class="spindle"></div>
-              <div class="arm" style="left:2%; transform:rotate(165deg); transform-origin:left center"></div>
-            </div>
           </div>
         </div>
       </div>
+
 
       <div class="skip-hint" id="skipHint" role="button" tabindex="0" aria-label="Continue">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -756,8 +699,11 @@ footer{margin-top:80px;padding:46px 0;text-align:center;color:var(--sub);font-si
     </div>
   </section>
 
-  <footer>© 2025 Jeremy Calcarian</footer>
-
   <script src="script.js"></script>
+  
+    
+
+  <footer>© 2025 Jeremy Calcarian</footer>
 </body>
+
 </html>
