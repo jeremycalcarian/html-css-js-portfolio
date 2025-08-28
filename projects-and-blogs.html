@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Projects & Blogs – DJ Decks</title>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet"/>
+
+<style>
+  :root{
+    --green:#00ff88; --cyan:#00e5ff; --text:#e7f4ef; --sub:#aeb8b4; --bg:#050709;
+    --glass:rgba(0,255,136,.08); --border:rgba(0,255,136,.22); --r:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:Inter,system-ui,sans-serif;color:var(--text);line-height:1.6;
+    background:radial-gradient(1200px 700px at 20% -10%, #0b0f12 0%, #050709 45%, #000 100%);
+    overflow-x:hidden;
+  }
+
+  header{
+    position:sticky;top:0;z-index:50;
+    display:flex;align-items:center;justify-content:center;
+    padding:16px; border-bottom:1px solid var(--border);
+    background:rgba(5,8,8,.8); backdrop-filter:blur(10px);
+  }
+  header h1{font-family:Orbitron,system-ui;font-weight:800;color:var(--green);font-size:1.35rem}
+  .rm-toggle{position:absolute;right:16px;top:12px}
+  .rm-toggle button{
+    background:transparent;border:1px solid var(--border);color:var(--sub);
+    padding:6px 10px;border-radius:999px;cursor:pointer;font-size:.85rem
+  }
+  .rm-toggle button:hover{border-color:var(--green);color:var(--green)}
+  /* Mobile-friendly placement */
+@media (max-width: 600px) {
+  .rm-toggle {
+    position: static;              /* let it flow instead of absolute */
+    margin-top: 8px;
+    width: 100%;                   /* full width row */
+    text-align: center;            /* center the button */
+    order: 3;                      /* ensure it appears after title/back button */
+  }
+  header {
+    flex-direction: column;
+    align-items: center;
+    padding: 12px;
+    gap: 6px;                      /* small spacing between rows */
+  }
+}
+
+
+  /* background texture */
+  .grid{position:fixed;inset:0;z-index:-3;opacity:.28;background-image:
+        linear-gradient(rgba(0,255,136,.05) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(0,255,136,.05) 1px,transparent 1px);
+        background-size:60px 60px;animation:gridfade 6s ease-in-out infinite}
+  @keyframes gridfade{50%{opacity:.5}}
+  .scanline{position:fixed;inset:0;z-index:-2;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.0) 0 2px,rgba(0,255,136,.03) 2px 3px)}
+  @media (prefers-reduced-motion: reduce){ .grid{animation:none} html{scroll-behavior:auto} }
+  body.reduced-motion .grid{animation:none}
+
+  /* DECKS */
+  .decks{
+    max-width:1400px;margin:16px auto; padding:0 16px;
+    display:grid;grid-template-columns:1fr 1fr;gap:16px;
+  }
+  .deck{
+    background:#0d1110;border:1px solid var(--border);border-radius:var(--r);
+    padding:14px 14px 18px; position:relative; overflow:hidden; min-height:240px;
+    box-shadow:0 12px 36px rgba(0,0,0,.45);
+  }
+  .deck header{all:unset;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .deck h2{font-family:Orbitron,system-ui;color:var(--green);font-size:.95rem;letter-spacing:.08em}
+  .drop-hint{color:var(--sub);font-size:.85rem}
+  .deck .top{display:grid;grid-template-columns:60px 1fr;gap:12px;align-items:center}
+  .art{width:60px;height:60px;border-radius:10px;background:linear-gradient(135deg,var(--green),var(--cyan));}
+  .now{font-weight:800;font-size:1.05rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .meta{font-family:Orbitron,system-ui;letter-spacing:.06em;color:#9eb5ae;font-size:.78rem;margin-top:2px;
+        font-variant-numeric:tabular-nums}
+  .genres{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .chip{font-size:.72rem;padding:2px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.18);color:var(--cyan);background:var(--glass)}
+ /* Wave is hidden by default */
+.wave{
+  height:46px; margin-top:10px; border-radius:4px;
+  background:repeating-linear-gradient(90deg,rgba(0,255,136,.42) 0 4px, rgba(0,229,255,.42) 4px 8px, transparent 8px 11px);
+  background-size:150px 100%;
+  /* key differences ↓ */
+  display:none;           /* invisible until load */
+  width:0;                /* collapsed */
+  overflow:hidden;
+  animation:waveScroll 2s linear infinite;
+  animation-play-state:paused;   /* paused until fully loaded */
+  transition:width .5s ease;     /* left→right reveal */
+}
+
+/* When loading: show wave, sweep width 0→100%, keep animation paused */
+.deck.loading .wave{
+  display:block;
+  width:100%;
+  animation-play-state:paused;
+}
+
+/* After loaded: keep visible and start the scrolling animation */
+.deck.active .wave{
+  display:block;
+  width:100%;
+  animation-play-state:running;
+}
+
+@keyframes waveScroll{to{background-position:-150px 0}}
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){ .wave{animation:none; transition:none} }
+body.reduced-motion .wave{animation:none; transition:none}
+
+
+  /* LIBRARY */
+  .library{
+    max-width:1400px;margin:6px auto 60px; padding:0 16px;
+    display:grid;grid-template-columns:220px 1fr; gap:16px;
+  }
+  .folders{
+    background:#0b0f0d;border:1px solid var(--border);border-radius:12px;padding:12px
+  }
+  .folders h3{font-family:Orbitron,system-ui;color:var(--green);font-size:.95rem;margin-bottom:8px}
+  .folder-btn{
+    width:100%; text-align:left; background:#0c1210; color:#cfe5dd;
+    border:1px solid rgba(255,255,255,.08); border-radius:10px; padding:10px; margin-bottom:8px;
+    cursor:pointer; font-weight:700;
+  }
+  .folder-btn.active{border-color:var(--green); box-shadow:0 0 0 2px rgba(0,255,136,.12)}
+
+  .crate{
+    background:#0b0f0d;border:1px solid var(--border);border-radius:12px; overflow:hidden;
+  }
+  .crate-bar{display:flex;gap:10px;align-items:center;padding:10px;background:#0c1210;border-bottom:1px solid rgba(255,255,255,.06)}
+  .crate-bar input{flex:1;background:#0a100e;color:#e7f4ef;border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:8px 10px}
+  .list-wrap{max-height:64vh; overflow:auto}
+  .list-header{
+    position:sticky; top:0; z-index:1;
+    display:grid;grid-template-columns:minmax(260px,1fr) 110px 74px minmax(260px,auto);
+    gap:12px; align-items:center;
+    padding:10px 12px; background:#0e1412; border-bottom:1px solid rgba(255,255,255,.06);
+    font-family:Orbitron,system-ui; letter-spacing:.06em; font-size:.78rem; color:#a9b5b0;
+  }
+  .row{
+    display:grid;grid-template-columns:minmax(260px,1fr) 110px 74px minmax(260px,auto);
+    gap:12px; align-items:center;
+    padding:12px; border-bottom:1px solid rgba(255,255,255,.06);
+    background:rgba(255,255,255,.02);
+  }
+  .row:nth-child(even){background:rgba(255,255,255,.03)}
+  .row:hover{background:rgba(0,255,136,.06); border-color:rgba(0,255,136,.25)}
+  .title{font-weight:800;color:#e7f4ef;cursor:pointer}
+  .col-num{color:#9fb0ab;font-size:.9rem;text-align:right;font-variant-numeric:tabular-nums}
+  .tags{display:flex;gap:6px;flex-wrap:wrap}
+  .tag{font-size:.72rem;border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:2px 8px;color:#9fe9ff}
+  .row[draggable="true"]{cursor:grab; user-select:none}
+
+  footer{margin:36px 0;text-align:center;color:#8ea49f}
+
+  .visually-hidden{position:absolute!important;clip:rect(1px,1px,1px,1px);padding:0;border:0;height:1px;width:1px;overflow:hidden;white-space:nowrap}
+
+  @media (max-width:900px){
+    .decks{grid-template-columns:1fr}
+    .library{grid-template-columns:1fr}
+    .list-header,.row{grid-template-columns:minmax(160px,1fr) 90px 64px minmax(160px,auto)}
+  }
+  .back-btn{
+  position:absolute;left:16px;top:12px;
+  font-size:.85rem;font-weight:600;
+  color:var(--sub);text-decoration:none;
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:6px 12px;
+  transition:.2s;
+}
+.back-btn:hover{
+  color:var(--green);
+  border-color:var(--green);
+  box-shadow:0 0 8px rgba(0,255,136,.25);
+}
+
+</style>
+</head>
+<body>
+<div class="grid"></div><div class="scanline"></div>
+
+<div id="srStatus" class="visually-hidden" aria-live="polite"></div>
+
+<header>
+  <a href="index.html" class="back-btn">← Back</a>
+  <h1>Projects & Blogs</h1>
+  <div class="rm-toggle"><button id="rmBtn" type="button">Reduced Motion: Off</button></div>
+</header>
+
+<section class="decks">
+  <!-- Projects Deck -->
+  <div id="deck-project" class="deck" role="region" aria-label="Projects Deck"
+       ondragover="allowDrop(event)" ondrop="dropToDeck(event,'project')">
+    <header>
+      <h2>PROJECTS DECK</h2>
+      <div class="drop-hint">Click or drop a project</div>
+    </header>
+    <div class="top">
+      <div class="art" id="art-project" aria-hidden="true"></div>
+      <div>
+        <div class="now"  id="now-project">No project loaded</div>
+        <div class="meta" id="meta-project">— • — BPM • KEY —</div>
+      </div>
+    </div>
+    <div class="genres" id="genres-project"></div>
+    <div class="wave"></div>
+    <div class="progress" id="prog-project"></div>
+  </div>
+
+  <!-- Blogs Deck -->
+  <div id="deck-blog" class="deck" role="region" aria-label="Blog Deck"
+       ondragover="allowDrop(event)" ondrop="dropToDeck(event,'blog')">
+    <header>
+      <h2>BLOG DECK</h2>
+      <div class="drop-hint">Click or drop a blog</div>
+    </header>
+    <div class="top">
+      <div class="art" id="art-blog" aria-hidden="true"></div>
+      <div>
+        <div class="now"  id="now-blog">No post loaded</div>
+        <div class="meta" id="meta-blog">— • — BPM • KEY —</div>
+      </div>
+    </div>
+    <div class="genres" id="genres-blog"></div>
+    <div class="wave"></div>
+    <div class="progress" id="prog-blog"></div>
+  </div>
+</section>
+
+<section class="library">
+  <aside class="folders" aria-label="Library">
+    <h3>Library</h3>
+    <button class="folder-btn active" data-folder="projects">Projects</button>
+    <button class="folder-btn" data-folder="blogs">Blogs</button>
+  </aside>
+
+  <div class="crate" aria-label="Items">
+    <div class="crate-bar">
+      <input id="search" type="search" placeholder="Search title, tags, genres…"/>
+    </div>
+    <div class="list-wrap">
+      <div class="list-header">
+        <div>Title</div><div style="text-align:right">BPM</div><div style="text-align:right">Key</div><div>Genres</div>
+      </div>
+      <div id="list" class="list" role="list"></div>
+    </div>
+  </div>
+</section>
+
+<footer>© 2025 Jeremy Calcarian</footer>
+
+<script>
+/* ===== Reduced Motion ===== */
+(function initReducedMotion(){
+  const btn = document.getElementById('rmBtn');
+  const saved = localStorage.getItem('reducedMotion') === 'true';
+  if(saved) document.body.classList.add('reduced-motion');
+  btn.textContent = 'Reduced Motion: ' + (document.body.classList.contains('reduced-motion')?'On':'Off');
+  btn.addEventListener('click', ()=>{
+    document.body.classList.toggle('reduced-motion');
+    localStorage.setItem('reducedMotion', document.body.classList.contains('reduced-motion'));
+    btn.textContent = 'Reduced Motion: ' + (document.body.classList.contains('reduced-motion')?'On':'Off');
+  });
+})();
+
+/* ===== Data ===== */
+const projects = [
+  { title:'Option Pricing Simulation', url:'option-pricing.html', bpm:124, key:'11A',
+    genres:['Finance','Monte Carlo','Visualization'], tags:['Python','Greeks'], art:'./assets/stochastic.png' },
+  { title:'EEG Stress Dashboard', url:'eeg-dashboard.html', bpm:126, key:'7A',
+    genres:['Machine Learning','Neurotech','Data Viz'], tags:['EEG','Pipelines'], art:'./assets/eeg_icon.png' },
+  { title:'Volunteer Dashboard', url:'empowerr-dashboard.html', bpm:126, key:'10A',
+    genres:['Next.js','Firebase','Nonprofit'], tags:['Auth','Realtime'], art:'./assets/Dashboard_ProjectPreview.jpeg' },
+  { title:'My Non-Profit', url:'empowerrmd.html', bpm:121, key:'6A',
+    genres:['Operations','Visualization'], tags:['Maps','ETL'], art:'./assets/empowerrlogo.png' },
+];
+
+const blogs = [
+  { title:'Martingales & Put-Call Parity', url:'martingale_blog1.html', bpm:118, key:'8A',
+    genres:['Math','Finance'], tags:['No-arbitrage','Measure'], art:'./assets/blog_martingale.jpg' },
+  { title:'VIX Intuitive Derivation', url:'VIX_blog2.html', bpm:120, key:'9A',
+    genres:['Derivatives','Volatility'], tags:['Options','Variance'], art:'./assets/blog_vix.jpg' },
+  { title:'All In: Betting Scholarship Money', url:'trading-blog.html', bpm:122, key:'12A',
+    genres:['Trading','Personal'], tags:['Risk','Behavioral'], art:'./assets/blog_trading.jpg' },
+];
+
+/* ===== Elements & State ===== */
+let currentFolder = 'projects';
+const folders = document.querySelectorAll('.folder-btn');
+const list = document.getElementById('list');
+const search = document.getElementById('search');
+const sr = document.getElementById('srStatus');
+
+/* ===== Helpers ===== */
+function rowsData(){
+  const base = currentFolder==='projects' ? projects : blogs;
+  const q = (search.value||'').toLowerCase();
+  return base.filter(item=>{
+    const hay = [item.title, ...(item.tags||[]), ...(item.genres||[])].join(' ').toLowerCase();
+    return hay.includes(q);
+  });
+}
+function chip(text, cls='tag'){ return `<span class="${cls}">${text}</span>`; }
+function asRow(item, i){
+  const genreHTML = (item.genres||[]).map(g=>chip(g)).join('');
+  return `
+    <div class="row" role="listitem" tabindex="0" draggable="true"
+         data-idx="${i}" data-type="${currentFolder}">
+      <div class="title">${item.title}</div>
+      <div class="col-num">${item.bpm} BPM</div>
+      <div class="col-num">${item.key}</div>
+      <div class="tags">${genreHTML}</div>
+    </div>
+  `;
+}
+function renderList(){
+  list.innerHTML = rowsData().map(asRow).join('');
+  bindRows();
+}
+function setFolder(folder){
+  currentFolder = folder;
+  folders.forEach(b=>b.classList.toggle('active', b.dataset.folder===folder));
+  search.value='';
+  renderList();
+}
+
+/* ===== Audio blip ===== */
+function beep(freq=220,dur=0.1){
+  try{
+    window._ac = window._ac || new (window.AudioContext||window.webkitAudioContext)();
+    const o=_ac.createOscillator(), g=_ac.createGain(), t=_ac.currentTime;
+    o.type='sine'; o.frequency.value=freq;
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.linearRampToValueAtTime(0.05,t+0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(_ac.destination); o.start(t); o.stop(t+dur);
+  }catch(e){}
+}
+
+/* ===== Deck loading + redirect ===== */
+const NAV_DELAY_FAST = 250;
+const NAV_DELAY = 750;
+
+function loadToDeck(kind, item, shouldNavigate=true){
+  const ids = (kind==='project')
+    ? {deck:'deck-project', now:'now-project', meta:'meta-project', prog:'prog-project', genres:'genres-project', art:'art-project'}
+    : {deck:'deck-blog',    now:'now-blog',    meta:'meta-blog',    prog:'prog-blog',    genres:'genres-blog',    art:'art-blog'};
+
+  const deckEl = document.getElementById(ids.deck);
+  const nowEl  = document.getElementById(ids.now);
+  const metaEl = document.getElementById(ids.meta);
+  const progEl = document.getElementById(ids.prog);
+  const gsEl   = document.getElementById(ids.genres);
+  const artEl  = document.getElementById(ids.art);
+
+  // reset deck state → trigger left→right wave reveal
+  deckEl.classList.remove('active');
+  deckEl.classList.add('loading');
+
+  nowEl.textContent = 'Loading…';
+  metaEl.textContent = `Queue • ${item.bpm} BPM • KEY ${item.key}`;
+  progEl.style.width='0%'; void progEl.offsetWidth; progEl.style.width='100%';
+
+  if (artEl) { artEl.style.backgroundImage = `url('${item.art||''}')`; artEl.style.backgroundSize='cover'; }
+
+  beep(330,.08);
+
+  const delay = document.body.classList.contains('reduced-motion') ? 250 : 750;
+
+  setTimeout(()=>{
+    nowEl.textContent = item.title;
+    metaEl.textContent = `Loaded • ${item.bpm} BPM • KEY ${item.key}`;
+    gsEl.innerHTML = (item.genres||[]).map(g=>`<span class="chip">${g}</span>`).join('');
+
+    // wave switches from paused (loading) → running (active)
+    deckEl.classList.remove('loading');
+    deckEl.classList.add('active');
+
+    if (sr) sr.textContent = `Loaded ${item.title} into the ${kind} deck.`;
+    beep(220,.08);
+
+    if(shouldNavigate && item.url){
+      setTimeout(()=>{ window.location.href = item.url; }, 750);
+    }
+  }, delay);
+}
+
+
+/* ===== Drag/Click Bindings ===== */
+function bindRows(){
+  list.querySelectorAll('.row').forEach(row=>{
+    const idx = +row.dataset.idx;
+    const typeKey = row.dataset.type; // 'projects' or 'blogs'
+    const dataArray = typeKey==='projects' ? projects : blogs;
+    const item = dataArray[idx];
+    const autoDeck = typeKey==='projects' ? 'project' : 'blog';
+
+    // click + keyboard
+    row.addEventListener('click', ()=> loadToDeck(autoDeck, item, true));
+    row.addEventListener('keydown', e=>{
+      if(e.key==='Enter' || e.key===' '){ e.preventDefault(); loadToDeck(autoDeck, item, true); }
+    });
+
+    // drag payload
+    row.addEventListener('dragstart', e=>{
+      e.dataTransfer.setData('text/plain', JSON.stringify({type:autoDeck, idx}));
+      e.dataTransfer.effectAllowed='copy';
+    });
+
+    // prefetch on hover/focus
+    row.addEventListener('mouseover', ()=> prefetch(item.url));
+    row.addEventListener('focusin',   ()=> prefetch(item.url));
+  });
+}
+
+function allowDrop(e){ e.preventDefault(); e.currentTarget.classList.add('drop-ready'); }
+function dropToDeck(e, deckType){
+  e.preventDefault();
+  e.currentTarget.classList.remove('drop-ready');
+  try{
+    const {type, idx} = JSON.parse(e.dataTransfer.getData('text/plain')||'{}');
+    if(!type){ return; }
+    if(deckType==='project' && type!=='project'){ flashWrong('deck-project'); return; }
+    if(deckType==='blog'    && type!=='blog'){    flashWrong('deck-blog');    return; }
+    const item = (type==='project' ? projects : blogs)[idx];
+    if(item) loadToDeck(deckType, item, true);
+  }catch(err){}
+}
+function flashWrong(deckId){
+  const el=document.getElementById(deckId);
+  el.classList.add('wrong');
+  setTimeout(()=> el.classList.remove('wrong'), 220);
+}
+
+/* ===== Prefetch helper ===== */
+function prefetch(href){
+  if(!href) return;
+  const link = document.createElement('link');
+  link.rel = 'prefetch';
+  link.href = href;
+  document.head.appendChild(link);
+}
+
+/* ===== Folder + Search ===== */
+document.querySelectorAll('.folder-btn').forEach(btn=> btn.addEventListener('click', ()=> setFolder(btn.dataset.folder)));
+search.addEventListener('input', renderList);
+
+/* init */
+setFolder('projects');
+</script>
+</body>
+</html>

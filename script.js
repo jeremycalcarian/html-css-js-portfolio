@@ -77,18 +77,17 @@ function playBeep(freq = 220, duration = 0.12) {
     if (!audioContext) {
       audioContext = new (window.AudioContext || window.webkitAudioContext)();
     }
-    
     const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
+    const gainNode   = audioContext.createGain();
+
     oscillator.type = 'sine';
     oscillator.frequency.value = freq;
-    
+
     const now = audioContext.currentTime;
     gainNode.gain.setValueAtTime(0.0001, now);
     gainNode.gain.linearRampToValueAtTime(0.04, now + 0.01);
     gainNode.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-    
+
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
     oscillator.start(now);
@@ -106,28 +105,28 @@ function loadTrack(target) {
   const track = trackData[target];
   if (!track) return;
 
-  const screenTitle = document.getElementById('screenTitle');
-  const screenMeta = document.getElementById('screenMeta');
-  const screenTime = document.getElementById('screenTime');
+  const screenTitle    = document.getElementById('screenTitle');
+  const screenMeta     = document.getElementById('screenMeta');
+  const screenTime     = document.getElementById('screenTime');
   const screenProgress = document.getElementById('screenProgress');
-  
+
   if (screenTitle) screenTitle.textContent = 'Loading...';
-  if (screenMeta) screenMeta.textContent = `Queue • ${track.bpm} BPM • KEY ${track.key}`;
-  if (screenTime) screenTime.textContent = '00:00';
+  if (screenMeta)  screenMeta.textContent  = `Queue • ${track.bpm} BPM • KEY ${track.key}`;
+  if (screenTime)  screenTime.textContent  = '00:00';
   if (screenProgress) {
     screenProgress.style.width = '0%';
     screenProgress.style.transition = 'width 0.3s ease';
   }
-  
+
   // Quick load animation - progress bar fills fast
   setTimeout(() => { if (screenProgress) screenProgress.style.width = '100%'; }, 100);
-  
+
   // Show loaded state and navigate
   setTimeout(() => {
     if (screenTitle) screenTitle.textContent = track.title;
-    if (screenMeta) screenMeta.textContent = `Playing • ${track.bpm} BPM • KEY ${track.key}`;
+    if (screenMeta)  screenMeta.textContent  = `Playing • ${track.bpm} BPM • KEY ${track.key}`;
     playBeep();
-    
+
     setTimeout(() => {
       closeOverlay();
       setTimeout(() => scrollToSection(target), 300);
@@ -141,10 +140,10 @@ function loadTrack(target) {
 function scrollToSection(target) {
   const element = document.querySelector(target);
   if (!element) return;
-  
+
   const navHeight = document.querySelector('nav')?.offsetHeight || 0;
   const targetPosition = element.getBoundingClientRect().top + window.scrollY - (navHeight + 10);
-  
+
   window.scrollTo({ top: Math.max(targetPosition, 0), behavior: 'smooth' });
 }
 
@@ -154,7 +153,6 @@ function scrollToSection(target) {
 function closeSkipHint() {
   const skipHint = document.getElementById('skipHint');
   if (skipHint) {
-    // fade out via CSS hook and then hard-remove
     document.body.classList.add('loaded');
     setTimeout(() => { if (skipHint && skipHint.parentNode) skipHint.parentNode.removeChild(skipHint); }, 400);
   }
@@ -163,7 +161,7 @@ function closeSkipHint() {
 function launchOverlay() {
   const overlay = document.getElementById('djOverlay');
   if (!overlay) return;
-  
+
   overlay.classList.remove('closed', 'closing');
   overlay.classList.add('open');
   document.body.classList.add('lock');
@@ -176,10 +174,10 @@ function launchOverlay() {
 function closeOverlay() {
   const overlay = document.getElementById('djOverlay');
   if (!overlay || overlay.classList.contains('closed') || overlay.classList.contains('closing')) return;
-  
+
   overlay.classList.add('closing');
   closeSkipHint();
-  
+
   setTimeout(() => {
     overlay.classList.remove('open', 'closing');
     overlay.classList.add('closed');
@@ -193,18 +191,29 @@ function closeOverlay() {
 =========================== */
 function updateColorTheme(hue) {
   const saturation = 100;
-  const lightness = 55;
+  const lightness  = 55;
   const newGreen = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-  const newCyan = `hsl(${(hue + 60) % 360}, ${saturation}%, ${lightness + 10}%)`;
-  
+  const newCyan  = `hsl(${(hue + 60) % 360}, ${saturation}%, ${lightness + 10}%)`;
+
   document.documentElement.style.setProperty('--green', newGreen);
-  document.documentElement.style.setProperty('--cyan', newCyan);
+  document.documentElement.style.setProperty('--cyan',  newCyan);
 }
 
 /* ===========================
    House music recommender
 =========================== */
 function initHouseRecommender() {
+  // 1) Require DOM hooks first
+  const btn     = document.getElementById('recommend-btn');
+  const rec     = document.getElementById('recommendation');
+  const moreMsg = document.getElementById('more-msg');
+
+  if (!btn || !rec) {
+    console.warn('[Recommender] Missing #recommend-btn or #recommendation');
+    return;
+  }
+
+  // 2) Track list
   const houseTracks = [
     '5veX2gRTIhuwxyelOqeeOM','4lq9lGXtJnAPLWVZav5Uyh','2klm9vgplHbcAq5VIHZCu4','3f5LJiAEHHZtW8bzF4qpNr',
     '5HphzVqJsiVij9zqLF5d14','5F9rZa65ePNd3HZFkavre7','2CtAajnRp5uwRCpQck0ki8','3X7zc5bxxXSZeHELV0I8DE',
@@ -213,20 +222,15 @@ function initHouseRecommender() {
     '39iL6MNqs9MIile4ohbx6K','0FBdJP7yzvq88bG1keGgt4','04gs2fDnnjT6995ruR1qbk','30uUMdzRVdYd9KuP9rJXxo',
     '6q36Cqt2d3O5jqrQR9uXCp','6Uz2230ZgSmqQli5SMaIZY','70fplEUWEuEIaJ2peNpPxW','0aeYqWitH0mkLtzcpeheWk',
     '6q6GR1UxIkyaVJuUNYtEjw','78nx0HDJIFD5xDq2L5420Z','1iKiLPkFnYhbCm5uvaDwjS','2y7UV3mw1igF35pj4b3xn7',
-    '1AS1oLvEr6PNsCLnuEUmCi','38tYIX8o2VDBpfowqBVPYK','451TMhTkxtyZPzrcuCdm9H'
+    '1AS1oLvEr6PNsCLnuEUmCi','38tYIX8o2VDBpfowqBVPYK','451TMhTkxtyZPzrcuCdm9H', '2CXF9gb38FVXESYZFobnCQ'
   ];
 
-  let remaining = [];      // queue of tracks left in this cycle
-  let lastId = null;       // last played track id (to avoid immediate repeat across cycles)
-  let pressCount = 0;      // count presses before revealing "more"
-
-  const btn = document.getElementById('recommend-btn');
-  const rec = document.getElementById('recommendation');
-  const moreMsg = document.getElementById('more-msg');
-  if (!btn || !rec) return;
-
-  // Fisher–Yates shuffle
+  // 3) Defensive helpers
   const shuffle = (arr) => {
+    if (!Array.isArray(arr)) {
+      console.error('[Recommender] shuffle received non-array:', arr);
+      return [];
+    }
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];
@@ -234,38 +238,45 @@ function initHouseRecommender() {
     return arr;
   };
 
-  // Get next non-repeating track id
-  const nextId = () => {
-    if (remaining.length === 0) {
-      // start a fresh cycle
-      remaining = shuffle(houseTracks.slice());
+  let pool     = [];
+  let lastId   = null;
+  let presses  = 0;
 
-      // avoid immediate repeat across cycles
-      if (lastId && remaining.length > 1 && remaining[0] === lastId) {
-        const swapIdx = remaining.findIndex(id => id !== lastId);
-        if (swapIdx > 0) [remaining[0], remaining[swapIdx]] = [remaining[swapIdx], remaining[0]];
+  const nextId = () => {
+    if (!pool.length) {
+      pool = shuffle(houseTracks.slice());
+      // avoid immediate repeat when resetting the pool
+      if (lastId && pool.length > 1 && pool[0] === lastId) {
+        const swapIdx = pool.findIndex(id => id !== lastId);
+        if (swapIdx > 0) [pool[0], pool[swapIdx]] = [pool[swapIdx], pool[0]];
       }
     }
-    const id = remaining.shift();
-    lastId = id;
+    const id = pool.shift();
+    lastId = id || null;
     return id;
   };
 
-  btn.addEventListener('click', function () {
-    pressCount++;
-
+  // 4) Click handler
+  btn.addEventListener('click', () => {
     const id = nextId();
-    const iframe = `<iframe src="https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0" width="100%" height="172" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>`;
-
-    rec.innerHTML = iframe;
-    rec.classList.add('show');
-
-    // Only reveal the "more/playlist" UI after the 3rd press
-    if (moreMsg && pressCount >= 3) {
-      moreMsg.style.display = 'block';
+    if (!id) {
+      console.error('[Recommender] No track ID available.');
+      return;
     }
+
+    presses += 1;
+
+    rec.innerHTML =
+      `<iframe src="https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0"
+               width="100%" height="172" frameborder="0"
+               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+               loading="lazy"></iframe>`;
+
+    rec.classList.add('show');
+    if (moreMsg && presses >= 3) moreMsg.style.display = 'block';
   });
 }
+
 
 /* ===========================
    Initialize sliders and controls
@@ -274,7 +285,7 @@ function initSliders() {
   // Tempo slider
   const tempoSlider = document.getElementById('tempoSlider');
   const tempoHandle = document.getElementById('tempoHandle');
-  const tempoTrack = document.getElementById('tempoTrack');
+  const tempoTrack  = document.getElementById('tempoTrack');
 
   if (tempoSlider && tempoHandle && tempoTrack) {
     let isDragging = false;
@@ -289,7 +300,7 @@ function initSliders() {
       const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
       const percentage = (x / rect.width) * 100;
       tempoHandle.style.left = `calc(${percentage}% - 8px)`;
-      tempoTrack.style.width = percentage + '%';
+      tempoTrack.style.width  = percentage + '%';
       tempo = 0.6 + (percentage / 100) * 1.2;
       document.documentElement.style.setProperty('--tempo', tempo);
       document.documentElement.style.setProperty('--rpm', (3 / tempo) + 's');
@@ -298,13 +309,13 @@ function initSliders() {
     document.addEventListener('mouseup', function() { isDragging = false; });
 
     tempoHandle.style.left = 'calc(50% - 8px)';
-    tempoTrack.style.width = '50%';
+    tempoTrack.style.width  = '50%';
   }
 
   // Vibe slider
   const vibeSlider = document.getElementById('vibeSlider');
   const vibeHandle = document.getElementById('vibeHandle');
-  const vibeTrack = document.getElementById('vibeTrack');
+  const vibeTrack  = document.getElementById('vibeTrack');
 
   if (vibeSlider && vibeHandle && vibeTrack) {
     let isVibing = false;
@@ -319,7 +330,7 @@ function initSliders() {
       const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
       const percentage = (x / rect.width) * 100;
       vibeHandle.style.left = `calc(${percentage}% - 8px)`;
-      vibeTrack.style.width = percentage + '%';
+      vibeTrack.style.width  = percentage + '%';
       vibe = (percentage / 100) * 360;
       updateColorTheme(vibe);
     });
@@ -327,23 +338,96 @@ function initSliders() {
     document.addEventListener('mouseup', function() { isVibing = false; });
 
     vibeHandle.style.left = 'calc(42% - 8px)';
-    vibeTrack.style.width = '42%';
+    vibeTrack.style.width  = '42%';
   }
 }
 
 /* ===========================
-   Initialize pad buttons
+   External page load (Coursework, etc.)
+   Sequence: beep → "Loading..." → progress → "Playing: X" + beep → close overlay → navigate
+=========================== */
+let _djNavLock = false; // avoid double-click spam
+
+function loadExternalPage(url, label, meta = { bpm: '128', key: '10A' }) {
+  if (_djNavLock) return;
+  _djNavLock = true;
+
+  launchOverlay();
+
+  const screenTitle    = document.getElementById('screenTitle');
+  const screenMeta     = document.getElementById('screenMeta');
+  const screenTime     = document.getElementById('screenTime');
+  const screenProgress = document.getElementById('screenProgress');
+
+  if (screenTitle) screenTitle.textContent = 'Loading...';
+  if (screenMeta)  screenMeta.textContent  = `Queue • ${meta.bpm} BPM • KEY ${meta.key}`;
+  if (screenTime)  screenTime.textContent  = '00:00';
+
+  if (screenProgress) {
+    screenProgress.style.transition = 'width 0.3s ease';
+    screenProgress.style.width = '0%';
+    void screenProgress.offsetWidth; // reflow to restart CSS transition
+    setTimeout(() => { screenProgress.style.width = '100%'; }, 90);
+  }
+
+  // first beep (same as pads)
+  playBeep(330, 0.08);
+
+  // after the quick fill, flip to "Playing"
+  setTimeout(() => {
+    if (screenTitle) screenTitle.textContent = label;
+    if (screenMeta)  screenMeta.textContent  = `Playing • ${meta.bpm} BPM • KEY ${meta.key}`;
+    playBeep(220, 0.08);
+
+    // Let "Playing" linger a bit
+    const AFTER_SECOND_BEEP = 1000; // tweak this feel (ms)
+
+    setTimeout(() => {
+      try { localStorage.setItem('hasSeenIntro', 'true'); } catch(e) {}
+      closeOverlay();
+      setTimeout(() => { window.location.href = url; }, 720); // allow close anim to finish
+    }, AFTER_SECOND_BEEP);
+  }, 380);
+}
+
+/* ===========================
+   Pad buttons (handles buttons AND <a class="pad-btn">)
 =========================== */
 function initPadButtons() {
   const pads = document.querySelectorAll('.pad-btn');
+  if (!pads.length) return;
+
   pads.forEach(pad => {
-    pad.addEventListener('click', function() {
+    pad.addEventListener('click', function(e) {
+      // visual active
       pads.forEach(p => p.classList.remove('active'));
       this.classList.add('active');
-      const target = this.getAttribute('data-target');
-      if (target) {
+
+      const dataTarget = this.getAttribute('data-target');
+      const href       = this.getAttribute('href');
+
+      // In-page sections via data-target="#id"
+      if (dataTarget && dataTarget.startsWith('#')) {
+        e.preventDefault();
         playBeep(330, 0.08);
-        loadTrack(target);
+        loadTrack(dataTarget);
+        return;
+      }
+
+      // Anchor pads that navigate to another page (e.g., coursework.html)
+      if (href && href.endsWith('.html')) {
+        e.preventDefault();
+        const label = (this.textContent || 'Loading').trim();
+        const meta  = (href.includes('coursework')) ? { bpm: '128', key: '10A' } : { bpm: '124', key: '9A' };
+        loadExternalPage(href, label, meta);
+        return;
+      }
+
+      // Fallback: if data-target exists but isn’t a hash or html, treat like in-page
+      if (dataTarget) {
+        e.preventDefault();
+        playBeep(330, 0.08);
+        loadTrack(dataTarget);
       }
     });
   });
@@ -354,7 +438,7 @@ function initPadButtons() {
 =========================== */
 function initHamburger() {
   const burger = document.querySelector('.hamburger-icon');
-  const menu = document.querySelector('.menu-links');
+  const menu   = document.querySelector('.menu-links');
   if (!burger || !menu) return;
 
   const open = () => {
@@ -375,7 +459,7 @@ function initHamburger() {
 
   burger.setAttribute('role', 'button');
   burger.setAttribute('tabindex', '0');
-  burger.setAttribute('aria-controls', 'navLinks'); // ok if absent
+  burger.setAttribute('aria-controls', 'navLinks');
   burger.setAttribute('aria-expanded', 'false');
 
   burger.addEventListener('click', (e) => { e.stopPropagation(); toggle(); });
@@ -423,7 +507,7 @@ function initInteractions() {
     });
   });
 
-  // Anchor link handling
+  // Anchor link handling (#hash)
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', function(e) {
       const href = this.getAttribute('href');
@@ -436,6 +520,16 @@ function initInteractions() {
       } else {
         scrollToSection(href);
       }
+    });
+  });
+
+  // Route "Coursework" nav through the deck animation (desktop & hamburger)
+  document.querySelectorAll('a[href*="coursework.html"]').forEach(a => {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      const href  = this.getAttribute('href');
+      const label = (this.textContent || 'Coursework').trim();
+      loadExternalPage(href, label, { bpm: '128', key: '10A' });
     });
   });
 
@@ -488,7 +582,7 @@ function handleFirstLoad() {
    - Mobile: no auto-close; just overscroll guards
 =========================== */
 function initOverlayScrolling() {
-  const overlay = document.getElementById('djOverlay');
+  const overlay  = document.getElementById('djOverlay');
   const scroller = document.getElementById('dj');
   if (!overlay || !scroller) return;
 
@@ -496,7 +590,7 @@ function initOverlayScrolling() {
   overlay.addEventListener('wheel', (e) => {
     if (isMobile()) return;
     if (overlay.classList.contains('open')) {
-      closeSkipHint(); // remove the "scroll to continue" hint immediately
+      closeSkipHint();
       closeOverlay();
     }
   }, { passive: true });
@@ -516,6 +610,20 @@ function initOverlayScrolling() {
 }
 
 /* ===========================
+   Back/forward cache normalization
+=========================== */
+window.addEventListener('pageshow', (e) => {
+  const overlay = document.getElementById('djOverlay');
+  if (!overlay) return;
+  const hasSeen = localStorage.getItem('hasSeenIntro') === 'true';
+  if (e.persisted) {
+    overlay.classList.toggle('open',  !hasSeen);
+    overlay.classList.toggle('closed',  hasSeen);
+    document.body.classList.toggle('lock', !hasSeen);
+  }
+});
+
+/* ===========================
    Main initialization
 =========================== */
 function init() {
@@ -523,9 +631,9 @@ function init() {
   initHouseRecommender();
   initSliders();
   initPadButtons();
-  initHamburger();       // NEW: robust hamburger behavior
+  initHamburger();
   initInteractions();
-  initOverlayScrolling(); // Desktop scroll-to-dismiss, mobile guards
+  initOverlayScrolling();
   handleFirstLoad();
   console.log('🎵 DJ Controller initialized! Use the pad buttons to explore.');
 }
@@ -539,3 +647,74 @@ if (document.readyState === 'loading') {
 } else {
   init();
 }
+
+/* ===========================
+   Misc UI helpers
+=========================== */
+function toggleMenu() {
+  const menu = document.querySelector(".menu-links");
+  const icon = document.querySelector(".hamburger-icon");
+  if (!menu || !icon) return;
+  menu.classList.toggle("open");
+  icon.classList.toggle("open");
+}
+
+/* ===========================
+   Typewriter title (optional)
+=========================== */
+document.addEventListener("DOMContentLoaded", function () {
+  const textElement = document.getElementById('animated-text');
+  if (!textElement) return;
+  const text = "Jeremy Calcarian";
+  let index = 0;
+  let isAdding = true;
+
+  function typeEffect() {
+    if (isAdding) {
+      if (index < text.length) {
+        textElement.innerHTML += text.charAt(index);
+        index++;
+        setTimeout(typeEffect, 100);
+      } else {
+        isAdding = false;
+        setTimeout(typeEffect, 2000);
+      }
+    } else {
+      if (index > 0) {
+        textElement.innerHTML = text.substring(0, index - 1);
+        index--;
+        setTimeout(typeEffect, 100);
+      } else {
+        isAdding = true;
+        setTimeout(typeEffect, 500);
+      }
+    }
+  }
+  typeEffect();
+});
+
+/* ===========================
+   Typewriter numbers (optional)
+=========================== */
+const typewriterNumbers = document.querySelectorAll('.typewriter-number');
+typewriterNumbers.forEach(number => {
+  const target   = +number.getAttribute('data-target');
+  const duration = 8000;
+  const interval = 50;
+  let current    = 0;
+  const increment = target / (duration / interval);
+
+  const updateNumber = () => {
+    current += increment;
+    if (current < target) {
+      number.textContent = Math.ceil(current);
+      setTimeout(updateNumber, interval);
+    } else {
+      number.textContent = target;
+      number.classList.add('complete');
+    }
+  };
+  updateNumber();
+});
+
+

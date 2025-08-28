@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Coursework – Jeremy Calcarian</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --green:#46f0b0; --text:#e9eeec; --sub:#a5ada9; --bg:#050709;
+    --glass:rgba(255,255,255,.035); --border:rgba(130,255,200,.22); --r:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:Inter,system-ui,sans-serif;color:var(--text);line-height:1.65;
+    background:radial-gradient(1200px 700px at 20% -10%, #0b0f12 0%, #050709 45%, #000 100%);
+    overflow-x:hidden; padding-right:74px; /* space for right fader */
+  }
+  @keyframes gridfade{50%{opacity:.55}}
+  .grid{position:fixed;inset:0;z-index:-2;opacity:.35;background-image:
+        linear-gradient(rgba(120,255,200,.05) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(120,255,200,.05) 1px,transparent 1px);
+        background-size:60px 60px;animation:gridfade 6s ease-in-out infinite;}
+  .scanline{position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.0) 0 2px,rgba(120,255,200,.03) 2px 3px);}
+
+  header{padding:92px 22px 18px;max-width:1200px;margin:auto;text-align:center}
+  .title{font-family:Orbitron,system-ui,sans-serif;font-size:3rem;font-weight:800;color:var(--green)}
+  .subtitle{color:var(--sub);margin-top:6px}
+
+  .top-wrap{max-width:1200px;margin:0 auto 18px;padding:0 22px}
+  .pad-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:14px}
+  .pad{
+    background:#0b0f0d;color:#dfe5e2;font-weight:800;letter-spacing:.35px;text-transform:uppercase;
+    border:2px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 12px;text-align:center;
+    transition:border-color .2s, box-shadow .2s, transform .15s;
+  }
+  .pad:hover{transform:translateY(-1px);border-color:var(--green);
+    box-shadow:0 0 0 2px rgba(70,240,176,.12), 0 10px 26px rgba(0,0,0,.35)}
+
+  /* panels */
+  .viewport{position:relative;overflow:hidden}
+  .stage{display:flex;width:200vw;transition:transform .45s ease-in-out}
+  .panel{
+    width:100vw;min-height:70vh;padding:24px 22px 128px;
+    background:linear-gradient(180deg,#101312 0%,#0b0f0d 50%,#070b0a 100%);
+    border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);
+  }
+  .panel h2{font-family:Orbitron,system-ui,sans-serif;color:var(--green);margin-bottom:12px}
+  /* a little narrower so cards never run under the right fader */
+  .panel .inner{ width:min(980px, calc(100vw - 200px)); margin:0 auto; }
+  @media(max-width:900px){ .panel .inner{ width:calc(100vw - 140px);} }
+  @media(max-width:700px){ .panel .inner{ width:calc(100vw - 110px);} }
+
+  .class-card{
+    background:var(--glass);border:1px solid rgba(255,255,255,.08);border-radius:14px;
+    padding:18px;margin:12px 0 16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+    transition:box-shadow .2s,border-color .2s;
+  }
+  .class-card:hover{border-color:var(--green);box-shadow:0 0 0 1px rgba(70,240,176,.18), inset 0 1px 0 rgba(255,255,255,.06)}
+  .class-card h3{margin-bottom:6px}
+  .class-card p{color:#cdd6d2}
+  .class-card ul{margin:8px 0 0 18px;color:#e5efea}
+  .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .chip{font-size:.75rem;padding:2px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.14);color:#e7fff4}
+
+  /* right vertical fader */
+  .v-fader{position:fixed;right:14px;top:50%;transform:translateY(-50%);z-index:60;
+    width:46px;height:min(60vh,560px);background:#0b0f0d;border:1px solid rgba(255,255,255,.08);border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.05);}
+  .v-slot{position:absolute;inset:10px;border-radius:8px;background:#0e1311;}
+  .v-slot::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:#0c110f;border-radius:2px;transform:translateX(-50%)}
+  .v-ticks{position:absolute;inset:12px;pointer-events:none;opacity:.75;mix-blend:screen;
+    background:repeating-linear-gradient(180deg,rgba(255,255,255,.85) 0 2px, transparent 2px 18px,rgba(255,255,255,.5) 18px 19px, transparent 19px 34px);}
+  .v-handle{position:absolute;left:3px;right:3px;height:28px;border-radius:6px;top:10px;
+    background:linear-gradient(180deg,#626764,#3b413e 60%,#2b302e);
+    border:1px solid #79807d;box-shadow:0 4px 14px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.2);
+    cursor:grab;transition:top .12s linear;}
+  .v-handle.dragging{transition:none}
+  .v-handle::after{content:"";position:absolute;left:12%;right:12%;top:50%;height:4px;transform:translateY(-50%);
+    background:linear-gradient(180deg,#fff,#cfd6d3);border-radius:2px;box-shadow:0 0 8px rgba(255,255,255,.6);}
+
+  /* bottom crossfader (vertical knob) */
+  .crossfader{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);z-index:70;
+    width:min(780px,94vw);padding:12px 18px 16px;background:rgba(10,14,13,.96);backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.08);border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.45);}
+  .cf-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;color:#a0a8a4;font-weight:800;font-family:Orbitron,system-ui,sans-serif;letter-spacing:.7px;font-size:.75rem}
+  .cf-wrap{position:relative;height:54px}
+  .cf-track{--p:0;position:absolute;left:110px;right:110px;top:18px;height:18px;border-radius:9px;background:#0d1210;border:1px solid rgba(255,255,255,.1);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.06);}
+  .cf-ticks{position:absolute;inset:2px;background:repeating-linear-gradient(90deg,transparent 0 12px, rgba(255,255,255,.9) 12px 13px, transparent 13px 24px);opacity:.85;pointer-events:none}
+  .cf-handle{position:absolute;top:50%;left:calc(var(--p) * 100%);transform:translate(-50%,-50%);width:18px;height:36px;border-radius:5px;
+    background:linear-gradient(90deg,#707774 0%,#444a47 58%,#2f3432 100%);border:1px solid #808784;
+    box-shadow:0 6px 16px rgba(0,0,0,.45), inset 1px 0 0 rgba(255,255,255,.22), inset -1px 0 0 rgba(0,0,0,.35);cursor:grab;}
+  .cf-handle::before{content:"";position:absolute;top:3px;bottom:3px;left:3px;width:2px;border-radius:2px;background:linear-gradient(180deg,#f7f8f7,#cfd5d2);box-shadow:0 0 6px rgba(255,255,255,.5);opacity:.9;}
+  .cf-handle::after{content:"";position:absolute;top:10%;bottom:10%;left:50%;width:4px;transform:translateX(-50%);background:linear-gradient(180deg,#ffffff,#cfd6d3);border-radius:2px;box-shadow:0 0 8px rgba(255,255,255,.7);opacity:.95;}
+  .cf-name{position:absolute;top:38px;color:#a0a8a4;font-weight:800}
+  .cf-name.a{left:34px}.cf-name.b{right:34px}
+  @media(max-width:860px){body{padding-right:58px}.cf-track{left:92px;right:92px}.cf-name.a{left:24px}.cf-name.b{right:24px}}
+  .back-btn{
+  position:absolute;left:16px;top:12px;
+  font-size:.85rem;font-weight:600;
+  color:var(--sub);text-decoration:none;
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:6px 12px;
+  transition:.2s;
+}
+.back-btn:hover{
+  color:var(--green);
+  border-color:var(--green);
+  box-shadow:0 0 8px rgba(0,255,136,.25);
+}
+</style>
+</head>
+<body>
+  <div class="grid"></div><div class="scanline"></div>
+
+  <header>
+    <a href="index.html" class="back-btn">← Back</a>
+    <h1 class="title">Coursework</h1>
+    <p class="subtitle">
+        Penn ⊇ {Finance ∩ Data Science ∩ Computer Science ∩ Statistics} | * ∈ {Graduate-Level Course}
+      </p>
+  </header>
+
+  <!-- pads -->
+  <div class="top-wrap">
+    <div class="pad-grid">
+      <div class="pad">Machine Learning*</div><div class="pad">Computer Systems</div>
+      <div class="pad">Algorithms</div><div class="pad">Natural Language Processing*</div>
+      <div class="pad">Investment Management</div><div class="pad">International Markets</div>
+      <div class="pad">Sports Analytics</div><div class="pad">Applied Probability Models in Marketing*</div>
+      <div class="pad">Financial Derivatives</div><div class="pad">Stochastic Processes</div>
+      <div class="pad">Big Data Analytics*</div><div class="pad">Advanced Topics in Deep Learning*</div>
+      <div class="pad">Game Theory</div><div class="pad">Discrete Mathematics</div>
+    </div>
+  </div>
+
+  <!-- panels -->
+  <div class="viewport" aria-live="polite">
+    <div id="stage" class="stage" style="transform:translateX(0%);">
+
+      <!-- TECHNICAL -->
+      <section class="panel" id="panel-tech" aria-hidden="false">
+        <div class="inner">
+          <h2>Technical Favorites</h2>
+
+          <!-- TECHNICAL CARDS -->
+          <div class="class-card">
+            <h3>MKTG 7760 — Applied Probability Models in Marketing</h3>
+            <p>One of my favorite courses at Penn, taught by one of the best professors I’ve had. A mix of technical and conceptual. We rebuilt probability models from scratch, worked in Bayesian thinking and updating, and rethought retention and customer profiles. The course is honest about machine learning—what it lacks and what it adds. We looked at models like the Dirichlet that show up in research. Time consuming, but approachable math and worth it. If you like quantitative work and aren’t afraid of math, take it.</p>
+            <div class="meta"><span class="chip">Bayesian</span><span class="chip">Dirichlet</span><span class="chip">Customer Models</span></div>
+          </div>
+          
+          <div class="class-card">
+            <h3>CIS 2400 — Computer Systems</h3>
+            <p>This course shows how a computer actually works—bits, ISA, compilers, memory, pipelines. We wrote assembly and C, built a C compiler that ties into LC-4 machine code, and moved from gates to higher abstractions. Great class if you want to know what’s hidden when you write higher-level code.</p>
+            <div class="meta"><span class="chip">C</span><span class="chip">Assembly</span><span class="chip">Architecture</span></div>
+          </div>
+          
+          <div class="class-card">
+            <h3>CIS 5200 — Machine Learning (Theory)</h3>
+            <p>Math heavy and theoretical. Less about coding outputs, more about why algorithms work. The professor emphasizes intuition and proofs: kernels, regularization theory beyond just lambda, SVMs from the ground up. If you want to understand the math behind ML instead of only coding it, this is the course.</p>
+            <div class="meta"><span class="chip">Kernels</span><span class="chip">Generalization</span><span class="chip">SVM</span></div>
+          </div>
+          
+          <div class="class-card">
+            <h3>FNCE 2050 — Investment Management</h3>
+            <p>A good mix of concept and math. Very research-based. The professor brings in his own work and others’. Clear about the strengths and weaknesses of different models and the assumptions people use in practice. Useful for understanding portfolio construction and attribution.</p>
+            <div class="meta"><span class="chip">Optimization</span><span class="chip">Attribution</span></div>
+          </div>
+          
+          <div class="class-card">
+            <h3>STAT 4330 — Stochastic Processes / Probability</h3>
+            <p>Very theoretical. We covered martingales, Markov chains, proofs, and probability at a deep level. Real analysis ideas showed up in the later part of the course. Difficult but worthwhile. Changed how I think about probability and expectation. Great class if you like the math side.</p>
+            <div class="meta"><span class="chip">Martingales</span><span class="chip">Markov Chains</span><span class="chip">Real Analysis</span></div>
+          </div>
+          
+    
+      </section>
+
+      <!-- NON-TECHNICAL -->
+      <section class="panel" id="panel-non" aria-hidden="true">
+        <div class="inner">
+          <h2>Non-Technical Favorites</h2>
+
+           <!-- NON-TECHNICAL CARDS -->
+           <div class="class-card">
+            <h3>OIDD 2550 — Analytics for Business Decisions</h3>
+            <p>Light coding in Jupyter, but mostly conceptual with some calculations on exams. This class is what got me into machine learning. Seeing real applications made me want to learn how to build the models myself. Professor was great.</p>
+            <div class="meta"><span class="chip">Applications</span><span class="chip">Decision Making</span></div>
+          </div>
+          
+          <div class="class-card">
+            <h3>MGMT 2910 — Negotiations</h3>
+            <p>You learn by doing. The professor brings in his own research, and I treated every exercise like it was real. It worked. I got much more confident negotiating after this class.</p>
+            <div class="meta"><span class="chip">Strategy</span><span class="chip">Influence</span></div>
+          </div>
+          
+          <div class="class-card">
+            <h3>MGMT 2670 — Entrepreneurship Through Acquisitions</h3>
+            <p>A solid look at ETA. Covers parts I wouldn’t have thought about before. The professor is a strong resource—both in the class and for anyone actually interested in starting something. Supportive of student founders and very knowledgeable.</p>
+            <div class="meta"><span class="chip">ETA</span><span class="chip">Operator Mindset</span></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- right vertical fader -->
+  <div class="v-fader" aria-hidden="false">
+    <div class="v-slot" id="vSlot">
+      <div class="v-ticks"></div>
+      <div class="v-handle" id="vHandle" style="top:10px"></div>
+    </div>
+  </div>
+
+  <!-- bottom crossfader -->
+  <div class="crossfader" role="tablist" aria-label="Coursework view switch">
+    <div class="cf-bar"><span>MAGVEL FADER</span><span>CROSS FADER ASSIGN</span><span>FEELING ADJUST</span></div>
+    <div class="cf-wrap">
+      <span class="cf-name a">◀ Technical</span>
+      <div class="cf-track" id="cfTrack">
+        <div class="cf-ticks"></div>
+        <div class="cf-handle" id="cfHandle" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0.00" aria-label="Crossfader"></div>
+      </div>
+      <span class="cf-name b">Non-Technical ▶</span>
+    </div>
+  </div>
+
+<script>
+/* crossfader (clamped, left start) */
+const stage = document.getElementById('stage');
+const cfTrack = document.getElementById('cfTrack');
+const cfHandle = document.getElementById('cfHandle');
+const techPanel = document.getElementById('panel-tech');
+const nonPanel  = document.getElementById('panel-non');
+
+let p = (location.hash==='#nontechnical') ? 1 : 0;
+function applyCrossfader(){
+  const r = cfTrack.getBoundingClientRect();
+  const knobW = cfHandle.offsetWidth || 18;
+  const min = (knobW/2) / r.width;
+  const max = 1 - min;
+  const cssP = min + p * (max - min);
+  cfTrack.style.setProperty('--p', cssP);
+  cfHandle.setAttribute('aria-valuenow', p.toFixed(2));
+  if(p < 0.5){
+    stage.style.transform = 'translateX(0%)';
+    techPanel.setAttribute('aria-hidden','false');
+    nonPanel.setAttribute('aria-hidden','true');
+    history.replaceState(null,'','#technical');
+  }else{
+    stage.style.transform = 'translateX(-100vw)';
+    techPanel.setAttribute('aria-hidden','true');
+    nonPanel.setAttribute('aria-hidden','false');
+    history.replaceState(null,'','#nontechnical');
+  }
+}
+function pFromClientX(clientX){
+  const r = cfTrack.getBoundingClientRect();
+  const knobW = cfHandle.offsetWidth || 18;
+  const leftEdge = r.left + knobW/2;
+  const rightEdge = r.right - knobW/2;
+  const clampedX = Math.max(leftEdge, Math.min(clientX, rightEdge));
+  return (clampedX - leftEdge) / (rightEdge - leftEdge);
+}
+let draggingCF = false;
+cfHandle.addEventListener('mousedown', e=>{ draggingCF=true; e.preventDefault(); });
+window.addEventListener('mouseup', ()=> draggingCF=false);
+window.addEventListener('mousemove', e=>{ if(draggingCF){ p = pFromClientX(e.clientX); applyCrossfader(); } });
+cfTrack.addEventListener('click', e=>{ p = pFromClientX(e.clientX); applyCrossfader(); });
+cfHandle.addEventListener('touchstart', e=>{ draggingCF=true; e.preventDefault(); }, {passive:false});
+window.addEventListener('touchend', ()=> draggingCF=false);
+window.addEventListener('touchmove', e=>{ if(draggingCF){ p = pFromClientX(e.touches[0].clientX); applyCrossfader(); } }, {passive:false});
+window.addEventListener('keydown', e=>{
+  if(e.key==='ArrowLeft'){ p=Math.max(0, p-0.08); applyCrossfader(); }
+  if(e.key==='ArrowRight'){ p=Math.min(1, p+0.08); applyCrossfader(); }
+});
+requestAnimationFrame(applyCrossfader);
+
+/* right vertical fader (drag = instant; scroll = smooth follow) */
+const vHandle = document.getElementById('vHandle');
+const vSlot   = document.getElementById('vSlot');
+
+function pageMax(){ return document.documentElement.scrollHeight - window.innerHeight; }
+function pageP(){ const m=pageMax(); return m<=0?0:(window.scrollY/m); }
+
+function syncVHandle(){
+  const rect = vSlot.getBoundingClientRect();
+  const usable = rect.height - 20 - vHandle.offsetHeight;
+  const top = 10 + usable * pageP();
+  if(!vHandle.classList.contains('dragging')) vHandle.style.top = top + 'px';
+}
+function scrollFromY(clientY){
+  const rect = vSlot.getBoundingClientRect();
+  const minY = rect.top + 10;
+  const maxY = rect.bottom - 10 - vHandle.offsetHeight;
+  const y = Math.max(minY, Math.min(clientY - vHandle.offsetHeight/2, maxY));
+  vHandle.style.top = (y - rect.top) + 'px';
+  const ratio = (y - minY) / (maxY - minY);
+  window.scrollTo({ top: pageMax()*ratio, behavior:'instant' });
+}
+let vDrag = false;
+vHandle.addEventListener('mousedown', e=>{ vDrag=true; vHandle.classList.add('dragging'); e.preventDefault(); });
+window.addEventListener('mouseup', ()=>{ vDrag=false; vHandle.classList.remove('dragging'); });
+window.addEventListener('mousemove', e=>{ if(vDrag) scrollFromY(e.clientY); });
+vHandle.addEventListener('touchstart', e=>{ vDrag=true; vHandle.classList.add('dragging'); e.preventDefault(); }, {passive:false});
+window.addEventListener('touchend', ()=>{ vDrag=false; vHandle.classList.remove('dragging'); });
+window.addEventListener('touchmove', e=>{ if(vDrag) scrollFromY(e.touches[0].clientY); }, {passive:false});
+window.addEventListener('scroll', syncVHandle, {passive:true});
+window.addEventListener('resize', syncVHandle);
+syncVHandle();
+</script>
+</body>
+</html>
