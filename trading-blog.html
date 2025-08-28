@@ -19,9 +19,7 @@
       --font-body: 'Source Code Pro', monospace;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -62,9 +60,7 @@
       margin-top: 8px;
     }
 
-    .section {
-      margin-bottom: 50px;
-    }
+    .section { margin-bottom: 50px; }
     .section h2 {
       font-family: var(--font-heading);
       font-size: 1.8rem;
@@ -74,19 +70,16 @@
       margin-bottom: 20px;
       font-weight: 600;
     }
-    .section p {
-      margin-bottom: 20px;
-    }
+    .section p { margin-bottom: 20px; }
 
     .trades {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 20px;
+      gap: 24px;
+      align-items: stretch;
     }
     @media (min-width: 700px) {
-      .trades {
-        grid-template-columns: 1fr 1fr;
-      }
+      .trades { grid-template-columns: 1fr 1fr; }
     }
 
     .trade-card {
@@ -94,7 +87,7 @@
       border-left: 5px solid var(--accent-green);
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
       border-radius: 6px;
-      padding: 24px;
+      padding: 32px 24px 24px; /* extra top padding so ticker never overlaps */
       position: relative;
     }
     .trade-card .ticker {
@@ -118,33 +111,31 @@
       font-weight: 600;
       margin-bottom: 12px;
     }
+
+    /* --- FIX: keep label/value pairs locked and aligned --- */
     .trade-stats {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px 40px;
+      display: grid;
+      grid-template-columns: 140px 1fr; /* label | value */
+      column-gap: 24px;
+      row-gap: 10px;
       margin-bottom: 16px;
       font-size: 0.95rem;
+      align-items: baseline;           /* cleaner baselines for numbers/text */
+      font-variant-numeric: tabular-nums; /* steadier number alignment */
     }
     .trade-stats .label {
       color: var(--text-secondary);
-      width: 120px;
+      /* width removed; grid handles sizing */
     }
     .trade-stats .value {
       color: var(--text-primary);
       font-weight: 600;
     }
-    .highlight {
-      color: var(--accent-green);
-      font-weight: 600;
-    }
 
-    ul.takeaways {
-      padding-left: 20px;
-      margin: 0;
-    }
-    ul.takeaways li {
-      margin-bottom: 10px;
-    }
+    .highlight { color: var(--accent-green); font-weight: 600; }
+
+    ul.takeaways { padding-left: 20px; margin: 0; }
+    ul.takeaways li { margin-bottom: 10px; }
   </style>
 </head>
 <body>
@@ -154,15 +145,26 @@
     <p>How I risked each semester’s refund checks on disciplined investments, strategic trades, and high-stakes decisions.</p>
   </header>
 
+  <!-- New Intro section with your added copy, cleaned up for grammar -->
   <section class="section">
-    <h2>The Early Spark</h2>
+    <h2>Intro</h2>
     <p>
       As a first-generation, low-income student, my parents didn't want me to make a custodial account (they were skeptical, which is very fair). But when I received my first scholarship checks (amounts for expenses), I funneled every cent into positions I’d researched. Those early wins fueled my conviction.
     </p>
     <p>
-      The real interesting part came when I didn't have campus housing, and I was using my scholarship money that was supposed to be used for housing and food. A total all‑in with zero margin for error.
+      The real interesting part came when I didn't have campus housing, and I was using my scholarship money that was supposed to be used for housing and food. A total all-in with zero margin for error.
+    </p>
+    <p>
+      <strong>Why did I do it?</strong> Honestly, because I’d been paper-trading for years in high school and sharing stock ideas with friends who had custodial accounts (not financial advice—I was doing my best with what I knew then). I had a couple of big bets I’d been waiting to fund, specifically Palantir and NVIDIA. With work-study income and scholarships my first year, it felt like the right risk. I was effectively risking my everyday spending money, which meant I had to really trust the thesis.
+    </p>
+    <p>
+      When I moved off campus, the stakes got higher. I was literally risking rent—there were stretches where I might not have been able to afford housing or food because the cash was in the market. I’d joke with my roommates, “looks like I’m not paying rent this month,” when the S&amp;P was down. It was a joke, but if something went sideways, it could’ve been true.
+    </p>
+    <p>
+      That pressure forced discipline. I read the markets every day, tracked events, and learned how much intuition matters in some of the plays—especially options. It’s part art, part science sometimes, tbh.
     </p>
   </section>
+
 
   <section class="section">
     <h2>Some Nice Winners</h2>
@@ -200,7 +202,7 @@
         <div class="ticker">SOFI</div>
         <h3>SoFi</h3>
         <p>
-          Freshman food refund turned into a $6/share stake in SoFi. I scaled out to cover groceries, but maintain a core position on long-term conviction.
+          Food money turned into a $6/share stake in SoFi. I scaled out to cover groceries, but maintain a core position on long-term conviction.
         </p>
         <div class="trade-stats">
           <div class="label">Entry Price</div><div class="value">$6</div>
@@ -236,8 +238,8 @@
   <section class="section">
     <h2> More Lessons </h2>
     <p>
-    It really tested my patience and willingness to trust my position. Of course there were some losses with the options, but with long-term positions I have turned over multiple hundreds of percent in profit
-    as an overall portfolio return. I have been able to use this money to travel for the first time outside the states. My favoriate vacation spot was Turks & Caicos. All thanks to the stock market. 
+      It really tested my patience and willingness to trust my position. Of course there were some losses with the options, but with long-term positions I have turned over multiple hundreds of percent in profit
+      as an overall portfolio return. I have been able to use this money to travel for the first time outside the states. My favoriate vacation spot was Turks &amp; Caicos. All thanks to the stock market. 
     </p>
     <p>
       Numerous semesters I wouldn't know sometimes if I could pay my next rent, but with careful investing and allocation of my capital, it worked out. 
