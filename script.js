@@ -23,40 +23,63 @@ const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
     try { localStorage.removeItem('hasSeenIntro'); } catch(e) {}
   }
 })();
-function initAnimatedNavLinks() {
-  // Intercept same-origin .html links (desktop + hamburger + anywhere)
-  document.querySelectorAll('a[href]').forEach(a => {
+/* ===========================
+   Animated nav: global delegator (handles .html and pretty URLs)
+=========================== */
+function setupAnimatedLinkDelegation() {
+  const isPageLikePath = (path) => {
+    // allow "" (root), ".html|.htm", or extensionless paths like /projects or /blog/
+    const m = path.match(/\.([a-z0-9]+)$/i);
+    return !m || ['html','htm'].includes(m[1]);
+  };
+
+  const shouldAnimate = (a, e) => {
+    if (!a) return false;
     const href = a.getAttribute('href');
-    if (!href) return;
+    if (!href) return false;
 
-    // Skip in-page anchors and JS voids
-    if (href.startsWith('#') || href.startsWith('javascript:')) return;
+    // respect modifier keys / middle click / downloads / opt-out flag
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return false;
+    if (e.button !== 0) return false; // left click only
+    if (a.target === '_blank') return false;
+    if (a.hasAttribute('download')) return false;
+    if (a.dataset.skipAnim === 'true') return false;
 
-    // Resolve absolute URL safely
+    // skip in-page, mailto, tel, javascript:
+    if (href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('javascript:')) return false;
+
+    // only same-origin page-like paths
     const url = new URL(href, window.location.href);
+    if (url.origin !== window.location.origin) return false;
+    if (!isPageLikePath(url.pathname)) return false;
 
-    const sameOrigin = url.origin === window.location.origin;
-    const isHtml     = url.pathname.endsWith('.html');
-    const opensNew   = (a.getAttribute('target') === '_blank');
-    const skipAnim   = (a.dataset.skipAnim === 'true');
+    // don't animate if it's already the current page path
+    if (url.pathname === window.location.pathname) return false;
 
-    // Only hijack internal .html navigations that don't open a new tab and aren't opted out
-    if (sameOrigin && isHtml && !opensNew && !skipAnim) {
-      a.addEventListener('click', (e) => {
-        e.preventDefault();
-        // Prefer visible text as a screen label
-        const label = (a.textContent || url.pathname.replace(/^\//,'') || 'Loading').trim();
-        // Mildly custom meta by route, otherwise default
-        const meta =
-          url.pathname.includes('coursework') ? { bpm:'128', key:'10A' } :
-          url.pathname.includes('projects')   ? { bpm:'124', key:'9A'  } :
-          url.pathname.includes('blog')       ? { bpm:'122', key:'7A'  } :
-                                                { bpm:'126', key:'11A' };
-        loadExternalPage(url.href, label, meta);
-      }, { passive:false });
-    }
-  });
+    return true;
+  };
+
+  // Capture phase so we beat default navigation even if other listeners exist
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href]');
+    if (!shouldAnimate(a, e)) return;
+
+    e.preventDefault();
+
+    const url   = new URL(a.getAttribute('href'), window.location.href);
+    const path  = url.pathname.toLowerCase();
+    const label = (a.textContent || path.replace(/^\//,'') || 'Loading').trim();
+
+    // route-specific flavor (optional)
+    let meta = { bpm:'126', key:'11A' };
+    if (path.includes('coursework')) meta = { bpm:'128', key:'10A' };
+    else if (path.includes('project')) meta = { bpm:'124', key:'9A' };
+    else if (path.includes('blog'))    meta = { bpm:'122', key:'7A' };
+
+    loadExternalPage(url.href, label, meta);
+  }, true);
 }
+
 
 /* ===========================
    Initialize particles
@@ -666,12 +689,12 @@ function init() {
   initSliders();
   initPadButtons();
   initHamburger();
-  initInteractions();      // keep your other interactions
-  initAnimatedNavLinks();  // <-- add this line
+  initInteractions();        // keep your other UI handlers
+  setupAnimatedLinkDelegation(); // <-- add this
   initOverlayScrolling();
   handleFirstLoad();
-  console.log('🎵 DJ Controller initialized! Use the pad buttons to explore.');
 }
+
 
 
 // Global for inline handlers
