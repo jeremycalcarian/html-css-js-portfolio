@@ -23,6 +23,40 @@ const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
     try { localStorage.removeItem('hasSeenIntro'); } catch(e) {}
   }
 })();
+function initAnimatedNavLinks() {
+  // Intercept same-origin .html links (desktop + hamburger + anywhere)
+  document.querySelectorAll('a[href]').forEach(a => {
+    const href = a.getAttribute('href');
+    if (!href) return;
+
+    // Skip in-page anchors and JS voids
+    if (href.startsWith('#') || href.startsWith('javascript:')) return;
+
+    // Resolve absolute URL safely
+    const url = new URL(href, window.location.href);
+
+    const sameOrigin = url.origin === window.location.origin;
+    const isHtml     = url.pathname.endsWith('.html');
+    const opensNew   = (a.getAttribute('target') === '_blank');
+    const skipAnim   = (a.dataset.skipAnim === 'true');
+
+    // Only hijack internal .html navigations that don't open a new tab and aren't opted out
+    if (sameOrigin && isHtml && !opensNew && !skipAnim) {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Prefer visible text as a screen label
+        const label = (a.textContent || url.pathname.replace(/^\//,'') || 'Loading').trim();
+        // Mildly custom meta by route, otherwise default
+        const meta =
+          url.pathname.includes('coursework') ? { bpm:'128', key:'10A' } :
+          url.pathname.includes('projects')   ? { bpm:'124', key:'9A'  } :
+          url.pathname.includes('blog')       ? { bpm:'122', key:'7A'  } :
+                                                { bpm:'126', key:'11A' };
+        loadExternalPage(url.href, label, meta);
+      }, { passive:false });
+    }
+  });
+}
 
 /* ===========================
    Initialize particles
@@ -632,11 +666,13 @@ function init() {
   initSliders();
   initPadButtons();
   initHamburger();
-  initInteractions();
+  initInteractions();      // keep your other interactions
+  initAnimatedNavLinks();  // <-- add this line
   initOverlayScrolling();
   handleFirstLoad();
   console.log('🎵 DJ Controller initialized! Use the pad buttons to explore.');
 }
+
 
 // Global for inline handlers
 window.launchOverlay = launchOverlay;
