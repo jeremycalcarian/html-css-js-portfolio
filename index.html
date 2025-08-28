@@ -526,6 +526,15 @@
   color: var(--green);
   margin-bottom: 6px;              /* replaces inline margin */
 }
+/* --- Experience chips --- */
+.chip-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.chip{
+  padding:8px 12px;border:1px solid var(--border);background:var(--glass);
+  border-radius:999px;font-weight:700;font-size:.95rem;color:var(--text);
+  transition:.2s;
+}
+.chip:hover{border-color:var(--green);box-shadow:0 6px 16px rgba(0,255,136,.18);transform:translateY(-1px)}
+
 
   </style>
   
@@ -789,9 +798,9 @@
         </div>
         <div class="meta-copy reveal-item" data-r="3">
           <p style = "margin-top:10px">
-            I enjoyed taking <a href="coursework.html" class="accent-link">Penn</a> classes in applied math.
+           I've enjoyed taking <a href="coursework.html" class="accent-link">Penn</a> classes in applied math.
             I’ve worked on <a href="projects-and-blogs.html" class="accent-link">projects</a> in EEG, nonprofit ops, finance, and ML.
-            If you’re curious about martingales, or how I put scholarship money to work, feel free to check out my <a href="projects-and-blogs.html" class="accent-link">blog</a>.
+            If you’re curious about martingales, or how I put scholarship money in the stock market, feel free to check out my <a href="projects-and-blogs.html" class="accent-link">blog</a>.
           </p>
           <p style="margin-top:10px">
             I play soccer during my free time, swing a golf club now and then, and enjoy weightlifting.
@@ -800,6 +809,22 @@
       </div>
     </div>
   </section>
+  <section id="experience">
+    <h2 class="title">Experience</h2>
+    <p class="subtitle">Recent tools I’ve worked with</p>
+  
+    <div class="glass-card" style="text-align:center">
+      <div class="chip-grid">
+        <span class="chip">AWS EC2</span>
+        <span class="chip">Python</span>
+        <span class="chip">Java</span>
+        <span class="chip">PyTorch</span>
+        <span class="chip">TensorFlow</span>
+        <span class="chip">Full-Stack</span>
+      </div>
+    </div>
+  </section>
+  
   
   
   
