@@ -175,7 +175,6 @@ function loadTrack(target) {
     screenProgress.style.transition = 'width 0.3s ease';
   }
 
-  // Quick load animation - progress bar fills fast
   setTimeout(() => { if (screenProgress) screenProgress.style.width = '100%'; }, 100);
 
   // Show loaded state and navigate
@@ -281,7 +280,7 @@ function initHouseRecommender() {
     '6q6GR1UxIkyaVJuUNYtEjw','78nx0HDJIFD5xDq2L5420Z','1iKiLPkFnYhbCm5uvaDwjS','2y7UV3mw1igF35pj4b3xn7',
     '1AS1oLvEr6PNsCLnuEUmCi','38tYIX8o2VDBpfowqBVPYK','451TMhTkxtyZPzrcuCdm9H', '2CXF9gb38FVXESYZFobnCQ',
     '1RHsONwpXcquKICISbiJxB', '6rlIST66eL6pBc6znNRytz','24JM0etQRuPagrlzJxIH3F','2sQnu2mQTLYZYHfljgWhk2',
-    
+
   ];
 
   // 3) Defensive helpers
@@ -401,10 +400,7 @@ function initSliders() {
   }
 }
 
-/* ===========================
-   External page load (Coursework, etc.)
-   Sequence: beep → "Loading..." → progress → "Playing: X" + beep → close overlay → navigate
-=========================== */
+
 let _djNavLock = false; // avoid double-click spam
 
 function loadExternalPage(url, label, meta = { bpm: '128', key: '10A' }) {
@@ -432,7 +428,7 @@ function loadExternalPage(url, label, meta = { bpm: '128', key: '10A' }) {
   // first beep (same as pads)
   playBeep(330, 0.08);
 
-  // after the quick fill, flip to "Playing"
+
   setTimeout(() => {
     if (screenTitle) screenTitle.textContent = label;
     if (screenMeta)  screenMeta.textContent  = `Playing • ${meta.bpm} BPM • KEY ${meta.key}`;
@@ -482,7 +478,7 @@ function initPadButtons() {
         return;
       }
 
-      // Fallback: if data-target exists but isn’t a hash or html, treat like in-page
+  
       if (dataTarget) {
         e.preventDefault();
         playBeep(330, 0.08);
@@ -541,9 +537,7 @@ function initHamburger() {
   function onKeydown(e) { if (e.key === 'Escape') close(); }
 }
 
-/* ===========================
-   Initialize other interactions
-=========================== */
+
 function initInteractions() {
   // Knob controls
   document.querySelectorAll('.knob-control, .eq-knob').forEach(knob => {
@@ -635,11 +629,7 @@ function handleFirstLoad() {
   }
 }
 
-/* ===========================
-   Overlay scrolling behavior
-   - Desktop: wheel/scroll closes overlay (and hides "scroll to continue")
-   - Mobile: no auto-close; just overscroll guards
-=========================== */
+
 function initOverlayScrolling() {
   const overlay  = document.getElementById('djOverlay');
   const scroller = document.getElementById('dj');
@@ -691,8 +681,8 @@ function init() {
   initSliders();
   initPadButtons();
   initHamburger();
-  initInteractions();        // keep your other UI handlers
-  setupAnimatedLinkDelegation(); // <-- add this
+  initInteractions();       
+  setupAnimatedLinkDelegation(); 
   initOverlayScrolling();
   handleFirstLoad();
 }
