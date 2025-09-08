@@ -279,7 +279,9 @@ function initHouseRecommender() {
     '39iL6MNqs9MIile4ohbx6K','0FBdJP7yzvq88bG1keGgt4','04gs2fDnnjT6995ruR1qbk','30uUMdzRVdYd9KuP9rJXxo',
     '6q36Cqt2d3O5jqrQR9uXCp','6Uz2230ZgSmqQli5SMaIZY','70fplEUWEuEIaJ2peNpPxW','0aeYqWitH0mkLtzcpeheWk',
     '6q6GR1UxIkyaVJuUNYtEjw','78nx0HDJIFD5xDq2L5420Z','1iKiLPkFnYhbCm5uvaDwjS','2y7UV3mw1igF35pj4b3xn7',
-    '1AS1oLvEr6PNsCLnuEUmCi','38tYIX8o2VDBpfowqBVPYK','451TMhTkxtyZPzrcuCdm9H', '2CXF9gb38FVXESYZFobnCQ'
+    '1AS1oLvEr6PNsCLnuEUmCi','38tYIX8o2VDBpfowqBVPYK','451TMhTkxtyZPzrcuCdm9H', '2CXF9gb38FVXESYZFobnCQ',
+    '1RHsONwpXcquKICISbiJxB', '6rlIST66eL6pBc6znNRytz','24JM0etQRuPagrlzJxIH3F','2sQnu2mQTLYZYHfljgWhk2',
+    
   ];
 
   // 3) Defensive helpers
