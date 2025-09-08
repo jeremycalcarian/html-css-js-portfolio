@@ -180,9 +180,8 @@
     .pad-btn:focus-visible{outline:2px solid var(--vibe);outline-offset:2px}
     .pad-btn.active{color:var(--vibe);border-color:var(--vibe);box-shadow:0 0 0 2px rgba(0,0,0,.4),0 0 12px rgba(0,255,136,.35)}
   
-    /* ================================
-       CENTER MIXER (restored)
-    ================================ */
+/* center mixer */ 
+
     .mixer-section{
       display:flex;flex-direction:column;gap:16px;min-height:500px;padding:20px;border-radius:12px;
       background:linear-gradient(180deg,#1a1d1b 0%,#0f1210 50%,#0a0d0b 100%); border:1px solid #2a2f2d;
@@ -862,15 +861,14 @@
   <script>
     (function(){
       const block = document.querySelector('#about .about-shell');
-      if(!block) return; // only on pages with About
+      if(!block) return; 
   
-      // Fire when the About shell actually enters the viewport
+
       const io = new IntersectionObserver((entries)=>{
         entries.forEach(entry=>{
           if(entry.isIntersecting){
             block.classList.add('reveal-in');
-            // apply a tidy progressive delay (already in CSS via data-r)
-            // (Nothing to do here unless you want to override delays)
+
             io.unobserve(block);
           }
         });
