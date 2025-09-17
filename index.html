@@ -12,6 +12,9 @@
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     /* ================================
        THEME & GLOBAL
@@ -535,11 +538,140 @@
 .chip:hover{border-color:var(--green);box-shadow:0 6px 16px rgba(0,255,136,.18);transform:translateY(-1px)}
 
 
+/* ===== White Cover Overlay (scoped) ===== */
+#cover{position:fixed;inset:0;z-index:10000;background:#fff;color:#111;display:block;overflow:auto}
+body.cover-lock{overflow:hidden}
+
+#cover .cover-shell{
+  width:min(960px,92vw); margin:64px auto 72px; background:#fff;
+  border:1px solid #eee; border-radius:28px; padding:40px 32px;
+  box-shadow:0 24px 80px rgba(0,0,0,.06);
+}
+
+#cover .cover-head{
+  display:flex; align-items:flex-end; justify-content:space-between; gap:18px; flex-wrap:wrap;
+  border-bottom:1px solid #eee; padding-bottom:18px; margin-bottom:18px;
+}
+
+#cover .cover-topline{font:600 12px/1 Inter,system-ui,sans-serif; letter-spacing:.16em; text-transform:uppercase; color:#6b7280}
+#cover .cover-title{font-family:Fraunces,ui-serif,Georgia,serif; font-weight:800; font-size:clamp(28px,3.2vw,40px); line-height:1.15; margin:6px 0 4px}
+#cover .cover-sub{font:500 15px/1.6 Inter,system-ui,sans-serif; color:#2a2a2a; margin:0}
+
+#cover .cover-btn{
+  border:1px solid #111; background:#111; color:#fff; border-radius:999px;
+  padding:12px 18px; font:600 14px/1 Inter,system-ui,sans-serif; cursor:pointer;
+}
+#cover .cover-btn:hover{transform:translateY(-1px)}
+
+#cover .cover-section{padding:18px 0; border-bottom:1px solid #eee}
+#cover .cover-section:last-of-type{border-bottom:0}
+#cover .cover-kicker{font:700 12px/1 Inter,system-ui,sans-serif; letter-spacing:.14em; text-transform:uppercase; color:#6b7280; margin-bottom:12px}
+#cover .cover-lead{font:400 17px/1.9 Inter,system-ui,sans-serif; color:#1a1a1a; margin:0}
+
+#cover .cover-list{margin:0; padding-left:20px}
+#cover .cover-list li{margin:6px 0}
+
+#cover .cover-grid{display:grid; gap:16px}
+@media (min-width:820px){ #cover .cover-grid{ grid-template-columns:1fr 1fr } }
+
+#cover .cover-card{border:1px solid #eee; border-radius:16px; padding:14px 16px; background:#fff}
+#cover .cover-card-title{font-family:Fraunces,ui-serif,Georgia,serif; font-weight:700; margin-bottom:6px}
+
+#cover .cover-pills{list-style:none; display:flex; flex-wrap:wrap; gap:10px; padding:0; margin:0}
+#cover .cover-pill{border:1px solid #eee; border-radius:999px; padding:8px 12px; font:600 14px/1 Inter,system-ui,sans-serif; background:#fff}
+
+#cover a.cover-link, #cover .cover-card a{color:inherit; text-decoration:none; border-bottom:1px solid transparent}
+#cover a.cover-link:hover, #cover .cover-card a:hover{border-bottom-color:currentColor}
+
+#cover .cover-foot{
+  display:flex; justify-content:space-between; align-items:center; gap:12px;
+  padding-top:12px; margin-top:6px; border-top:1px solid #eee; color:#6b7280; font:400 14px/1.6 Inter,system-ui,sans-serif;
+}
+
   </style>
   
     
 </head>
 <body>
+<!-- ===== White Cover Overlay (scoped, no collisions) ===== -->
+<div id="cover" class="cover-show" role="dialog" aria-modal="true" aria-labelledby="cover-title">
+  <div class="cover-shell">
+    <header class="cover-head">
+      <div>
+        <div class="cover-topline">JEREMY CALCARIAN</div>
+        <h1 id="cover-title" class="cover-title">University of Pennsylvania</h1>
+        <p class="cover-sub"></p>
+      </div>
+      <button class="cover-btn" data-cover-close>Enter Portfolio</button>
+    </header>
+
+    <section class="cover-section">
+      <div class="cover-kicker">About Me</div>
+      <p class="cover-lead">
+        My background spans research, investing, and product work in wearables. I focus on quantitative finance, statistical modeling, and market analysis.
+        
+      </p>
+    </section>
+
+    <section class="cover-section">
+      <div class="cover-kicker">Coursework</div>
+      <ul class="cover-list">
+        <li>Quantitative Finance & Derivatives · Investment Management</li>
+        <li>Statistical learning · Probabilistic Modeling · Stochastic Processes</li>
+        <li>Machine learning · NLP · Big Data</li>
+        <li>Computer Systems · Data Structures · Algorithms</li>
+        <li>Policy & markets: Political Economy, International Markets, Behavioral Economics</li>
+      </ul>
+    </section>
+
+    <section class="cover-section">
+      <div class="cover-kicker">Projects & blogs</div>
+      <div class="cover-grid">
+        <div class="cover-card">
+          <div class="cover-card-title">Projects</div>
+          <ul class="cover-list">
+            <li><a href="eeg-dashboard.html">EEG Dashboard</a></li>
+            <li><a href="empowerr-dashboard.html">Member Analytics Dashboard</a></li>
+            <li><a href="empowerrmd.html">Empowerr Inc. (My Nonprofit)</a></li>
+            <li><a href="option-pricing.html">Options Pricing Dashboard</a></li>
+          </ul>
+        </div>
+        <div class="cover-card">
+          <div class="cover-card-title">Writing</div>
+          <ul class="cover-list">
+            <li><a href="martingale_blog1.html">Martingales and Put-Call Parity</a></li>
+            <li><a href="VIX_blog2.html">Derivation of The VIX Index</a></li>
+            <li><a href="trading-blog.html">Trading My College Scholarship In the Market</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="cover-section">
+      <div class="cover-kicker">Interests</div>
+      <ul class="cover-pills">
+        <li class="cover-pill">Markets & Macro</li>
+        <li class="cover-pill">Probabilistic modeling</li>
+        <li class="cover-pill">EEG & neurotech</li>
+        <li class="cover-pill">Wearable Products</li>
+        <li class="cover-pill">House music</li>
+        <li class="cover-pill">Soccer</li>
+        <li class="cover-pill">Poker</li>
+        <li class="cover-pill">Weightlifting</li>
+        <li class="cover-pill">iPhone videography</li>
+        <li class="cover-pill">Community building</li>
+      </ul>
+    </section>
+
+    <footer class="cover-foot">
+      <a href="#contact" class="cover-link" data-cover-close>Contact</a>
+      <span>© 2025</span>
+    </footer>
+  </div>
+</div>
+<!-- ===== /White Cover Overlay ===== -->
+
+
   <div id="particles-js"></div>
   <div class="grid"></div>
   <div class="scanline"></div>
@@ -577,7 +709,7 @@
     </div>
   </nav>
 
-  <div id="djOverlay" class="overlay open" aria-modal="true" role="dialog" aria-labelledby="djTitle">
+  <div id="djOverlay" class="overlay" aria-modal="true" role="dialog" aria-labelledby="djTitle">
     <section id="dj">
       <div class="intro">
         <h1>Hey, I'm Jeremy Calcarian.</h1>
@@ -791,8 +923,8 @@
   
         <div class="lead-copy reveal-item" data-r="2">
           <p style = "margin-top: 10px;">
-            I am interested in software, finance, probabilistic models, and iPhone videography.
-            I’m currently @Niura; past work spans data analytics, venture capital, and nonprofit ops.
+            I am interested in software, finance, probabilistic models, and love to engage in iPhone videography.
+            I’m currently @Niura; past work research, investments, and nonprofit ops.
           </p>
         </div>
         <div class="meta-copy reveal-item" data-r="3">
@@ -877,6 +1009,36 @@
       io.observe(block);
     })();
   </script>  
+<script>
+  (function(){
+    const cover = document.getElementById('cover');
+    if(!cover) return; // safety
+    document.body.classList.add('cover-lock');
+
+    function closeCover(){
+      // remove the overlay entirely so nothing can interfere
+      cover.parentNode.removeChild(cover);
+      document.body.classList.remove('cover-lock');
+    }
+
+    // Close on the primary button or any element with data-cover-close
+    cover.addEventListener('click', (e)=>{
+      if(e.target.closest('[data-cover-close]')) closeCover();
+    });
+
+    // If user clicks an in-page hash (e.g., #about), close then let the browser scroll
+    document.addEventListener('click', (e)=>{
+      const a = e.target.closest('a[href^="#"]');
+      if(!a) return;
+      closeCover();
+    });
+
+    // If they land with a hash, don't block
+    if(location.hash) closeCover();
+  })();
+</script>
+
+  
   
 
   <script src="script.js"></script>

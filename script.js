@@ -769,3 +769,42 @@ typewriterNumbers.forEach(number => {
 });
 
 
+
+  // Close the intro overlay
+  function closeOverlay() {
+    document.getElementById('djOverlay')?.classList.remove('open');
+    document.body.classList.remove('lock');
+  }
+
+  // If the URL already has a section hash on load (direct link or /portfolio/#about),
+  // close the overlay and scroll to it.
+  function maybeCloseOverlayForHash() {
+    if (!location.hash) return;
+    const allowed = new Set(['#about','#experience','#contact','#house-recommender']);
+    if (allowed.has(location.hash)) {
+      closeOverlay();
+      const el = document.querySelector(location.hash);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // Intercept in-page links (href^="#") and pad buttons (data-target)
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href^="#"], button[data-target]');
+    if (!link) return;
+
+    e.preventDefault();
+    const target = link.getAttribute('href')?.startsWith('#')
+      ? link.getAttribute('href')
+      : link.getAttribute('data-target');
+
+    if (!target) return;
+    closeOverlay();
+    const el = document.querySelector(target);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    history.replaceState(null, '', target);
+  });
+
+  window.addEventListener('hashchange', maybeCloseOverlayForHash);
+  window.addEventListener('DOMContentLoaded', maybeCloseOverlayForHash);
+
