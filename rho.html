@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jeremy Calcarian — Growth Engineering at Rho</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { overflow: hidden; font-family: 'Inter', sans-serif; background: #0d0d0d; color: #fff; }
+
+    /* Splash Screen */
+    #splash {
+      width:100vw;
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+    }
+    .logo {
+      font-family:'Playfair Display', serif;
+      font-size:4.6rem;
+      opacity:0;
+      animation:fadeUp 1.1s ease forwards;
+    }
+    .subtitle {
+      margin-top:0.5rem;
+      opacity:0;
+      animation:fadeUp 1.1s ease forwards 0.4s;
+      font-size:1.25rem;
+      color:#dcdcdc;
+    }
+    .author {
+      margin-top:0.3rem;
+      opacity:0;
+      animation:fadeUp 1.1s ease forwards 0.8s;
+      color:#9c9c9c;
+    }
+    #enterBtn {
+      margin-top:2.2rem;
+      padding:12px 30px;
+      border:1.4px solid white;
+      background:transparent;
+      color:white;
+      font-size:1.05rem;
+      cursor:pointer;
+      opacity:0;
+      animation:fadeUp 1.1s ease forwards 1.3s;
+      border-radius:6px;
+    }
+    #enterBtn:hover {
+      background:white;
+      color:black;
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+
+    /* Main */
+    #main {
+      display:none;
+      overflow-y:auto;
+      height:100vh;
+      background:#fafafa;
+      color:#222;
+      padding:60px 20px;
+    }
+    .content {
+      max-width:820px;
+      margin:0 auto;
+    }
+
+    h1 { font-size:2.3rem; font-weight:600; margin-bottom:0.4rem; }
+    h2 { font-size:1.55rem; font-weight:600; margin:2.4rem 0 1rem; }
+    p, li { font-size:1.06rem; line-height:1.6; color:#333; }
+    ul { margin-left:1.2rem; margin-top:0.6rem; }
+
+    .section-block {
+      background:white;
+      border:1px solid #e7e7e7;
+      border-radius:14px;
+      padding:32px 28px;
+      margin:40px 0;
+      box-shadow:0 4px 14px rgba(0,0,0,0.04);
+      opacity:0;
+      transform:translateY(20px);
+      animation:fadeUp 0.9s ease forwards;
+    }
+
+    /* Duration dependence interactive styles */
+    .dd-section-title {
+      font-size: 1.55rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .dd-intro {
+      font-size: 1.02rem;
+      color: #444;
+      margin-bottom: 1.4rem;
+    }
+
+    .dd-toggle-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .dd-btn {
+      padding: 9px 18px;
+      border-radius: 999px;
+      border: 1px solid #d4d4d4;
+      background: #ffffff;
+      font-size: 0.95rem;
+      cursor: pointer;
+      color: #444;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .dd-btn.active {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #2563eb;
+    }
+
+    .dd-btn:hover {
+      background: #f3f4f6;
+    }
+
+    .dd-curve-box {
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .dd-caption {
+      font-size: 0.95rem;
+      color: #444;
+      margin-top: 10px;
+    }
+
+    /* Hidden-state / repeat-usage styles */
+    .hmm-section-title {
+      font-size: 1.55rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .hmm-intro {
+      font-size: 1.02rem;
+      color: #444;
+      margin-bottom: 1.4rem;
+    }
+
+    .hmm-depth-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .hmm-depth-pill {
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid #d4d4d4;
+      font-size: 0.9rem;
+      color: #4b5563;
+      background: #ffffff;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .hmm-depth-pill.active {
+      background: #0f766e;
+      border-color: #0f766e;
+      color: #ffffff;
+    }
+
+    .hmm-depth-pill:hover {
+      background: #f3f4f6;
+    }
+
+    .hmm-bullets {
+      font-size: 0.92rem;
+      color: #555;
+      margin-left: 1.2em;
+      line-height: 1.5;
+    }
+
+    .hmm-bullets li {
+      margin-bottom: 6px;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="splash">
+    <div class="logo">Rho</div>
+    <div class="subtitle">My First Thoughts on Growth Engineering at Rho</div>
+    <div class="author">Jeremy Calcarian</div>
+    <button id="enterBtn">Enter →</button>
+  </div>
+
+  <div id="main">
+    <div class="content">
+
+      <div class="section-block">
+        <h1>Growth Engineering Thoughts Preview</h1>
+        <p style="color:#666; margin-top:-4px;">Jeremy Calcarian</p>
+        <p style="color:#777; margin-top:10px; font-size:0.98rem;">
+          This is not a proposal for what I would do at Rho. It is a thinking board shaped by the conversations I had with the team. The goal here is to outline how I might begin reasoning about Rho’s funnel, activation dynamics, customer differences, and where small, low-risk experiments could stack into long-term growth.
+        </p>
+        <p style="color:#777; margin-top:1.1rem; font-size:0.98rem;">
+          Everything here reduces to practical and testable steps. Complexity should never be the starting point. It should only be added when it helps replace assumptions with clearer judgment, and I believe that will be an objective of growth engineering.
+        </p>
+        <p style="color:#777; margin-top:1.1rem; font-size:0.98rem;">
+          The way I see this team integrating is around the idea that top-of-funnel and bottom-of-funnel work will form a shared foundation that the business compounds on. Each side needs its own structure, but they need to stay coordinated so that learning in one part of the funnel reinforces the other. Creating a distinction between (TOFU & BOFU) is imperative, but careful coordination will increase
+          our effectiveness of creating internal compounding effects of revenue in the future. 
+        </p>
+      </div>
+
+      <div class="section-block">
+        <h2>1. What I Would Validate First</h2>
+        <p>
+          My first priority is to understand where customer heterogeneity and cohort-level behavior create hidden bottlenecks in activation and early retention.
+          Concretely, I would want a simple but trustworthy baseline to work from before touching anything.
+        </p>
+        <ul>
+          <li>Sanity-check <strong>signup cohort retention</strong> with clear activation and retention points.</li>
+          <li>Slice those cohorts by a few core attributes (company size, segment, acquisition channel, initial product surface).</li>
+          <li>Look for <strong>where dropoff clusters</strong>: pre-activation, just after first value, or later in the journey. Start to build an intuition for what the data actually says right now.</li>
+          <li>Overlay basic funnel events to see where attribution decays or intent stalls inside Rho’s onboarding and first-use flows.</li>
+        </ul>
+        <p style="margin-top: 0.9rem; font-size:0.98rem; color:#555;">
+          At a high level, I want to understand how different groups of customers behave today so there is a clear target to begin working toward first.
+        </p>
+      </div>
+
+      <div class="section-block">
+        <h2>2. Activation, BOFU Focus and Cohort Behavior</h2>
+        <p>
+          With a baseline in place, I would focus early energy on bottom-of-funnel and activation improvements that respect Rho’s cautious, compliance-first environment.
+        </p>
+        <ul>
+          <li>Recognize that real progress will involve experimentation, but only after validating data quality and definitions.</li>
+          <li>Frame each change as a <strong>hypothesis-driven experiment</strong> (for example, “If we surface this context earlier, activation for this cohort should move by X percent”).</li>
+          <li>Execute carefully with the smallest reasonable variants before committing to heavier product work. In many cases this will mean collecting additional data first.</li>
+          <li>Track impact on activation, short-term retention, and any sensitive counter-metrics (support load, error rates, risk signals).</li>
+        </ul>
+        <p style="margin-top: 0.9rem; font-size:0.98rem; color:#555;">
+          It feels important to build a stronger understanding of stages and acceleration rates across different teams so work is targeted and aligned. I also recognize the need to stay consistent with Rho’s risk and trust posture.
+        </p>
+      </div>
+
+      <div class="section-block">
+        <h2>3. Roadmap (High-Level)</h2>
+        <ul>
+          <li><strong>1:</strong> Baseline research and data creation (for example, tagging), instrumentation checks, and intuition-building around customer heterogeneity.</li>
+          <li><strong>2:</strong> Hypothesis list and prioritization, a small batch of BOFU and activation experiments, and clear success metrics per test.</li>
+          <li><strong>3:</strong> Iteratively learn with GTM, Product, and RevOps and evolve experiments into a lightweight, repeatable process (flags, logging, review cadence).</li>
+        </ul>
+      </div>
+
+      <div class="section-block">
+        <h2>Early Insight Areas I Would Explore</h2>
+        <p>These are lightweight, data-driven questions that directly support safe, high-leverage BOFU experiments.</p>
+        <h3>1. Engagement Over Time</h3>
+        <p>How do activation and early retention behave by signup cohort and segment? Where do cohorts flatten, and how does that compare to benchmarks for similar products?</p>
+        <h3>2. Repeat-Usage Predictors</h3>
+        <p>What early behaviors (within the first days or weeks) strongly correlate with a user or company returning to a state of consistency of actions or progression of milestones?</p>
+        <h3>3. Strong-Fit vs Weak-Fit Signals</h3>
+        <p>Given Rho’s constraints, what simple and safe signals can we use to distinguish accounts that are likely to become meaningful customers from those that are just exploring?</p>
+        <h3>4. Dynamic Customer Health</h3>
+        <p>As customers interact with Rho, how should our view of their health and future value update in a simple and explainable way?</p>
+      </div>
+
+      <!-- Transition block -->
+      <div class="section-block">
+        <p style="font-size:1.05rem; color:#444; line-height:1.65;">
+          Before diving in further, there were two ideas that stayed with me after my conversations with the team:
+          <strong>duration dependence</strong> and <strong>repeat usage depth</strong>.
+          Both help explain early customer behavior, both highlight hidden differences across users, and both offer safe ways to begin sharpening intuition around where Rho’s strongest opportunities and risks may be.
+        </p>
+      </div>
+
+      <div class="section-block" id="dd-interactive">
+        <h2 class="dd-section-title">Duration Dependence: The Hidden Pattern That Can Reveal Customer Quality</h2>
+        <p class="dd-intro">
+          Duration dependence asks: <strong>"Given that a customer has not acted yet, how does the chance they act <em>right now</em> change as time passes?"</strong>
+          It is essentially the hazard rate for a key action. Understanding its shape for different segments helps decide when to nudge and when to give space.
+        </p>
+        
+        <p style="margin-bottom: 1.4rem; font-size: 1.02rem; color: #444;">
+          Different customer segments can have very different duration dependence patterns for the same behavior.
+          For example, a startup that just hired a new CFO, coming off a legacy platform, might show <em>positive</em> duration dependence for first payment:
+          they need time to evaluate, compare alternatives, unwind existing workflows, and build internal consensus. Their likelihood of converting can
+          increase over the first 2 to 3 weeks as they see more value and build trust.
+        </p>
+        
+        <p style="margin-bottom: 1.4rem; font-size: 1.02rem; color: #444;">
+          Meanwhile, a solo founder at a seed-stage startup can show <em>negative</em> duration dependence for that same action.
+          If they do not convert quickly, they either solve the problem another way or the pain was weaker than we assumed.
+          Every day that passes, their probability of performing that action can drop. Here is where the "Winning them everyday" idea can show itself early.
+          <br><br>
+          There may be attributes where both patterns appear across stages and segments. Exploring how those patterns differ, and how we can detect them,
+          is a useful input into how Rho sequences interventions, support, and product nudges.
+        </p>
+
+        <div class="dd-toggle-row">
+          <button class="dd-btn active" id="dd-btn-positive" onclick="showDD('positive')">Positive duration dependence</button>
+          <button class="dd-btn" id="dd-btn-negative" onclick="showDD('negative')">Negative duration dependence</button>
+        </div>
+
+        <div class="dd-curve-box">
+          <svg viewBox="0 0 420 220" width="100%" height="auto" role="img"
+               aria-label="Hazard curves for duration dependence">
+            <!-- Axes -->
+            <line x1="40" y1="190" x2="40" y2="30" stroke="#d4d4d4" stroke-width="1.5" />
+            <line x1="40" y1="190" x2="390" y2="190" stroke="#d4d4d4" stroke-width="1.5" />
+            
+            <!-- Y-axis label -->
+            <text x="20" y="110" font-size="11" fill="#777" text-anchor="middle" transform="rotate(-90, 20, 110)">Hazard Rate</text>
+            <!-- X-axis label -->
+            <text x="215" y="210" font-size="11" fill="#777" text-anchor="middle">Time Since Sign-up</text>
+
+            <!-- Mild gridlines -->
+            <line x1="40" y1="150" x2="390" y2="150" stroke="#f3f4f6" stroke-width="1" />
+            <line x1="40" y1="110" x2="390" y2="110" stroke="#f3f4f6" stroke-width="1" />
+            <line x1="40" y1="70"  x2="390" y2="70"  stroke="#f3f4f6" stroke-width="1" />
+
+            <!-- Single curve that morphs between shapes -->
+            <path
+              id="dd-line"
+              d="M40 155 Q 100 145, 160 120 T 280 70 Q 335 50, 390 42"
+              stroke="#2563eb"
+              stroke-width="3"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round">
+              <!-- Animate to positive curve (increasing hazard) -->
+              <animate
+                id="dd-anim-positive"
+                attributeName="d"
+                dur="0.6s"
+                fill="freeze"
+                begin="indefinite"
+                from="M40 120 Q 100 135, 160 148 T 280 165 Q 335 172, 390 176"
+                to="M40 155 Q 100 145, 160 120 T 280 70 Q 335 50, 390 42" />
+              <!-- Animate to negative curve (decreasing hazard) -->
+              <animate
+                id="dd-anim-negative"
+                attributeName="d"
+                dur="0.6s"
+                fill="freeze"
+                begin="indefinite"
+                from="M40 155 Q 100 145, 160 120 T 280 70 Q 335 50, 390 42"
+                to="M40 120 Q 100 135, 160 148 T 280 165 Q 335 172, 390 176" />
+            </path>
+          </svg>
+
+          <p class="dd-caption" id="dd-caption">
+            <strong>Positive duration dependence:</strong> The probability of action increases over time.
+            These customers may need more time to see value and build conviction. They are often larger or more complex accounts that require education, consensus-building, or migration planning.
+            Premature pressure can backfire, so patient nurture sequences with progressive value reveals are a better fit.
+          </p>
+        </div>
+        
+        <div style="margin-top: 1.8rem; padding: 20px; background: #f8fafc; border-left: 3px solid #2563eb; border-radius: 6px;">
+          <p style="font-size: 1.02rem; color: #444; margin-bottom: 0.8rem;">
+            <strong>Why this matters for a cautious product like Rho:</strong>
+          </p>
+          <p style="font-size: 0.98rem; color: #555; line-height: 1.65;">
+            When duration dependence is mapped to customer attributes (company size, industry, signup source, onboarding path, early engagement signals),
+            it becomes a guide for where we should intervene and where we should deliberately hold back.
+            For a financial product with real risk and compliance constraints, this is especially important.
+            Experiments should be targeted, reversible, and clearly grounded in how different cohorts naturally behave over time.
+          </p>
+        </div>
+      </div>
+
+      <div class="section-block" id="repeat-hmm">
+        <h2 class="hmm-section-title">Repeat Usage Reveals Hidden Customer States</h2>
+        <p class="hmm-intro">
+          <strong>Core idea:</strong> One action, a few repeats, and weekly usage can signal very different underlying states.
+          That is obvious conceptually, but the growth question is: <em>at what repeat depth does a customer’s behavior become meaningfully different
+          from what we would expect?</em> The simple example below is how I am thinking about a repeated action (for example, deposits).
+          Any real implementation would be guided by Rho’s data, not by these placeholder numbers.
+        </p>
+
+        <!-- Interactive selector at top -->
+        <div style="background: #f8fafc; padding: 18px 20px; border-radius: 10px; margin-bottom: 24px;">
+          <div style="font-size: 0.9rem; font-weight: 600; color: #374151; margin-bottom: 10px;">
+            Simple example: choose repeat depth to see how our view of deviations from expected value changes (frequency, monetary, recency):
+          </div>
+          <div class="hmm-depth-pills">
+            <button class="hmm-depth-pill active" id="depth-pill-1" onclick="selectDepth(1)">1 repeat</button>
+            <button class="hmm-depth-pill" id="depth-pill-2" onclick="selectDepth(2)">2–3 repeats</button>
+            <button class="hmm-depth-pill" id="depth-pill-3" onclick="selectDepth(3)">X+ repeats</button>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px;">
+            <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid #e5e7eb;">
+              <div style="font-size: 0.8rem; color: #6b7280; margin-bottom: 4px;">Δ vs expected value</div>
+              <div style="font-size: 1.4rem; font-weight: 600; color: #0f766e;" id="dev-ev">≈ 0%</div>
+              <div style="font-size: 0.78rem; color: #6b7280; margin-top: 4px;">across frequency, monetary, recency</div>
+            </div>
+            <div style="background: white; padding: 12px; border-radius: 8px; border: 1px solid #e5e7eb;">
+              <div style="font-size: 0.8rem; color: #6b7280; margin-bottom: 4px;">Confidence in that deviation</div>
+              <div style="font-size: 1.4rem; font-weight: 600; color: #111827;" id="dev-conf">Low</div>
+              <div style="font-size: 0.78rem; color: #6b7280; margin-top: 4px;">is this real signal or just noise?</div>
+            </div>
+          </div>
+
+          <p style="font-size: 0.92rem; color: #555; margin-top: 12px; line-height: 1.5;" id="depth-caption">
+            At a single repeat, any deviation from our expected value is effectively noise. Almost everyone still looks like a trial user, so it is hard to tell whether this behavior is truly above or below what we would expect.
+            As we build a clearer distinction between early churners and long-term customers, this signal should become less blurry over time.
+          </p>
+          <ul class="hmm-bullets" id="depth-bullets" style="margin-top: 8px;">
+            <li>Focus on defining what counts as a meaningful "repeatable event" at Rho (frequency, monetary size, and recency baseline).</li>
+            <li>Start with clarity on the behavioral unit and how we would measure it consistently.</li>
+          </ul>
+        </div>
+
+        <!-- Visualization -->
+        <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px;">
+          <div style="font-size: 0.88rem; color: #6b7280; margin-bottom: 12px; text-align: center;">
+            Conceptual Model: Hidden States Drive Observable Repeat Behavior
+          </div>
+          
+          <svg viewBox="0 0 500 200" width="100%" height="auto">
+            <defs>
+              <radialGradient id="stateGrad" cx="50%" cy="40%" r="70%">
+                <stop offset="0%" stop-color="#ecfeff" />
+                <stop offset="100%" stop-color="#ccfbf1" />
+              </radialGradient>
+              <marker id="arrowHead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                <path d="M0,0 L8,4 L0,8 z" fill="#9ca3af" />
+              </marker>
+            </defs>
+
+            <!-- States -->
+            <circle cx="100" cy="80" r="35" fill="url(#stateGrad)" stroke="#0f766e" stroke-width="2" />
+            <text x="100" y="78" text-anchor="middle" font-size="11" font-weight="600" fill="#0f766e">Trial</text>
+            <text x="100" y="95" text-anchor="middle" font-size="11" fill="#6b7280">1 repeat</text>
+
+            <circle cx="250" cy="80" r="35" fill="url(#stateGrad)" stroke="#0f766e" stroke-width="2" />
+            <text x="250" y="78" text-anchor="middle" font-size="11" font-weight="600" fill="#0f766e">Developing</text>
+            <text x="250" y="95" text-anchor="middle" font-size="11" fill="#6b7280">2–3 repeats</text>
+
+            <circle cx="400" cy="80" r="35" fill="url(#stateGrad)" stroke="#0f766e" stroke-width="2" />
+            <text x="400" y="78" text-anchor="middle" font-size="11" font-weight="600" fill="#0f766e">Stable</text>
+            <text x="400" y="95" text-anchor="middle" font-size="11" fill="#6b7280">X+ repeats</text>
+
+            <!-- Transitions -->
+            <line x1="135" y1="80" x2="210" y2="80" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrowHead)" />
+            <text x="172" y="70" text-anchor="middle" font-size="11" fill="#6b7280">35%</text>
+
+            <line x1="285" y1="80" x2="360" y2="80" stroke="#9ca3af" stroke-width="2" marker-end="url(#arrowHead)" />
+            <text x="322" y="70" text-anchor="middle" font-size="11" fill="#6b7280">40%</text>
+
+            <!-- Bottom label -->
+            <text x="250" y="160" text-anchor="middle" font-size="12" fill="#6b7280">
+              Repeat depth reveals which hidden regime a customer likely occupies
+            </text>
+          </svg>
+
+          <div style="font-size: 0.88rem; color: #555; margin-top: 12px; text-align: left;">
+            As mentioned earlier, customers may effectively move into a different behavioral regime relative to our baseline expected value.
+            That might show up as transacting more often, with higher amounts, or on tighter cycles.
+            The more we understand these deviations, the better we can allocate precise and beneficial support to Rho customers, one of Rho's biggest assets, without overstepping or over-touching.
+            This is a simple example, but it is important to recognize that the stages of stickiness can reverse and a company can transition to a previous stage because of external reasons.
+            An example of a sticky action could be participation in Rho's treasury management.
+            Some companies will participate in certain services and not others, with different sizes, levels of stickiness, and variability in actions.
+            That creates an interesting operational challenge, and one that requires creativity from the growth engineering team.
+          </div>
+        </div>
+      </div>
+
+      <footer style="margin-top: 60px; padding: 20px; text-align: center; color: #999; font-size: 0.9rem;">
+        © Jeremy Calcarian
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("enterBtn").onclick = () => {
+      document.getElementById("splash").style.display = "none";
+      document.body.style.overflow = "auto";
+      document.getElementById("main").style.display = "block";
+    };
+
+    function showDD(type) {
+      const animPositive = document.getElementById("dd-anim-positive");
+      const animNegative = document.getElementById("dd-anim-negative");
+      const btnPos = document.getElementById("dd-btn-positive");
+      const btnNeg = document.getElementById("dd-btn-negative");
+      const caption = document.getElementById("dd-caption");
+
+      if (type === "positive") {
+        animPositive.beginElement();
+        btnPos.classList.add("active");
+        btnNeg.classList.remove("active");
+        caption.innerHTML =
+          '<strong>Positive duration dependence:</strong> The probability of action <em>increases</em> over time. ' +
+          'These customers may need more time to see value and build conviction. They are often larger or more complex accounts that require education, consensus-building, or migration planning. ' +
+          'Premature pressure can backfire, so patient nurture sequences with progressive value reveals are more appropriate.';
+      } else {
+        animNegative.beginElement();
+        btnNeg.classList.add("active");
+        btnPos.classList.remove("active");
+        caption.innerHTML =
+          '<strong>Negative duration dependence:</strong> The probability of action <em>decreases</em> over time. ' +
+          'These customers show early intent but can experience rapid decay if they do not convert quickly. Perhaps another solution met their need or the underlying pain was not strong. ' +
+          'In this regime, time-sensitive nudges and friction removal matter most. ' +
+          'It is also important to recognize when negative duration may be an artifact: if early churners and long-term survivors are blurred within a cohort, the aggregate can falsely resemble negative duration dependence. ' +
+          'That distortion can mislead experiment design, so understanding who truly belongs in the cohort is critical before choosing incentives or interventions.';
+      }
+    }
+
+    function selectDepth(level) {
+      const pills = [
+        document.getElementById("depth-pill-1"),
+        document.getElementById("depth-pill-2"),
+        document.getElementById("depth-pill-3")
+      ];
+      const devEv = document.getElementById("dev-ev");
+      const devConf = document.getElementById("dev-conf");
+      const caption = document.getElementById("depth-caption");
+      const bullets = document.getElementById("depth-bullets");
+
+      pills.forEach(p => p.classList.remove("active"));
+      pills[level - 1].classList.add("active");
+
+      if (level === 1) {
+        devEv.textContent = "≈ 0%";
+        devConf.textContent = "Low";
+        caption.innerHTML =
+          'At a single repeat, any deviation from our expected value is effectively noise. Almost everyone still looks like a trial user, so it is hard to tell whether this behavior is truly above or below what we would expect. ' +
+          'As we start to understand early churners and long-term customers more clearly, this signal should become more defined over time.';
+        bullets.innerHTML = `
+          <li>Focus on defining what counts as a meaningful "repeatable event" at Rho (frequency, monetary size, and recency baseline).</li>
+          <li>Build clarity on the behavioral unit and how we would measure it consistently.</li>
+        `;
+      } else if (level === 2) {
+        devEv.textContent = "≈ +10–20%";
+        devConf.textContent = "Medium";
+        caption.innerHTML =
+          'By the second or third repeat, our view of deviations from expected value starts to mean something. We can begin to see whether a customer consistently transacts more often, with larger amounts, or on tighter cycles than our baseline.';
+        bullets.innerHTML = `
+          <li>This is where we can start asking who is persistently above expectation on frequency, monetary value, or recency.</li>
+          <li>Lightweight experiments can use this band to test how we surface support, education, or product nudges to reinforce emerging high-value behavior.</li>
+        `;
+      } else {
+        devEv.textContent = "≈ +30–40%";
+        devConf.textContent = "High";
+        caption.innerHTML =
+          'At X or more repeats, customers who are still active are likely in a different regime entirely. Their behavior is often systematically above our expected value, not just on one axis, but across frequency, monetary value, or recency.';
+        bullets.innerHTML = `
+          <li>Here, the question shifts from “will they stick” to “how do we thoughtfully support and scale this behavior without overstepping”.</li>
+          <li>Rho’s support and account touchpoints become strategic tools for amplifying positive deviations from expected value.</li>
+        `;
+      }
+    }
+
+    // Initialize default state
+    selectDepth(1);
+  </script>
+</body>
+</html>
